@@ -1,9 +1,12 @@
 package com.management.org.dcms.codes
+
 import android.app.Application
 import android.content.Context
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class DcmsApplication : Application() {
-
 
     override fun onCreate() {
         super.onCreate()
@@ -17,6 +20,5 @@ class DcmsApplication : Application() {
             return applicationInstance
         }
     }
-
 
 }

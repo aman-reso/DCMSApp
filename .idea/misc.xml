@@ -5,8 +5,10 @@
       <map>
         <entry key="../../../layout/compose-model-1648387134016.xml" value="0.16891891891891891" />
         <entry key="../../../layout/compose-model-1648387454015.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.10104166666666667" />
         <entry key="app/src/main/res/layout/fragment_home_message.xml" value="0.18177083333333333" />
+        <entry key="app/src/main/res/xml/network_security_config.xml" value="0.1" />
       </map>
     </option>
   </component>

@@ -32,7 +32,7 @@ object AndroidDeviceUtils {
         return androidVersion;
     }
 
-    fun getLocalIpAddress(): String? {
+    fun getLocalIpAddress(): String {
         try {
             val en: Enumeration<NetworkInterface> = NetworkInterface.getNetworkInterfaces()
             while (en.hasMoreElements()) {
@@ -44,12 +44,12 @@ object AndroidDeviceUtils {
                         if (inetAddress.address == null) {
                             return UNDEFINED
                         }
-                        return inetAddress.getHostAddress()
+                        return inetAddress.hostAddress
                     }
                 }
             }
         } catch (ex: SocketException) {
-            ex.printStackTrace()
+           return UNDEFINED
         }
         return UNDEFINED
     }

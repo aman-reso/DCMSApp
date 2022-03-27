@@ -1,17 +1,29 @@
 package com.management.org.dcms.codes.models
 
-data class LoginRequestData(
-    var id: Int? = 0, val mobileNumber: String, val password: String,
-    val deviceId: String,
-    val androidVersion: String,
-    val ipAddress: String, val latitude: String, var logitude: String
-)
+import com.google.gson.annotations.SerializedName
 
-//Id (integer, optional),
-//LoginId (string, optional),
-//Password (string, optional),
-//DeviceId (string, optional),
-//AndVersion (string, optional),
-//IpAddress (string, optional),
-//Lattitude (string, optional),
-//Longitude (string, optional)
+data class LoginRequestData(
+    @SerializedName("Id")
+    var id: Int? = 0,
+
+    @SerializedName("LoginId")
+    val mobileNumber: String,
+
+    @SerializedName("Password")
+    val password: String,
+
+    @SerializedName("DeviceId")
+    val deviceId: String,
+
+    @SerializedName("AndVersion")
+    val androidVersion: String,
+
+    @SerializedName("IpAddress")
+    val ipAddress: String,
+
+    @SerializedName("Lattitude")
+    val latitude: String,
+
+    @SerializedName("Longitude")
+    var longitude: String
+)
