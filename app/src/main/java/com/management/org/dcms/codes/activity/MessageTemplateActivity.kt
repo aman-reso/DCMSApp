@@ -102,12 +102,16 @@ class MessageTemplateActivity : AppCompatActivity() {
 
     private fun sendToWhatsApp(waMobNumber: String, messageTemplateString: String) {
         try {
+            val mobWithCountryCode = countryCodeIndia + waMobNumber
             val intent = Intent(Intent.ACTION_VIEW)
-            val query: String = URLEncoder.encode(messageTemplateString, "utf-8")
-            intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$waMobNumber&text=$query")
+            val message: String = URLEncoder.encode(messageTemplateString, "utf-8")
+            intent.data = Uri.parse("${BASE_URL_FOR_WHATSAPP}send?phone=$mobWithCountryCode&text=$message")
             startActivity(intent)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 }
+
+const val countryCodeIndia: String = "+91"
+const val BASE_URL_FOR_WHATSAPP: String = "http://api.whatsapp.com/"
