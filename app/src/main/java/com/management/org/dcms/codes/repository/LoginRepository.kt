@@ -26,4 +26,16 @@ class LoginRepository @Inject constructor(var apiInterface: DcmsApiInterface) {
 
         apiInterface.postLoginData(loginRequestData = loginRequestData)
     }
+
+    suspend fun getTaskDetail(authToken: String) = safeApiCall {
+        apiInterface.getTaskDetail(authToken)
+    }
+
+    suspend fun getWAMessageTemplate(authToken: String) = safeApiCall {
+        apiInterface.getWaMessage(authToken)
+    }
+
+    suspend fun getContactsList(authToken: String) = safeApiCall {
+        apiInterface.getContactsList(authToken)
+    }
 }

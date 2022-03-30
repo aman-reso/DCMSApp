@@ -1,14 +1,20 @@
 package com.management.org.dcms.codes
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.MemoryFile
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.management.org.dcms.R
+import com.management.org.dcms.codes.authConfig.AuthConfigManager
+import com.management.org.dcms.codes.extensions.showHideView
+import com.management.org.dcms.codes.models.LoginResponseData
+import com.management.org.dcms.codes.network_res.GlobalNetResponse
+import com.management.org.dcms.codes.utility.Utility
+import com.management.org.dcms.codes.utility.Utility.showToastMessage
 import com.management.org.dcms.codes.viewmodel.logintvm.LoginViewModel
 import com.management.org.dcms.databinding.ActivityLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,11 +27,16 @@ class LoginActivity : AppCompatActivity() {
     private var phoneNumberET: EditText? = null
     private var passwordET: EditText? = null
     private var loginBtn: Button? = null
+    private var progressBar: ProgressBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loginActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        if (Utility.isUserLoggedIn()) {
+            startHomeLandingActivity()
+        }
         setUpViews()
+        setUpObserves()
         setUpClickListener()
     }
 
@@ -34,6 +45,32 @@ class LoginActivity : AppCompatActivity() {
             phoneNumberET = activityLoginBinding.editTextPhoneNumber
             passwordET = activityLoginBinding.editTextPassword
             loginBtn = activityLoginBinding.loginButton
+            progressBar = activityLoginBinding.loginPgBar
+        }
+    }
+
+    private fun setUpObserves() {
+        loginViewModel?.apply {
+            this.authLiveData.observe(this@LoginActivity) { globalNetworkResponse ->
+                parseLoginDataResponse(globalNetworkResponse)
+            }
+        }
+    }
+
+    private fun parseLoginDataResponse(response: GlobalNetResponse<LoginResponseData>) {
+        progressBar?.showHideView(false)
+        when (response) {
+            is GlobalNetResponse.NetworkFailure -> {
+                val errorMsg = response.error
+                showToastMessage(errorMsg)
+            }
+            is GlobalNetResponse.Success -> {
+                val loginResponseData: LoginResponseData? = response.value
+                if (loginResponseData?.authToken != null) {
+                    AuthConfigManager.saveAuthToken(loginResponseData.authToken)
+                    startHomeLandingActivity()
+                }
+            }
         }
     }
 
@@ -43,10 +80,16 @@ class LoginActivity : AppCompatActivity() {
             val inputPassword: String = passwordET?.text.toString()
             if (inputMobileNumber.isNotEmpty()) {
                 if (inputPassword.isNotEmpty()) {
-                    //proceed networkCall
+                    progressBar?.showHideView(true)
                     loginViewModel?.submitLoginData(inputPhone = inputMobileNumber, inputPassword = inputPassword)
                 }
             }
         }
+    }
+
+    private fun startHomeLandingActivity() {
+        val homeLandingIntent = Intent(this, HomeLandingMainActivity::class.java);
+        startActivity(homeLandingIntent)
+        finish()
     }
 }
