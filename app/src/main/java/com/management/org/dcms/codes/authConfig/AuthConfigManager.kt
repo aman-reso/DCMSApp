@@ -7,6 +7,7 @@ class AuthConfigManager {
     companion object {
         var shared_pref_location = "com.dcms.share_pref"
         var tokenKey: String = "token";
+
         fun saveAuthToken(token: String?) {
             if (token != null) {
                 val sharedPref = DcmsApplication.getDcmsAppContext()?.getSharedPreferences(shared_pref_location, Context.MODE_PRIVATE);
@@ -18,6 +19,12 @@ class AuthConfigManager {
             val sharedPref = DcmsApplication.getDcmsAppContext()?.getSharedPreferences(shared_pref_location, Context.MODE_PRIVATE);
             return sharedPref?.getString(tokenKey, "") ?: ""
         }
+
+        fun logoutUser() {
+            val sharedPref = DcmsApplication.getDcmsAppContext()?.getSharedPreferences(shared_pref_location, Context.MODE_PRIVATE);
+            sharedPref?.edit()?.putString(tokenKey, "")?.apply()
+        }
+
     }
 
 }

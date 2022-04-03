@@ -17,15 +17,39 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(var loginRepository: LoginRepository) : ViewModel() {
     var taskDetailLiveData: MutableLiveData<GlobalNetResponse<TaskDetailsModel>?> = MutableLiveData()
 
-    fun getTaskDetails() {
+    internal fun getTaskDetails() {
         if (Utility.isUserLoggedIn()) {
             viewModelScope.launch(Dispatchers.IO) {
                 val authToken: String? = AuthConfigManager.getAuthToken()
-                var response= loginRepository.getTaskDetail(authToken!!)
+                var response = authToken?.let { loginRepository.getTaskDetail(it) }
                 taskDetailLiveData.postValue(response)
             }
         } else {
             taskDetailLiveData.postValue(null)
         }
     }
+
+    internal inline fun performLogoutOperationForServer(crossinline callbackForLogout: (Boolean) -> Unit) {
+        if (Utility.isUserLoggedIn()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val authToken: String? = AuthConfigManager.getAuthToken()
+                if (authToken != null) {
+                    when (val response = loginRepository.logoutUserFromServer(authToken = authToken)) {
+                        is GlobalNetResponse.Success -> {
+                            val successResponseValue = response.value
+                            if (successResponseValue.Status == 200) {
+                                callbackForLogout.invoke(true)
+                            } else {
+                                callbackForLogout.invoke(false)
+                            }
+                        }
+                        is GlobalNetResponse.NetworkFailure -> {
+                            callbackForLogout.invoke(false)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

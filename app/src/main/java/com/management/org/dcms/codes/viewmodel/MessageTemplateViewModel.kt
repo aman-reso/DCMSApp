@@ -20,7 +20,7 @@ import javax.inject.Inject
 class MessageTemplateViewModel @Inject constructor(var loginRepository: LoginRepository) : ViewModel() {
     var messageTemplateLiveData: MutableLiveData<GlobalNetResponse<WAMessageTemplateModel>> = MutableLiveData()
     var contactsListLiveData: MutableLiveData<GlobalNetResponse<ContactsMainModel>> = MutableLiveData()
-
+//use mediator live data here
     internal fun getWAMessageTemplate() {
         if (Utility.isUserLoggedIn()) {
             viewModelScope.launch(Dispatchers.IO) {

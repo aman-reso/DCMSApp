@@ -28,6 +28,7 @@ class LoginRepository @Inject constructor(var apiInterface: DcmsApiInterface) {
     }
 
     suspend fun getTaskDetail(authToken: String) = safeApiCall {
+        System.out.println("authTOken-->$authToken")
         apiInterface.getTaskDetail(authToken)
     }
 
@@ -37,5 +38,8 @@ class LoginRepository @Inject constructor(var apiInterface: DcmsApiInterface) {
 
     suspend fun getContactsList(authToken: String) = safeApiCall {
         apiInterface.getContactsList(authToken)
+    }
+    suspend fun logoutUserFromServer(authToken:String)= safeApiCall {
+        apiInterface.logoutUserFromServer(authToken = authToken)
     }
 }

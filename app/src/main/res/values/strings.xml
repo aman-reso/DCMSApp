@@ -3,4 +3,8 @@
     <string name="phone_number">Phone number</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="instruction_for_you">Instruction For You</string>
+    <string name="here_is_the_instruction_please_go_through_this_first">Here is the instruction please go through this first...</string>
+    <string name="attempt">Attempt</string>
+    <string name="today_s_task">Today\'s Task</string>
 </resources>

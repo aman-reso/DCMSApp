@@ -8,28 +8,40 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.activity.MessageTemplateActivity
+import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.extensions.enableDisableView
 import com.management.org.dcms.codes.extensions.showHideView
-import com.management.org.dcms.codes.models.Task
 import com.management.org.dcms.codes.models.TaskDetailsModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewmodel.HomeViewModel
 import com.management.org.dcms.databinding.ActivityMainBinding
+import com.management.org.dcms.databinding.LayputHomeDashboardBinding
+import com.management.org.dcms.databinding.ProfileSectionBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeLandingMainActivity : AppCompatActivity() {
     private val homeViewModel: HomeViewModel? by viewModels()
 
     private var mainActivityBinding: ActivityMainBinding? = null
+    private var dashboardBinding: LayputHomeDashboardBinding? = null
+    private var profileSectionBinding: ProfileSectionBinding? = null
+
     private var messageActionView: View? = null
     private var questionActionView: View? = null
     private var progressBar: ProgressBar? = null
     private var taskDetailsModel: TaskDetailsModel? = null
     private var instructionTV: TextView? = null
+    private var instructionDetailTextView: TextView? = null
+    private var nameTextView: TextView? = null
+    private var mobNumTextView: TextView? = null
+    private var logoutTextView: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,10 +53,16 @@ class HomeLandingMainActivity : AppCompatActivity() {
 
     private fun setUpViews() {
         mainActivityBinding?.let {
-            messageActionView = it.messageMainAction
-            questionActionView = it.questionMainAction
+            profileSectionBinding = it.profileSectionContainer
+            dashboardBinding = it.mainDashboardContainer
+            messageActionView = dashboardBinding?.messageMainAction
+            questionActionView = dashboardBinding?.questionMainAction
             progressBar = it.progressBar
-            instructionTV = it.instructionTV
+            instructionTV = it.instructionTitleTextView
+            instructionDetailTextView = it.instructionDetailTextView
+            logoutTextView = profileSectionBinding?.logoutSection
+            mobNumTextView = profileSectionBinding?.profileContactNumTV
+            nameTextView = profileSectionBinding?.profileNameTV
         }
     }
 
@@ -88,7 +106,7 @@ class HomeLandingMainActivity : AppCompatActivity() {
                 messageActionView?.enableDisableView(isEnable = isMessageEnabled)
             }
             if (insturction != null) {
-                instructionTV?.text = insturction
+                instructionDetailTextView?.text = insturction
             }
 
         }
@@ -119,10 +137,30 @@ class HomeLandingMainActivity : AppCompatActivity() {
                 Utility.showToastMessage("Please Wait")
             }
         }
+        logoutTextView?.setOnClickListener {
+            performLogoutOperation()
+        }
     }
 
     private fun startMessageTemplateActivity() {
         val intent = Intent(this, MessageTemplateActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun performLogoutOperation() {
+        progressBar?.showHideView(true)
+        homeViewModel?.performLogoutOperationForServer(callbackForLogoutResponse)
+    }
+
+    private var callbackForLogoutResponse = fun(isSuccessfullyLogout: Boolean) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (isSuccessfullyLogout) {
+                AuthConfigManager.logoutUser();
+                Utility.showToastMessage("Successfully Logout")
+            } else {
+                Utility.showToastMessage("Something went wrong")
+            }
+            progressBar?.showHideView(false)
+        }
     }
 }

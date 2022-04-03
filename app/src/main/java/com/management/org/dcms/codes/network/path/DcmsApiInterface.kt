@@ -22,7 +22,9 @@ interface DcmsApiInterface {
     suspend fun getWaMessage(@Query("AuthToken") token: String): WAMessageTemplateModel
 
     @GET("/api/SGAccount/Contacts")
-    suspend fun getContactsList(@Query("AuthToken")authToken: String): ContactsMainModel
+    suspend fun getContactsList(@Query("AuthToken") authToken: String): ContactsMainModel
 
+    @POST("/api/sg/Logout")
+    suspend fun logoutUserFromServer(@Query("AuthToken") authToken: String): LogoutResponseData
 }
 
