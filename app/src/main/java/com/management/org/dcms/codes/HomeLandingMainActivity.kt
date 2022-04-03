@@ -153,7 +153,7 @@ class HomeLandingMainActivity : AppCompatActivity() {
     }
 
     private var callbackForLogoutResponse = fun(isSuccessfullyLogout: Boolean) {
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch(Dispatchers.Main) {
             if (isSuccessfullyLogout) {
                 AuthConfigManager.logoutUser();
                 Utility.showToastMessage("Successfully Logout")
