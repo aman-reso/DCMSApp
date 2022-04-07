@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.models.ContactsModel
+import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewholder.ContactsListViewHolder
 
 //will shift it to Async Diff utils
@@ -26,8 +27,10 @@ class ContactsListAdapter(var callback: (ContactsModel) -> Unit) : RecyclerView.
         val item = contactsList[position]
         holder.bindDataWithHolder(item)
         holder.sendToWapIcon?.setOnClickListener {
-            if (item != null) {
+            if (item != null && item.SentStatus==0) {
                 callback.invoke(item)
+            }else if (item.SentStatus==1){
+                Utility.showToastMessage("Already send")
             }
         }
     }

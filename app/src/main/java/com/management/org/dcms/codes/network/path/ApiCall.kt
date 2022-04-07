@@ -14,11 +14,12 @@ suspend fun <T> safeApiCall(apiCall: suspend () -> T): GlobalNetResponse<T> {
             when (throwable) {
                 is HttpException -> {
                     val code = throwable.code()
-//                    val errorResponse = convertErrorBody(throwable)
-                    GlobalNetResponse.NetworkFailure("failure")
+                    val message=throwable.localizedMessage
+                    GlobalNetResponse.NetworkFailure(message)
                 }
                 else -> {
-                    GlobalNetResponse.NetworkFailure("")
+                    val message=throwable.localizedMessage
+                    GlobalNetResponse.NetworkFailure(message)
                 }
             }
         }

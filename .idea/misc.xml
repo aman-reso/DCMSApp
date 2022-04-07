@@ -7,17 +7,22 @@
         <entry key="../../../layout/compose-model-1648387454015.xml" value="0.45" />
         <entry key="../../../layout/compose-model-1648757760249.xml" value="0.5623376623376624" />
         <entry key="app/src/main/res/drawable/corner_16dp_without_border.xml" value="0.173" />
+        <entry key="app/src/main/res/drawable/corner_8dp_with_border.xml" value="0.2095" />
         <entry key="app/src/main/res/drawable/corner_8dp_without_border.xml" value="0.173" />
         <entry key="app/src/main/res/drawable/ic_baseline_exit_to_app_24.xml" value="0.173" />
         <entry key="app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_message_template.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_question_listing.xml" value="0.24947916666666667" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.23541666666666666" />
         <entry key="app/src/main/res/layout/app_title_bar.xml" value="0.24947916666666667" />
         <entry key="app/src/main/res/layout/fragment_home_message.xml" value="0.18177083333333333" />
         <entry key="app/src/main/res/layout/layout_contact_each_item.xml" value="0.22864583333333333" />
         <entry key="app/src/main/res/layout/layput_home_dashboard.xml" value="0.24947916666666667" />
         <entry key="app/src/main/res/layout/profile_section.xml" value="0.24947916666666667" />
+        <entry key="app/src/main/res/layout/qcontacts_each_item_holder.xml" value="0.24947916666666667" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.139" />
         <entry key="app/src/main/res/xml/network_security_config.xml" value="0.1" />
       </map>
     </option>

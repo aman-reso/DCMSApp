@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.activity.MessageTemplateActivity
+import com.management.org.dcms.codes.activity.QuestionListingActivity
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.extensions.enableDisableView
 import com.management.org.dcms.codes.extensions.showHideView
@@ -64,6 +65,7 @@ class HomeLandingMainActivity : AppCompatActivity() {
             mobNumTextView = profileSectionBinding?.profileContactNumTV
             nameTextView = profileSectionBinding?.profileNameTV
         }
+
     }
 
     private fun setUpObserver() {
@@ -98,9 +100,9 @@ class HomeLandingMainActivity : AppCompatActivity() {
         taskDetailsModel?.let { taskDetailsModel: TaskDetailsModel ->
             val isQuestionEnabled = taskDetailsModel.Task?.Questionaires
             val isMessageEnabled = taskDetailsModel.Task?.WAMessages
-            var insturction = taskDetailsModel.Task?.Instructions
+            val insturction = taskDetailsModel.Task?.Instructions
             if (isQuestionEnabled != null) {
-                questionActionView?.enableDisableView(isEnable = isQuestionEnabled)
+               // questionActionView?.enableDisableView(isEnable = isQuestionEnabled)
             }
             if (isMessageEnabled != null) {
                 messageActionView?.enableDisableView(isEnable = isMessageEnabled)
@@ -117,12 +119,15 @@ class HomeLandingMainActivity : AppCompatActivity() {
             if (taskDetailsModel != null) {
                 val isQuestionEnabled = taskDetailsModel?.Task?.Questionaires
                 if (isQuestionEnabled == true) {
-
+                    startQuestionActivity()
                 } else {
-                    Utility.showToastMessage("Please Wait")
+                    startQuestionActivity()
+                    Utility.showToastMessage("Not enabled right now")
                 }
-            } else {
+            }
+            else {
                 Utility.showToastMessage("Please Wait")
+
             }
         }
         messageActionView?.setOnClickListener {
@@ -140,6 +145,11 @@ class HomeLandingMainActivity : AppCompatActivity() {
         logoutTextView?.setOnClickListener {
             performLogoutOperation()
         }
+    }
+
+    private fun startQuestionActivity() {
+        val intent = Intent(this, QuestionListingActivity::class.java)
+        startActivity(intent)
     }
 
     private fun startMessageTemplateActivity() {

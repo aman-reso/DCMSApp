@@ -32,9 +32,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loginActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        if (Utility.isUserLoggedIn()) {
-            startHomeLandingActivity()
-        }
         setUpViews()
         setUpObserves()
         setUpClickListener()

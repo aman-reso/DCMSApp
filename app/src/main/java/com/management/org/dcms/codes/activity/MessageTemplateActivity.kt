@@ -24,6 +24,7 @@ import com.management.org.dcms.codes.adapter.ContactsListAdapter
 import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.codes.models.ContactsMainModel
 import com.management.org.dcms.codes.models.ContactsModel
+import com.management.org.dcms.codes.models.SentReportPostModel
 import com.management.org.dcms.codes.models.WAMessageTemplateModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
 import com.management.org.dcms.codes.utility.Utility
@@ -45,14 +46,18 @@ class MessageTemplateActivity : AppCompatActivity() {
     private var messageTemplateString: String? = null
     private var dummyImageView: ImageView? = null
     private var messageBodyTextView: TextView? = null
-
+    private var templateId: Int? = -1
     private var progressBar: ProgressBar? = null
+    private var themeId: Int? = -1
+    private var campaignId: Int? = -1
+    var firstTimeOnCreate = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_message_template)
         setUpViews()
         setUpObservers()
+        firstTimeOnCreate = true
     }
 
     private fun setUpViews() {
@@ -70,12 +75,12 @@ class MessageTemplateActivity : AppCompatActivity() {
         messageTemplateViewModel?.apply {
             messageTemplateLiveData.observe(this@MessageTemplateActivity) { response ->
                 if (response != null) {
-                    progressBar?.showHideView(false)
                     parseNetworkResponseForMessageTemplate(response)
                 }
             }
             contactsListLiveData.observe(this@MessageTemplateActivity) { response ->
                 if (response != null) {
+                    progressBar?.showHideView(false)
                     parseNetworkResponseForContactList(response)
                 }
             }
@@ -87,8 +92,11 @@ class MessageTemplateActivity : AppCompatActivity() {
     private fun parseNetworkResponseForContactList(response: GlobalNetResponse<ContactsMainModel>) {
         when (response) {
             is GlobalNetResponse.Success -> {
-                val successResponse: ContactsMainModel = response.value
-                contactsListAdapter.submitData(successResponse.contactList)
+                val successResponse: ContactsMainModel? = response.value
+                println("successResponse-->$successResponse")
+                if (successResponse?.contactList != null) {
+                    contactsListAdapter.submitData(successResponse.contactList!!)
+                }
             }
             is GlobalNetResponse.NetworkFailure -> {
 
@@ -104,6 +112,7 @@ class MessageTemplateActivity : AppCompatActivity() {
             is GlobalNetResponse.Success -> {
                 val successResponse: WAMessageTemplateModel = response.value
                 setMessageIntoViews(successResponse)
+                messageTemplateViewModel?.getContactsListForMessage(successResponse.WAMessage.ThemeId, successResponse.WAMessage.CampaignId)
             }
             is GlobalNetResponse.NetworkFailure -> {
 
@@ -111,13 +120,21 @@ class MessageTemplateActivity : AppCompatActivity() {
         }
     }
 
+    private fun refreshListAfterSend() {
+        if (themeId != null && themeId != -1 && campaignId != null && campaignId != -1) {
+            messageTemplateViewModel?.getContactsListForMessage(themeId!!, campaignId = campaignId!!)
+        }
+    }
+
     private fun setMessageIntoViews(successResponse: WAMessageTemplateModel) {
         messageBodyTextView?.text = successResponse.WAMessage.Template
         messageTemplateString = successResponse.WAMessage.Template
+        templateId = successResponse.WAMessage.Id
     }
 
     private var callback = fun(contactsMainModel: ContactsModel) {
-        if (messageTemplateString != null) {
+        if (messageTemplateString != null && templateId != null && templateId != -1) {
+            messageTemplateViewModel?.sentWAReportToServer(hhId = contactsMainModel.HHId, templateId = templateId!!, waNum = contactsMainModel.WANo)
             val waMobNumber = contactsMainModel.WANo
             sendToWhatsApp(waMobNumber, messageTemplateString!!)
         } else {
@@ -136,6 +153,14 @@ class MessageTemplateActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!firstTimeOnCreate) {
+            refreshListAfterSend()
+        }
+        firstTimeOnCreate = false
     }
 }
 
