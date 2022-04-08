@@ -100,6 +100,7 @@ class AddItemViewModel @Inject constructor(private val repository: AddItemReposi
                     } else {
                         _registerResponse.value =  UiState.Success(response.value)
                     }
+                    Log.d("asdfghj", "registerHousehold: ${response.value}")
                 }
                 is ResultWrapper.NetworkError -> {
                     _registerResponse.value =  UiState.Failed("No Internet")

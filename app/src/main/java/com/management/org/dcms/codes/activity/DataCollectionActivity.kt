@@ -1,16 +1,16 @@
 package com.management.org.dcms.codes.activity
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -40,9 +40,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+
 
 @AndroidEntryPoint
 class DataCollectionActivity : AppCompatActivity() {
@@ -60,7 +62,7 @@ class DataCollectionActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 //Image Uri will not be null for RESULT_OK
                 fileUri = data?.data!!
-                binding?.image?.setImageURI(fileUri)
+//                binding?.image?.setImageURI(fileUri)
             } else if (resultCode == ImagePicker.RESULT_ERROR) {
                 Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
             } else {
@@ -119,7 +121,7 @@ class DataCollectionActivity : AppCompatActivity() {
                                 s: CharSequence?,
                                 start: Int,
                                 count: Int,
-                                after: Int
+                                after: Int,
                             ) {
                             }
 
@@ -127,7 +129,7 @@ class DataCollectionActivity : AppCompatActivity() {
                                 s: CharSequence?,
                                 start: Int,
                                 before: Int,
-                                count: Int
+                                count: Int,
                             ) {
                                 try {
                                     Timber.i("SELECTED = ${it.data.Villages[villageList.indexOf(s.toString())]}")
@@ -189,7 +191,7 @@ class DataCollectionActivity : AppCompatActivity() {
                                 s: CharSequence?,
                                 start: Int,
                                 count: Int,
-                                after: Int
+                                after: Int,
                             ) {
                             }
 
@@ -197,7 +199,7 @@ class DataCollectionActivity : AppCompatActivity() {
                                 s: CharSequence?,
                                 start: Int,
                                 before: Int,
-                                count: Int
+                                count: Int,
                             ) {
                                 try {
                                     Timber.i("SELECTED = ${it.data.wards[wardList.indexOf(s.toString())]}")
@@ -230,7 +232,7 @@ class DataCollectionActivity : AppCompatActivity() {
                 s: CharSequence?,
                 start: Int,
                 count: Int,
-                after: Int
+                after: Int,
             ) {
             }
 
@@ -238,7 +240,7 @@ class DataCollectionActivity : AppCompatActivity() {
                 s: CharSequence?,
                 start: Int,
                 before: Int,
-                count: Int
+                count: Int,
             ) {
                 try {
                     Timber.i("SELECTED = ${mobileTypeList[mobileTypeList.indexOf(s.toString())]}")
@@ -265,7 +267,7 @@ class DataCollectionActivity : AppCompatActivity() {
                 s: CharSequence?,
                 start: Int,
                 count: Int,
-                after: Int
+                after: Int,
             ) {
             }
 
@@ -273,7 +275,7 @@ class DataCollectionActivity : AppCompatActivity() {
                 s: CharSequence?,
                 start: Int,
                 before: Int,
-                count: Int
+                count: Int,
             ) {
                 try {
                     Timber.i("SELECTED = ${documentTypeList[documentTypeList.indexOf(s.toString())]}")
@@ -325,9 +327,25 @@ class DataCollectionActivity : AppCompatActivity() {
                     LocationRequest.PRIORITY_HIGH_ACCURACY,
                     a
                 ).addOnSuccessListener {
-                    val file = File("${fileUri?.path}")
-                    val encodedImage: String = Base64.encodeToString(method(file), Base64.DEFAULT)
-                    Log.d("asdf", "onCreate: $encodedImage")
+                    var encodedImage = ""
+                    try {
+                        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, fileUri)
+                        // initialize byte stream
+                        val stream = ByteArrayOutputStream()
+                        // compress Bitmap
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                        // Initialize byte array
+                        val bytes: ByteArray = stream.toByteArray()
+                        // get base64 encoded string
+                        encodedImage = Base64.encodeToString(bytes, Base64.DEFAULT).toString()
+
+                        val imageBytes = Base64.decode(encodedImage, Base64.DEFAULT)
+                        val decodedImage =
+                            BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.lastIndex)
+                        binding?.image?.setImageBitmap(decodedImage)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
                     val token = AuthConfigManager.getAuthToken()
                     viewModel.registerHousehold(
                         villageId,
@@ -384,7 +402,6 @@ class DataCollectionActivity : AppCompatActivity() {
     @Throws(IOException::class)
     fun method(file: File): ByteArray? {
         return try {
-
             val fl = FileInputStream(file)
             val arr = ByteArray(file.length().toInt())
             fl.read(arr)
