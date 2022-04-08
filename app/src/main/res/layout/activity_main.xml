@@ -71,18 +71,12 @@
                     android:id="@+id/mainDashboardContainer"
                     layout="@layout/layput_home_dashboard"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-                <include
-                    layout="@layout/profile_section"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/profileSectionContainer"
-                    android:layout_marginTop="16dp" />
             </LinearLayout>
 
             <ProgressBar

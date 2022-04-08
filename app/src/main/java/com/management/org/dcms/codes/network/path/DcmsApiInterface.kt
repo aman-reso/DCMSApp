@@ -1,10 +1,7 @@
 package com.management.org.dcms.codes.network.path
 
-import com.google.gson.JsonObject
 import com.management.org.dcms.codes.models.*
-import org.json.JSONObject
 import retrofit2.http.*
-import javax.inject.Singleton
 
 
 interface DcmsApiInterface {
@@ -26,5 +23,20 @@ interface DcmsApiInterface {
 
     @POST("/api/sg/Logout")
     suspend fun logoutUserFromServer(@Query("AuthToken") authToken: String): LogoutResponseData
+
+    @GET("/api/ward/WardByVillageId")
+    suspend fun getWardByVillageId (@Query("id")id:Int): WardResponse
+
+    @GET("/api/village/VillagesBySg")
+    suspend fun getVillageBySg(@Query("AuthToken")token:String):VillageResponse
+
+    @GET("/api/village/list")
+    suspend fun getAllVillageList():VillageResponse
+
+    @POST("/api/households/register")
+    suspend fun householdRegister(
+        @Body request: houseHoldView,
+        @Query("AuthToken") token: String,
+    ): RegisterResponse
 }
 

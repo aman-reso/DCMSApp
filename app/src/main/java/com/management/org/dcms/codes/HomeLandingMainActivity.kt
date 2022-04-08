@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.management.org.dcms.R
+import com.management.org.dcms.codes.activity.DataCollectionActivity
 import com.management.org.dcms.codes.activity.MessageTemplateActivity
+import com.management.org.dcms.codes.activity.ProfileActivity
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.extensions.enableDisableView
 import com.management.org.dcms.codes.extensions.showHideView
@@ -34,6 +37,7 @@ class HomeLandingMainActivity : AppCompatActivity() {
     private var profileSectionBinding: ProfileSectionBinding? = null
 
     private var messageActionView: View? = null
+    private var dataCollectionActionView: View? = null
     private var questionActionView: View? = null
     private var progressBar: ProgressBar? = null
     private var taskDetailsModel: TaskDetailsModel? = null
@@ -53,9 +57,9 @@ class HomeLandingMainActivity : AppCompatActivity() {
 
     private fun setUpViews() {
         mainActivityBinding?.let {
-            profileSectionBinding = it.profileSectionContainer
             dashboardBinding = it.mainDashboardContainer
             messageActionView = dashboardBinding?.messageMainAction
+            dataCollectionActionView = dashboardBinding?.datCollectionAction
             questionActionView = dashboardBinding?.questionMainAction
             progressBar = it.progressBar
             instructionTV = it.instructionTitleTextView
@@ -64,6 +68,18 @@ class HomeLandingMainActivity : AppCompatActivity() {
             mobNumTextView = profileSectionBinding?.profileContactNumTV
             nameTextView = profileSectionBinding?.profileNameTV
         }
+
+        mainActivityBinding?.containerAppBar?.toolbar?.setTitle(R.string.app_name)
+
+        mainActivityBinding?.containerAppBar?.toolbar?.setOnMenuItemClickListener {
+            if (it.itemId == R.id.profile){
+                startActivity(Intent(this, ProfileActivity::class.java))
+            }else{
+                performLogoutOperation()
+            }
+            true
+        }
+
     }
 
     private fun setUpObserver() {
@@ -98,7 +114,7 @@ class HomeLandingMainActivity : AppCompatActivity() {
         taskDetailsModel?.let { taskDetailsModel: TaskDetailsModel ->
             val isQuestionEnabled = taskDetailsModel.Task?.Questionaires
             val isMessageEnabled = taskDetailsModel.Task?.WAMessages
-            var insturction = taskDetailsModel.Task?.Instructions
+            val insturction = taskDetailsModel.Task?.Instructions
             if (isQuestionEnabled != null) {
                 questionActionView?.enableDisableView(isEnable = isQuestionEnabled)
             }
@@ -137,9 +153,13 @@ class HomeLandingMainActivity : AppCompatActivity() {
                 Utility.showToastMessage("Please Wait")
             }
         }
-        logoutTextView?.setOnClickListener {
-            performLogoutOperation()
+        dataCollectionActionView?.setOnClickListener {
+            startDataCollectionActivity()
         }
+    }
+
+    private fun startDataCollectionActivity() {
+        startActivity(Intent(this,DataCollectionActivity::class.java))
     }
 
     private fun startMessageTemplateActivity() {

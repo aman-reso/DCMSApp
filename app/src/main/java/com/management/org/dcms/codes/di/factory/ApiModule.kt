@@ -2,6 +2,7 @@ package com.management.org.dcms.codes.di.factory
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.management.org.dcms.codes.network.path.DcmsApiInterface
@@ -74,6 +75,7 @@ class ApiModule {
     @Provides
     @Singleton
     fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
+        Log.d("TAG", "provideRetrofit: $BASE_URL")
         return Retrofit.Builder()
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))

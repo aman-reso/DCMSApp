@@ -1,5 +1,6 @@
 package com.management.org.dcms.codes.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,6 +22,7 @@ class HomeViewModel @Inject constructor(var loginRepository: LoginRepository) : 
         if (Utility.isUserLoggedIn()) {
             viewModelScope.launch(Dispatchers.IO) {
                 val authToken: String? = AuthConfigManager.getAuthToken()
+                Log.d("asdfghjkl", "getTaskDetails: $authToken")
                 var response = authToken?.let { loginRepository.getTaskDetail(it) }
                 taskDetailLiveData.postValue(response)
             }

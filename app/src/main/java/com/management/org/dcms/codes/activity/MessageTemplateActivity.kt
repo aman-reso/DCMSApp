@@ -1,5 +1,6 @@
 package com.management.org.dcms.codes.activity
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
@@ -11,6 +12,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -43,7 +45,6 @@ class MessageTemplateActivity : AppCompatActivity() {
     private var contactsRecyclerView: RecyclerView? = null
     private val contactsListAdapter: ContactsListAdapter by lazy { ContactsListAdapter(callback = callback) }
     private var messageTemplateString: String? = null
-    private var dummyImageView: ImageView? = null
     private var messageBodyTextView: TextView? = null
 
     private var progressBar: ProgressBar? = null
@@ -59,11 +60,30 @@ class MessageTemplateActivity : AppCompatActivity() {
         mainActivityBinding?.also {
             messageTemplateTV = it.MessageTemplateTV
             contactsRecyclerView = it.contactsRecyclerView
-            dummyImageView = it.dummyImageView
             messageBodyTextView = it.messageTemplateDescTextView
             progressBar = it.progressBar
         }
         contactsRecyclerView?.adapter = contactsListAdapter
+
+        mainActivityBinding?.containerAppBar?.toolbar?.visibility = View.GONE
+        mainActivityBinding?.containerAppBar?.icNavBackIcon?.visibility = View.VISIBLE
+        mainActivityBinding?.containerAppBar?.appBarTitleTV?.visibility = View.VISIBLE
+
+        mainActivityBinding?.containerAppBar?.icNavBackIcon?.setOnClickListener { onBackPressed() }
+
+        mainActivityBinding?.sendToWaGroupBtn?.setOnClickListener {
+            try {
+                val message = messageBodyTextView?.text.toString()
+                val whatsAppIntent = Intent()
+                whatsAppIntent.data =
+                    Uri.parse("whatsapp://send?text=${URLEncoder
+                        .encode(message,"UTF-8")}")
+                whatsAppIntent.action = Intent.ACTION_VIEW
+                startActivity(whatsAppIntent)
+            }catch (e: ActivityNotFoundException){
+                Toast.makeText(this, "You don't have whatsapp installed!!", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setUpObservers() {
