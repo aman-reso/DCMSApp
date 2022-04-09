@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/containerAppBar"
+            layout="@layout/app_title_bar" />
+
+        <LinearLayout
+            android:id="@+id/profileSectionContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/containerAppBar">
+
+            <TextView
+                android:id="@+id/profileSectionTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/nuntio_bold"
+                android:text="Profile"
+                android:textColor="#232323"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/profileNameTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/nuntio_regular"
+                android:text=""
+                android:textColor="#232323"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileContactNumTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/nuntio_regular"
+                android:text=""
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileEmailIdTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/nuntio_regular"
+                android:text=""
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileStateNameTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/nuntio_regular"
+                android:text=""
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileDistrictNameTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/nuntio_regular"
+                android:text=""
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileBlockNameTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/nuntio_regular"
+                android:text=""
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/profileVillageNameTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/nuntio_regular"
+                android:text=""
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profilePanchayatNameTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/nuntio_regular"
+                android:text=""
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

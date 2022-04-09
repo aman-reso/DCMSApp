@@ -4,13 +4,12 @@ package com.management.org.dcms.codes.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.models.ContactsMainModel
 import com.management.org.dcms.codes.models.QContactsMainModel
 import com.management.org.dcms.codes.models.WAMessageTemplateModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
-import com.management.org.dcms.codes.repository.LoginRepository
+import com.management.org.dcms.codes.repository.DcmsNetworkCallRepository
 import com.management.org.dcms.codes.utility.Utility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MessageTemplateViewModel @Inject constructor(var loginRepository: LoginRepository) : ViewModel() {
+class MessageTemplateViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetworkCallRepository) : ViewModel() {
     var messageTemplateLiveData: MutableLiveData<GlobalNetResponse<WAMessageTemplateModel>> = MutableLiveData()
     var contactsListLiveData: MutableLiveData<GlobalNetResponse<ContactsMainModel>> = MutableLiveData()
     var qContactListLiveData: MutableLiveData<GlobalNetResponse<QContactsMainModel>> = MutableLiveData()
@@ -30,7 +29,7 @@ class MessageTemplateViewModel @Inject constructor(var loginRepository: LoginRep
             viewModelScope.launch(Dispatchers.IO) {
                 val authToken = AuthConfigManager.getAuthToken()
                 async {
-                    val response = loginRepository.getWAMessageTemplate(authToken!!)
+                    val response = dcmsNetworkCallRepository.getWAMessageTemplate(authToken!!)
                     messageTemplateLiveData.postValue(response)
                 }
             }
@@ -40,7 +39,7 @@ class MessageTemplateViewModel @Inject constructor(var loginRepository: LoginRep
     fun getContactsListForMessage(themeId: Int, campaignId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val authToken = AuthConfigManager.getAuthToken()
-            val response = loginRepository.getContactsList(authToken!!, themeId, campaignId)
+            val response = dcmsNetworkCallRepository.getContactsList(authToken!!, themeId, campaignId)
             contactsListLiveData.postValue(response)
         }
     }
@@ -50,7 +49,7 @@ class MessageTemplateViewModel @Inject constructor(var loginRepository: LoginRep
             val authToken = AuthConfigManager.getAuthToken()
             println("authToken==>+$authToken")
             if (authToken != null) {
-                when (val serverResponse = loginRepository.sentWAReport(authToken = authToken, hhId = hhId, templateId = templateId, waNum = waNum)) {
+                when (val serverResponse = dcmsNetworkCallRepository.sentWAReport(authToken = authToken, hhId = hhId, templateId = templateId, waNum = waNum)) {
                     is GlobalNetResponse.Success -> {
                         println("serverResponse$serverResponse")
                     }
@@ -66,7 +65,7 @@ class MessageTemplateViewModel @Inject constructor(var loginRepository: LoginRep
         viewModelScope.launch(Dispatchers.IO) {
             val authToken = AuthConfigManager.getAuthToken()
             if (authToken != null) {
-                val serverResponse = loginRepository.getContactsListForQuestion(authToken = authToken, themeId = 1, campaignId = 1)
+                val serverResponse = dcmsNetworkCallRepository.getContactsListForQuestion(authToken = authToken, themeId = 1, campaignId = 1)
                 qContactListLiveData.postValue(serverResponse)
             }
         }

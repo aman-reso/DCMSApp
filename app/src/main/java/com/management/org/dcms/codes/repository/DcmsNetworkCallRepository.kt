@@ -9,7 +9,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LoginRepository @Inject constructor(var apiInterface: DcmsApiInterface) {
+class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInterface) {
 
     suspend fun submitRequestForLogin(inputPhone: String, inputPassword: String) = safeApiCall {
         val id: Int = 0
@@ -56,5 +56,8 @@ class LoginRepository @Inject constructor(var apiInterface: DcmsApiInterface) {
     }
     suspend fun getContactsListForQuestion(authToken: String,campaignId: Int,themeId: Int)= safeApiCall {
         apiInterface.getQuestionContactsList(authToken,campaignId,themeId)
+    }
+    suspend fun getProfileDetails(authToken: String)= safeApiCall {
+        apiInterface.getProfileDetails(authToken = authToken)
     }
 }

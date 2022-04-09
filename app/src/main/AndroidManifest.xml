@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".codes.DcmsApplication"
@@ -19,10 +21,13 @@
         android:theme="@style/Theme.DCMS"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".codes.LoginActivity"
+            android:name=".codes.activity.ProfileActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="false" />
-        <!-- <activity -->
+        <activity
+            android:name=".codes.LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- <activity -->
         <!-- android:name=".codes.activity.QuestionListingActivity" -->
         <!-- android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" -->
         <!-- android:exported="false" /> -->
@@ -30,7 +35,6 @@
             android:name=".codes.activity.MessageTemplateActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
         <activity
             android:name=".codes.activity.QuestionListingActivity"
             android:exported="false"
@@ -56,6 +60,31 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+
+        <activity
+            android:name=".codes.dcmsclient.viewitem.ViewItemActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".codes.dcmsclient.additem.AddItemActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".codes.dcmsclient.signup.SignupActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".codes.dcmsclient.login.DcmsClientLoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".codes.dcmsclient.DcmsSplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".codes.dcmsclient.DcmClientMainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

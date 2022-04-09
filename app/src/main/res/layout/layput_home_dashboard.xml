@@ -10,107 +10,223 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainDashboardContainer"
         android:layout_width="match_parent"
-        android:layout_height="150dp">
-
+        android:paddingBottom="10dp"
+        android:layout_height="310dp">
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/containerForQuestionSection"
-            android:layout_width="0dp"
-            android:layout_height="110dp"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/corner_8dp_without_border"
-            android:backgroundTint="#ffc277"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/containerForMessageSection"
+            android:id="@+id/container1"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerForQuestionSection"
+                android:layout_width="0dp"
+                android:layout_height="110dp"
                 android:layout_marginHorizontal="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="@font/nuntio_regular"
-                android:text="Hii, Your question time is enabled Please Attempt it"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/corner_8dp_without_border"
+                android:backgroundTint="#ffc277"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/containerForMessageSection"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nuntio_regular"
+                    android:text="Hii, Your question time is enabled Please Attempt it"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/questionMainAction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/corner_16dp_without_border"
+                android:backgroundTint="#9297fe"
+                android:elevation="4dp"
+                android:fontFamily="@font/nuntio_bold"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="12dp"
+                android:text="@string/attempt"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/containerForQuestionSection"
+                app:layout_constraintStart_toStartOf="@+id/containerForQuestionSection"
+                app:layout_constraintTop_toTopOf="@+id/containerForQuestionSection"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerForMessageSection"
+                android:layout_width="0dp"
+                android:layout_height="110dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/corner_8dp_without_border"
+                android:backgroundTint="#ff7648"
+                app:layout_constraintBottom_toBottomOf="@+id/containerForQuestionSection"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/containerForQuestionSection"
+                app:layout_constraintTop_toTopOf="@+id/containerForQuestionSection">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nuntio_regular"
+                    android:text="Hii,Please Share Your message"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/messageMainAction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/corner_16dp_without_border"
+                android:backgroundTint="#edf8e1"
+                android:elevation="4dp"
+                android:fontFamily="@font/nuntio_regular"
+                android:paddingVertical="12dp"
+                android:text="Start Message"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/containerForMessageSection"
+                app:layout_constraintStart_toStartOf="@+id/containerForMessageSection"
+                app:layout_constraintTop_toTopOf="@+id/containerForMessageSection"
+                app:layout_constraintVertical_bias="1.0" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/questionMainAction"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginBottom="4dp"
-            android:background="@drawable/corner_16dp_without_border"
-            android:backgroundTint="#9297fe"
-            android:elevation="4dp"
-            android:fontFamily="@font/nuntio_bold"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="12dp"
-            android:text="@string/attempt"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/containerForQuestionSection"
-            app:layout_constraintStart_toStartOf="@+id/containerForQuestionSection"
-            app:layout_constraintTop_toTopOf="@+id/containerForQuestionSection"
-            app:layout_constraintVertical_bias="1.0" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/containerForMessageSection"
-            android:layout_width="0dp"
-            android:layout_height="110dp"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/corner_8dp_without_border"
-            android:backgroundTint="#ff7648"
-            app:layout_constraintBottom_toBottomOf="@+id/containerForQuestionSection"
+            android:id="@+id/container2"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/containerForQuestionSection"
-            app:layout_constraintTop_toTopOf="@+id/containerForQuestionSection">
+            app:layout_constraintTop_toBottomOf="@id/container1">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerForTextMessage"
+                android:layout_width="0dp"
+                android:layout_height="110dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/corner_8dp_without_border"
+                android:backgroundTint="#ffc277"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/containerForDataCollection"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nuntio_regular"
+                    android:text="Hii, Your Text message is enabled Please Attempt it"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/textMessageAction"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="@font/nuntio_regular"
-                android:text="Hii,Please Share Your message"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/corner_16dp_without_border"
+                android:backgroundTint="#9297fe"
+                android:elevation="4dp"
+                android:fontFamily="@font/nuntio_bold"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="12dp"
+                android:text="@string/text_message"
+                android:textAlignment="center"
                 android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/containerForTextMessage"
+                app:layout_constraintStart_toStartOf="@id/containerForTextMessage"
+                app:layout_constraintTop_toTopOf="@id/containerForTextMessage"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerForDataCollection"
+                android:layout_width="0dp"
+                android:layout_height="110dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/corner_8dp_without_border"
+                android:backgroundTint="#ff7648"
+                app:layout_constraintBottom_toBottomOf="@id/containerForTextMessage"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@id/containerForTextMessage"
+                app:layout_constraintTop_toTopOf="@id/containerForTextMessage">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nuntio_regular"
+                    android:text="Hii,Please Share Your message"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/datCollectionAction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/corner_16dp_without_border"
+                android:backgroundTint="#edf8e1"
+                android:elevation="4dp"
+                android:fontFamily="@font/nuntio_regular"
+                android:paddingVertical="12dp"
+                android:text="Data Collection"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/containerForDataCollection"
+                app:layout_constraintStart_toStartOf="@id/containerForDataCollection"
+                app:layout_constraintTop_toTopOf="@id/containerForDataCollection"
+                app:layout_constraintVertical_bias="1.0" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/messageMainAction"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginBottom="4dp"
-            android:background="@drawable/corner_16dp_without_border"
-            android:backgroundTint="#edf8e1"
-            android:elevation="4dp"
-            android:fontFamily="@font/nuntio_regular"
-            android:paddingVertical="12dp"
-            android:text="Start Message"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/containerForMessageSection"
-            app:layout_constraintStart_toStartOf="@+id/containerForMessageSection"
-            app:layout_constraintTop_toTopOf="@+id/containerForMessageSection"
-            app:layout_constraintVertical_bias="1.0" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

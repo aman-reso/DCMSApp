@@ -15,15 +15,16 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        Handler().postDelayed(Runnable {
+        Handler().postDelayed(fun() {
             if (Utility.isUserLoggedIn()) {
                 startHomeLandingActivity()
-            }else{
+            } else {
                 startLogintActivity()
             }
         },3000)
     }
     private fun startHomeLandingActivity() {
+
         val homeLandingIntent = Intent(this, HomeLandingMainActivity::class.java);
         startActivity(homeLandingIntent)
         finish()

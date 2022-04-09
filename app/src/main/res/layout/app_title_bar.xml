@@ -12,13 +12,14 @@
         android:layout_height="54dp"
         android:background="@android:color/holo_red_light">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/icNavBackIcon"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:visibility="gone"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
             android:src="@drawable/ic_baseline_keyboard_backspace_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/appBarTitleTV"
@@ -33,13 +34,26 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/nuntio_bold"
-            android:text="@string/app_name"
+            android:text="Dcms"
             android:textColor="@color/white"
             android:textSize="20sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/icNavBackIcon"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:title="@string/app_name"
+            app:titleTextColor="@color/white"
+            app:titleMarginStart="20dp"
+            app:menu="@menu/dashboard_menu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

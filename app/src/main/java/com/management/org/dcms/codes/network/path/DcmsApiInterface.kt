@@ -36,7 +36,8 @@ interface DcmsApiInterface {
     ): QContactsMainModel
 
    // http://dcmshost.dmi.ac.in/api/SGAccount/QContacts?AuthToken=wUESwWxNd20%3D&CampaignId=1&ThemeId=1
-
+   @POST("/Api/Account/Profile")
+   suspend fun getProfileDetails(@Query("AuthToken")authToken: String):ProfileResponseModel
 
 }
 

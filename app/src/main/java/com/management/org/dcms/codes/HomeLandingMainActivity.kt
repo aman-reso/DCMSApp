@@ -9,10 +9,13 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import com.management.org.dcms.codes.dcmsclient.signup.SignupActivity
 import com.management.org.dcms.R
-import com.management.org.dcms.codes.activity.MessageTemplateActivity
+import com.management.org.dcms.codes.activity.ProfileActivity
 import com.management.org.dcms.codes.activity.QuestionListingActivity
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
+import com.management.org.dcms.codes.dcmsclient.DcmsSplashActivity
+import com.management.org.dcms.codes.dcmsclient.login.DcmsClientLoginActivity
 import com.management.org.dcms.codes.extensions.enableDisableView
 import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.codes.models.TaskDetailsModel
@@ -22,6 +25,7 @@ import com.management.org.dcms.codes.viewmodel.HomeViewModel
 import com.management.org.dcms.databinding.ActivityMainBinding
 import com.management.org.dcms.databinding.LayputHomeDashboardBinding
 import com.management.org.dcms.databinding.ProfileSectionBinding
+import com.squareup.moshi.internal.Util
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,6 +39,7 @@ class HomeLandingMainActivity : AppCompatActivity() {
     private var profileSectionBinding: ProfileSectionBinding? = null
 
     private var messageActionView: View? = null
+    private var dataCollectionActionView: View? = null
     private var questionActionView: View? = null
     private var progressBar: ProgressBar? = null
     private var taskDetailsModel: TaskDetailsModel? = null
@@ -54,9 +59,9 @@ class HomeLandingMainActivity : AppCompatActivity() {
 
     private fun setUpViews() {
         mainActivityBinding?.let {
-            profileSectionBinding = it.profileSectionContainer
             dashboardBinding = it.mainDashboardContainer
             messageActionView = dashboardBinding?.messageMainAction
+            dataCollectionActionView = dashboardBinding?.datCollectionAction
             questionActionView = dashboardBinding?.questionMainAction
             progressBar = it.progressBar
             instructionTV = it.instructionTitleTextView
@@ -64,6 +69,17 @@ class HomeLandingMainActivity : AppCompatActivity() {
             logoutTextView = profileSectionBinding?.logoutSection
             mobNumTextView = profileSectionBinding?.profileContactNumTV
             nameTextView = profileSectionBinding?.profileNameTV
+        }
+
+        mainActivityBinding?.containerAppBar?.toolbar?.setTitle(R.string.app_name)
+
+        mainActivityBinding?.containerAppBar?.toolbar?.setOnMenuItemClickListener {
+            if (it.itemId == R.id.profile){
+                startActivity(Intent(this, ProfileActivity::class.java))
+            }else{
+                performLogoutOperation()
+            }
+            true
         }
 
     }
@@ -100,15 +116,15 @@ class HomeLandingMainActivity : AppCompatActivity() {
         taskDetailsModel?.let { taskDetailsModel: TaskDetailsModel ->
             val isQuestionEnabled = taskDetailsModel.Task?.Questionaires
             val isMessageEnabled = taskDetailsModel.Task?.WAMessages
-            val insturction = taskDetailsModel.Task?.Instructions
+            val instruction = taskDetailsModel.Task?.Instructions
             if (isQuestionEnabled != null) {
                // questionActionView?.enableDisableView(isEnable = isQuestionEnabled)
             }
             if (isMessageEnabled != null) {
                 messageActionView?.enableDisableView(isEnable = isMessageEnabled)
             }
-            if (insturction != null) {
-                instructionDetailTextView?.text = insturction
+            if (instruction != null) {
+                instructionDetailTextView?.text = instruction
             }
 
         }
@@ -142,31 +158,36 @@ class HomeLandingMainActivity : AppCompatActivity() {
                 Utility.showToastMessage("Please Wait")
             }
         }
-        logoutTextView?.setOnClickListener {
-            performLogoutOperation()
+        dataCollectionActionView?.setOnClickListener {
+
         }
     }
 
     private fun startQuestionActivity() {
-        val intent = Intent(this, QuestionListingActivity::class.java)
+        val intent = Intent(this, DcmsSplashActivity::class.java)
         startActivity(intent)
     }
 
     private fun startMessageTemplateActivity() {
-        val intent = Intent(this, MessageTemplateActivity::class.java)
+        val intent = Intent(this, SignupActivity::class.java)
         startActivity(intent)
     }
 
     private fun performLogoutOperation() {
-        progressBar?.showHideView(true)
-        homeViewModel?.performLogoutOperationForServer(callbackForLogoutResponse)
+        if(Utility.isUserLoggedIn()){
+            progressBar?.showHideView(true)
+            homeViewModel?.performLogoutOperationForServer(callbackForLogoutResponse)
+        }else{
+            progressBar?.showHideView(false)
+            Utility.showToastMessage("Already logout")
+        }
     }
 
     private var callbackForLogoutResponse = fun(isSuccessfullyLogout: Boolean) {
         lifecycleScope.launch(Dispatchers.Main) {
             if (isSuccessfullyLogout) {
                 AuthConfigManager.logoutUser();
-                Utility.showToastMessage("Successfully Logout")
+                Utility.showToastMessage("You have successfully Logout")
             } else {
                 Utility.showToastMessage("Something went wrong")
             }

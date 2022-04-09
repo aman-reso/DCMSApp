@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.models.TaskDetailsModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
-import com.management.org.dcms.codes.repository.LoginRepository
+import com.management.org.dcms.codes.repository.DcmsNetworkCallRepository
 import com.management.org.dcms.codes.utility.Utility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -14,14 +14,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(var loginRepository: LoginRepository) : ViewModel() {
+class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetworkCallRepository) : ViewModel() {
     var taskDetailLiveData: MutableLiveData<GlobalNetResponse<TaskDetailsModel>?> = MutableLiveData()
 
     internal fun getTaskDetails() {
         if (Utility.isUserLoggedIn()) {
             viewModelScope.launch(Dispatchers.IO) {
                 val authToken: String? = AuthConfigManager.getAuthToken()
-                var response = authToken?.let { loginRepository.getTaskDetail(it) }
+                var response = authToken?.let { dcmsNetworkCallRepository.getTaskDetail(it) }
                 taskDetailLiveData.postValue(response)
             }
         } else {
@@ -34,10 +34,10 @@ class HomeViewModel @Inject constructor(var loginRepository: LoginRepository) : 
             viewModelScope.launch(Dispatchers.IO) {
                 val authToken: String? = AuthConfigManager.getAuthToken()
                 if (authToken != null) {
-                    when (val response = loginRepository.logoutUserFromServer(authToken = authToken)) {
+                    when (val response = dcmsNetworkCallRepository.logoutUserFromServer(authToken = authToken)) {
                         is GlobalNetResponse.Success -> {
                             val successResponseValue = response.value
-                            if (successResponseValue.Status == 200) {
+                            if (successResponseValue.Status == 1) {
                                 callbackForLogout.invoke(true)
                             } else {
                                 callbackForLogout.invoke(false)
