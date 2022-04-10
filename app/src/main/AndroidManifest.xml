@@ -21,9 +21,13 @@
         android:theme="@style/Theme.DCMS"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".codes.activity.ProfileActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:name=".codes.activity.AttemptQuestionActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
+        <activity
+            android:name=".codes.activity.ProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".codes.LoginActivity"
             android:exported="false"

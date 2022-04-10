@@ -1,5 +1,6 @@
 package com.management.org.dcms.codes.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ProgressBar
@@ -76,7 +77,7 @@ class QuestionListingActivity : AppCompatActivity() {
         //}
     }
     private var callback = fun(contactsMainModel: QContactsModel) {
-        //messageTemplateViewModel?.sentWAReportToServer(hhId = contactsMainModel.HHId, templateId = 1, waNum = contactsMainModel.MobileNo)
+        messageTemplateViewModel?.sentWAReportToServer(hhId = contactsMainModel.HHId, templateId = 1, waNum = contactsMainModel.MobileNo)
 
 //        if (messageTemplateString != null && templateId != null && templateId != -1) {
 //            messageTemplateViewModel?.sentWAReportToServer(hhId = contactsMainModel.HHId, templateId = templateId!!, waNum = contactsMainModel.WANo)
@@ -85,5 +86,7 @@ class QuestionListingActivity : AppCompatActivity() {
 //        } else {
 //            Utility.showToastMessage("Please wait Message Template Not Received")
 //        }
+        var intent=Intent(this,AttemptQuestionActivity::class.java)
+        startActivity(intent)
     }
 }

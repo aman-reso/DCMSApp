@@ -23,7 +23,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private val loginViewModel: LoginViewModel? by viewModels()
     private var loginActivityBinding: ActivityLoginBinding? = null
-
     private var phoneNumberET: EditText? = null
     private var passwordET: EditText? = null
     private var loginBtn: Button? = null

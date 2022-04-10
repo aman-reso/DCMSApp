@@ -164,7 +164,7 @@ class HomeLandingMainActivity : AppCompatActivity() {
     }
 
     private fun startQuestionActivity() {
-        val intent = Intent(this, DcmsSplashActivity::class.java)
+        val intent = Intent(this, QuestionListingActivity::class.java)
         startActivity(intent)
     }
 
