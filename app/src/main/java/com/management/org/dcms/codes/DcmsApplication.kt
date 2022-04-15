@@ -16,6 +16,8 @@ class DcmsApplication : Application() {
 
     companion object {
         private var applicationInstance: Context? = null
+        var latitude:Double=-1.0
+        var longitude:Double=-1.0
         fun getDcmsAppContext(): Context? {
             return applicationInstance
         }

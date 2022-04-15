@@ -1,6 +1,7 @@
 package com.management.org.dcms.codes.dcmsclient.signup
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.provider.Settings
@@ -20,6 +21,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.snackbar.Snackbar
 import com.management.org.dcms.R
+import com.management.org.dcms.codes.LoginActivity
 import com.management.org.dcms.codes.dcmsclient.data.models.*
 import com.management.org.dcms.databinding.DcmsClientActivitySignupBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -386,8 +388,8 @@ class SignupActivity : AppCompatActivity() {
                     binding.email.text.toString(),
                     binding.mobile.text.toString(),
                     deviceId,
-                    it.latitude.toString(),
-                    it.longitude.toString()
+                    "123",
+                   "123"
                 )
 
             }.addOnFailureListener {
@@ -404,6 +406,7 @@ class SignupActivity : AppCompatActivity() {
                 when(it){
                     is UiState.Success<*>->{
                         Snackbar.make(binding.root,"Account created",Snackbar.LENGTH_LONG).show()
+                        startLoginActivity()
                         finish()
                     }
                     is UiState.Failed ->{
@@ -414,13 +417,18 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-    fun setLoading() {
+    private fun startLoginActivity() {
+        val homeLandingIntent = Intent(this, LoginActivity::class.java);
+        startActivity(homeLandingIntent)
+        finish()
+    }
+   private fun setLoading() {
         binding.progress.visibility = View.VISIBLE
         binding.register.text = "Loading..."
         binding.register.isEnabled = false
     }
 
-    fun loadingStop() {
+    private fun loadingStop() {
         binding.progress.visibility = View.GONE
         binding.register.text = "Register"
         binding.register.isEnabled = true

@@ -1,15 +1,17 @@
 package com.management.org.dcms.codes.dcmsclient.viewitem
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.management.org.dcms.codes.dcmsclient.Manager
 import com.management.org.dcms.codes.dcmsclient.data.models.HouseHoldsResponse
 import com.management.org.dcms.codes.dcmsclient.util.UiState
 import com.google.android.material.snackbar.Snackbar
+import com.management.org.dcms.codes.authConfig.AuthConfigManager
+import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.databinding.DcmsClientActivityViewItemBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -19,24 +21,29 @@ class ViewItemActivity : AppCompatActivity() {
     private lateinit var binding: DcmsClientActivityViewItemBinding
     private lateinit var adapter: ViewItemAdapter
     val viewModel by viewModels<ViewItemVIewModel>()
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DcmsClientActivityViewItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Manager(application).token?.let { viewModel.getHouseholds(it) }
+        AuthConfigManager.getAuthToken()?.let { viewModel.getHouseholds(it) }
         adapter = ViewItemAdapter()
         binding.households.adapter = adapter
-        binding.households.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.households.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        binding.toolbar.setNavigationOnClickListener {
-            finish()
+        binding.containerAppBar.appBarTitleTV.text="Added Household"
+        binding.containerAppBar.icNavBackIcon.showHideView(true)
+
+        binding.containerAppBar.icNavBackIcon.setOnClickListener {
+            onBackPressed()
         }
+
         lifecycleScope.launch {
             viewModel.householdList.collect {
                 when (it) {
                     is UiState.Success<*> -> {
-                        stopload()
+                        stopLoad()
                         it.data as HouseHoldsResponse
                         adapter.submitList(it.data.households)
                         if (it.data.households.isEmpty()) {
@@ -45,10 +52,10 @@ class ViewItemActivity : AppCompatActivity() {
                         }
                     }
                     is UiState.Loading -> {
-                        startload()
+                        startLoad()
                     }
                     is UiState.Failed -> {
-                        stopload()
+                        stopLoad()
                         Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_LONG).show()
                     }
 
@@ -58,12 +65,13 @@ class ViewItemActivity : AppCompatActivity() {
         }
 
     }
-    fun startload() {
+
+    private fun startLoad() {
         binding.progress.visibility = View.VISIBLE
         binding.households.visibility = View.GONE
     }
 
-    fun stopload() {
+    private fun stopLoad() {
         binding.progress.visibility = View.GONE
         binding.households.visibility = View.VISIBLE
     }

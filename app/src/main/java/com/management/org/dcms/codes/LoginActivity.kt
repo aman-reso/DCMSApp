@@ -1,15 +1,19 @@
 package com.management.org.dcms.codes
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
+import com.example.easywaylocation.EasyWayLocation.LOCATION_SETTING_REQUEST_CODE
+import com.management.org.dcms.LocationBuilder
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
+import com.management.org.dcms.codes.dcmsclient.signup.SignupActivity
 import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.codes.models.LoginResponseData
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
@@ -18,6 +22,13 @@ import com.management.org.dcms.codes.utility.Utility.showToastMessage
 import com.management.org.dcms.codes.viewmodel.logintvm.LoginViewModel
 import com.management.org.dcms.databinding.ActivityLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import java.lang.Exception
+
+const val ONE_MINUTE:Long = 20 * 1000
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
@@ -36,6 +47,10 @@ class LoginActivity : AppCompatActivity() {
         setUpClickListener()
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     private fun setUpViews() {
         loginActivityBinding?.let { activityLoginBinding ->
             phoneNumberET = activityLoginBinding.editTextPhoneNumber
@@ -52,6 +67,8 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+
+
 
     private fun parseLoginDataResponse(response: GlobalNetResponse<LoginResponseData>) {
         progressBar?.showHideView(false)
@@ -81,11 +98,29 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+        if (Utility.isUserLoggedIn()) {
+            loginActivityBinding?.registerBtn?.showHideView(false)
+        } else {
+            loginActivityBinding?.registerBtn?.showHideView(true)
+        }
+        loginActivityBinding?.registerBtn?.setOnClickListener {
+            startRegistrationActivity()
+        }
     }
+
+
+
 
     private fun startHomeLandingActivity() {
         val homeLandingIntent = Intent(this, HomeLandingMainActivity::class.java);
         startActivity(homeLandingIntent)
         finish()
     }
+
+    private fun startRegistrationActivity() {
+        val homeLandingIntent = Intent(this, SignupActivity::class.java);
+        startActivity(homeLandingIntent)
+        finish()
+    }
+
 }

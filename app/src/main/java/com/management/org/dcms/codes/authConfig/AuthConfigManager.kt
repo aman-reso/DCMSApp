@@ -15,7 +15,7 @@ class AuthConfigManager {
             }
         }
 
-        fun getAuthToken(): String? {
+        fun getAuthToken(): String {
             val sharedPref = DcmsApplication.getDcmsAppContext()?.getSharedPreferences(shared_pref_location, Context.MODE_PRIVATE);
             return sharedPref?.getString(tokenKey, "") ?: ""
         }
@@ -24,6 +24,7 @@ class AuthConfigManager {
             val sharedPref = DcmsApplication.getDcmsAppContext()?.getSharedPreferences(shared_pref_location, Context.MODE_PRIVATE);
             sharedPref?.edit()?.putString(tokenKey, "")?.apply()
         }
+
 
     }
 

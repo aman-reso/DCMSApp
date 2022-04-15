@@ -12,5 +12,5 @@ data class LoginResponse(
     @Json(name = "DisplayName")
     val displayName:String?,
     @Json(name = "AuthToken")
-    val token:String?
+    val token:String
 )

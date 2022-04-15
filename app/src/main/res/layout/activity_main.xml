@@ -77,6 +77,30 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:fontFamily="@font/nuntio_bold"
+                    android:text="See your Report"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/seeAddedHouseHoldTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="8dp"
+                    android:drawableEnd="@drawable/ic_baseline_double_arrow_24"
+                    android:drawablePadding="4dp"
+                    android:fontFamily="@font/nuntio_regular"
+                    android:paddingVertical="8dp"
+                    android:text="Added Household"
+                    android:textAlignment="center"
+                    android:textColor="#333"
+                    android:textSize="14sp" />
+
             </LinearLayout>
 
             <ProgressBar

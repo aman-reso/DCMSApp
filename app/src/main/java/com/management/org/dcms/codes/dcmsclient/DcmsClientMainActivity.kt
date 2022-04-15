@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class DcmClientMainActivity : AppCompatActivity() {
+class DcmsClientMainActivity : AppCompatActivity() {
     val viewModel by viewModels<LoginViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +55,11 @@ class DcmClientMainActivity : AppCompatActivity() {
             viewModel.logoutStatus.collect {
                 when(it){
                     is UiState.Success<*> ->{
-                        Manager(application).isLoggedIn = false
-                        Manager(application).token = ""
-                        startActivity(Intent(this@DcmClientMainActivity, DcmsClientLoginActivity::class.java))
-                        finish()
-                        Timber.e("test")
+//                        Manager(application).isLoggedIn = false
+//                        Manager(application).token = ""
+//                        startActivity(Intent(this@DcmsClientMainActivity, DcmsClientLoginActivity::class.java))
+//                        finish()
+//                        Timber.e("test")
                     }
                     is UiState.Failed ->{
 
@@ -95,7 +95,7 @@ class DcmClientMainActivity : AppCompatActivity() {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.home_menu, menu)
         menu.findItem(R.id.logout)?.setOnMenuItemClickListener {
-           viewModel.userLogout(Manager(application).token.toString())
+
             true
         }
         return true

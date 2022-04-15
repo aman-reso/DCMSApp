@@ -11,4 +11,13 @@
     <string name="data_collection">Data Collection</string>
     <string name="profile">Profile</string>
     <string name="log_out">Log Out</string>
+    <string name="add_household">Add Household</string>
+    <string name="village">Village</string>
+    <string name="name">Name</string>
+    <string name="mobile_type">Mobile Type</string>
+    <string name="email">Email</string>
+    <string name="address">Address</string>
+    <string name="mother_name">Mother Name</string>
+    <string name="document_number">Document Number</string>
+    <string name="ward">Ward</string>
 </resources>

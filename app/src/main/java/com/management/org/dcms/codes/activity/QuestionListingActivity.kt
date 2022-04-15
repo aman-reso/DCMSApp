@@ -3,6 +3,7 @@ package com.management.org.dcms.codes.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.RecyclerView
@@ -35,13 +36,18 @@ class QuestionListingActivity : AppCompatActivity() {
         qContactsRecyclerView = findViewById(R.id.qContactsRecyclerView)
         qContactsRecyclerView?.adapter = contactsListAdapter
         progressBar = findViewById(R.id.progressBar)
+        val navIcon: ImageView? = findViewById(R.id.icNavBackIcon)
+        navIcon?.showHideView(true)
+        navIcon?.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun setUpObservers() {
         messageTemplateViewModel?.apply {
             messageTemplateLiveData.observe(this@QuestionListingActivity) { response ->
                 if (response != null) {
-                  //  parseNetworkResponseForMessageTemplate(response)
+                    //  parseNetworkResponseForMessageTemplate(response)
                 }
             }
             qContactListLiveData.observe(this@QuestionListingActivity) { networkResponse ->
@@ -64,7 +70,7 @@ class QuestionListingActivity : AppCompatActivity() {
             is GlobalNetResponse.Success -> {
                 val contactsList = networkResponse.value
                 if (contactsList?.qContactsList != null) {
-                    System.out.println("list of contacts-->"+contactsList?.qContactsList)
+                    System.out.println("list of contacts-->" + contactsList?.qContactsList)
                     contactsListAdapter.submitData(contactsList = contactsList?.qContactsList!!)
                 }
             }
@@ -72,10 +78,11 @@ class QuestionListingActivity : AppCompatActivity() {
     }
 
     private fun refreshListAfterSend() {
-       // if (themeId != null && themeId != -1 && campaignId != null && campaignId != -1) {
-            //messageTemplateViewModel?.getContactsListForMessage(1, campaignId =1)
+        // if (themeId != null && themeId != -1 && campaignId != null && campaignId != -1) {
+        //messageTemplateViewModel?.getContactsListForMessage(1, campaignId =1)
         //}
     }
+
     private var callback = fun(contactsMainModel: QContactsModel) {
         messageTemplateViewModel?.sentWAReportToServer(hhId = contactsMainModel.HHId, templateId = 1, waNum = contactsMainModel.MobileNo)
 
@@ -86,7 +93,7 @@ class QuestionListingActivity : AppCompatActivity() {
 //        } else {
 //            Utility.showToastMessage("Please wait Message Template Not Received")
 //        }
-        var intent=Intent(this,AttemptQuestionActivity::class.java)
+        val intent = Intent(this, AttemptQuestionActivity::class.java)
         startActivity(intent)
     }
 }

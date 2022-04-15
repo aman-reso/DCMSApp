@@ -3,8 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:theme="@style/Theme.Material3.Light.NoActionBar"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:theme="@style/Theme.Material3.Light.NoActionBar">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:fontFamily="@font/nuntio_bold"
             android:text="Signup"
             android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
             android:textStyle="bold"
@@ -35,6 +40,7 @@
 
             <AutoCompleteTextView
                 android:id="@+id/states_spinner"
+                android:fontFamily="@font/nuntio_regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textAutoComplete"
@@ -48,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:fontFamily="@font/nuntio_regular"
             android:hint="District"
             app:layout_constraintTop_toBottomOf="@+id/autocomplete_state"
             tools:visibility="visible">
@@ -56,6 +63,7 @@
                 android:id="@+id/District_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nuntio_regular"
                 android:inputType="textAutoComplete" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -74,6 +82,7 @@
                 android:id="@+id/blocks_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nuntio_regular"
                 android:inputType="textAutoComplete" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -92,6 +101,7 @@
                 android:id="@+id/gram_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nuntio_regular"
                 android:inputType="textAutoComplete" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -110,6 +120,7 @@
                 android:id="@+id/village_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nuntio_regular"
                 android:inputType="textAutoComplete" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -120,11 +131,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:fontFamily="@font/nuntio_regular"
             android:hint="Name"
             app:layout_constraintTop_toBottomOf="@+id/village_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/name"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:lines="1"
+                android:fontFamily="@font/nuntio_regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -141,8 +157,11 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email"
+                android:maxLines="1"
+
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nuntio_regular" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,12 +171,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:fontFamily="@font/nuntio_regular"
             android:hint="Mobile"
 
             app:layout_constraintTop_toBottomOf="@+id/outlinedTextEmail">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/mobile"
+                android:maxLines="1"
+
+                android:fontFamily="@font/nuntio_regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -174,17 +197,24 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password"
+                android:maxLines="1"
+                android:fontFamily="@font/nuntio_regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/register"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:background="@drawable/corner_16dp_without_border"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:fontFamily="@font/nuntio_bold"
             android:text="Register"
+            android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -192,9 +222,9 @@
 
         <ProgressBar
             android:id="@+id/progress"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -202,4 +232,6 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
 </ScrollView>

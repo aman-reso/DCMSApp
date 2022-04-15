@@ -9,13 +9,14 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import com.management.org.dcms.codes.dcmsclient.signup.SignupActivity
 import com.management.org.dcms.R
+import com.management.org.dcms.codes.activity.MessageTemplateActivity
 import com.management.org.dcms.codes.activity.ProfileActivity
 import com.management.org.dcms.codes.activity.QuestionListingActivity
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
-import com.management.org.dcms.codes.dcmsclient.DcmsSplashActivity
-import com.management.org.dcms.codes.dcmsclient.login.DcmsClientLoginActivity
+import com.management.org.dcms.codes.dcmsclient.DcmsClientMainActivity
+import com.management.org.dcms.codes.dcmsclient.additem.AddItemActivity
+import com.management.org.dcms.codes.dcmsclient.viewitem.ViewItemActivity
 import com.management.org.dcms.codes.extensions.enableDisableView
 import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.codes.models.TaskDetailsModel
@@ -25,7 +26,6 @@ import com.management.org.dcms.codes.viewmodel.HomeViewModel
 import com.management.org.dcms.databinding.ActivityMainBinding
 import com.management.org.dcms.databinding.LayputHomeDashboardBinding
 import com.management.org.dcms.databinding.ProfileSectionBinding
-import com.squareup.moshi.internal.Util
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,6 +48,7 @@ class HomeLandingMainActivity : AppCompatActivity() {
     private var nameTextView: TextView? = null
     private var mobNumTextView: TextView? = null
     private var logoutTextView: TextView? = null
+    private var seeAddedHouseHoldTv:TextView?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,8 +70,11 @@ class HomeLandingMainActivity : AppCompatActivity() {
             logoutTextView = profileSectionBinding?.logoutSection
             mobNumTextView = profileSectionBinding?.profileContactNumTV
             nameTextView = profileSectionBinding?.profileNameTV
-        }
+            seeAddedHouseHoldTv=it.seeAddedHouseHoldTv
 
+        }
+        mainActivityBinding?.containerAppBar?.appBarTitleTV?.showHideView(false)
+        mainActivityBinding?.containerAppBar?.toolbar?.showHideView(true)
         mainActivityBinding?.containerAppBar?.toolbar?.setTitle(R.string.app_name)
 
         mainActivityBinding?.containerAppBar?.toolbar?.setOnMenuItemClickListener {
@@ -159,7 +163,10 @@ class HomeLandingMainActivity : AppCompatActivity() {
             }
         }
         dataCollectionActionView?.setOnClickListener {
-
+            startDataCollectionActivity()
+        }
+        seeAddedHouseHoldTv?.setOnClickListener {
+            startSeeAddedHouseHoldIntent()
         }
     }
 
@@ -169,7 +176,22 @@ class HomeLandingMainActivity : AppCompatActivity() {
     }
 
     private fun startMessageTemplateActivity() {
-        val intent = Intent(this, SignupActivity::class.java)
+        val intent = Intent(this, MessageTemplateActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun startDataCollectionActivity() {
+        val intent = Intent(this, AddItemActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun redirectedToSignInPage(){
+        val intent =Intent(this,LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+    private fun startSeeAddedHouseHoldIntent(){
+        val intent =Intent(this,ViewItemActivity::class.java)
         startActivity(intent)
     }
 
@@ -188,6 +210,7 @@ class HomeLandingMainActivity : AppCompatActivity() {
             if (isSuccessfullyLogout) {
                 AuthConfigManager.logoutUser();
                 Utility.showToastMessage("You have successfully Logout")
+                redirectedToSignInPage()
             } else {
                 Utility.showToastMessage("Something went wrong")
             }

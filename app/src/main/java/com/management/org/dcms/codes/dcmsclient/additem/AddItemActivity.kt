@@ -17,7 +17,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.management.org.dcms.codes.dcmsclient.Manager
 import com.management.org.dcms.codes.dcmsclient.data.models.VillageResponse
 import com.management.org.dcms.codes.dcmsclient.data.models.WardResponse
 import com.management.org.dcms.codes.dcmsclient.util.UiState
@@ -28,6 +27,8 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.snackbar.Snackbar
 import com.management.org.dcms.R
+import com.management.org.dcms.codes.authConfig.AuthConfigManager
+import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.databinding.DcmsClientActivityAddItemBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +38,6 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
-import java.util.*
 
 
 @AndroidEntryPoint
@@ -69,7 +69,7 @@ class AddItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DcmsClientActivityAddItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Manager(application).token?.let { viewModel.getAllVillages(it) }
+        AuthConfigManager.getAuthToken().let { viewModel.getAllVillages(it) }
         val villageList = mutableListOf<String>()
         var villageName = ""
         var villageId = 0
@@ -79,14 +79,16 @@ class AddItemActivity : AppCompatActivity() {
         var documentType = ""
         val documentTypeList = listOf("AADHAAR", "VOTERID")
         val wardList = mutableListOf<String>()
-        binding.toolbar.setNavigationOnClickListener {
+        binding.containerAppBar.icNavBackIcon.showHideView(true)
+        binding.containerAppBar.appBarTitleTV.text = getString(R.string.add_household)
+        binding.containerAppBar.icNavBackIcon.setOnClickListener {
             finish()
         }
         binding.imageSelector.setOnClickListener {
             ImagePicker.with(this).compress(1024)         //Final image size will be less than 1 MB(Optional)
                 .maxResultSize(1080, 1080).cameraOnly().crop().createIntent {
-                startForProfileImageResult.launch(it)
-            }
+                    startForProfileImageResult.launch(it)
+                }
         }
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         lifecycleScope.launch {
@@ -296,7 +298,6 @@ class AddItemActivity : AppCompatActivity() {
                     is UiState.Loading -> {
                         startLoad()
                     }
-
                 }
             }
         }
@@ -304,7 +305,7 @@ class AddItemActivity : AppCompatActivity() {
             if (!binding.address.text.isNullOrEmpty() && !binding.email.text.isNullOrEmpty()
                 && !binding.mobile.text.isNullOrEmpty() && !binding.name.text.isNullOrEmpty() && villageName != ""
                 && !binding.landmark.text.isNullOrEmpty() && !binding.whatsapp.text.isNullOrEmpty() && !binding.ward.text.isNullOrEmpty() && villageId != 0
-                && fileUri!=null && mobileType!= "" && documentType!="" && !binding.documentNumber.text.isNullOrEmpty()
+                && fileUri != null && mobileType != "" && documentType != "" && !binding.documentNumber.text.isNullOrEmpty()
             ) {
                 val a = CancellationTokenSource().token
                 fusedLocationClient.getCurrentLocation(
@@ -312,8 +313,9 @@ class AddItemActivity : AppCompatActivity() {
                     a
                 ).addOnSuccessListener {
                     val file = File("${fileUri?.path}")
-                    val encodedImage: String = Base64.encodeToString(method(file),Base64.DEFAULT)
-                        Manager(application).token?.let { it1 ->
+                    val encodedImage: String = Base64.encodeToString(method(file), Base64.DEFAULT)
+                    AuthConfigManager.getAuthToken()?.let { it1 ->
+                        try {
                             viewModel.registerHousehold(
                                 villageId,
                                 villageName,
@@ -327,19 +329,22 @@ class AddItemActivity : AppCompatActivity() {
                                 binding.ward.text.toString(),
                                 binding.landmark.text.toString(),
                                 it1,
-                                it.latitude.toString(),
-                                it.longitude.toString(),
+                                "123",
+                                "123",
                                 encodedImage,
                                 ".jpg",
                                 mobileType,
                                 documentType,
                                 binding.documentNumber.text.toString()
-
                             )
+                        } catch (e: java.lang.Exception) {
+                            System.out.println("exception-->" + e.localizedMessage)
                         }
 
+                    }
+
                 }.addOnFailureListener {
-                    Snackbar.make(binding.root,"${it.message}",Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_SHORT).show()
 //                    Snackbar.make(binding.root, "Not able to Get your location", Snackbar.LENGTH_LONG).show()
                 }
             } else {
@@ -363,13 +368,12 @@ class AddItemActivity : AppCompatActivity() {
     @Throws(IOException::class)
     fun method(file: File): ByteArray? {
         return try {
-
             val fl = FileInputStream(file)
             val arr = ByteArray(file.length().toInt())
             fl.read(arr)
             fl.close()
-             arr
-        }catch (e:Exception){
+            arr
+        } catch (e: Exception) {
             Timber.e("$e")
             null
         }

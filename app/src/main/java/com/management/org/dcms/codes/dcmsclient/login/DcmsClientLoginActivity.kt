@@ -14,8 +14,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.management.org.dcms.codes.dcmsclient.Manager
-import com.management.org.dcms.codes.dcmsclient.DcmsSplashActivity
 import com.management.org.dcms.codes.dcmsclient.signup.SignupActivity
 import com.management.org.dcms.codes.dcmsclient.data.models.LoginResponse
 import com.management.org.dcms.codes.dcmsclient.util.UiState
@@ -24,6 +22,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.snackbar.Snackbar
+import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.databinding.DcmsClientActivityLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -76,15 +75,11 @@ class DcmsClientLoginActivity : AppCompatActivity() {
                         binding.progress.visibility = View.GONE
                         it.data as LoginResponse
                         Timber.e("${it.data.token}")
-                        Manager(application).token = it.data.token
+                        AuthConfigManager.saveAuthToken(it.data.token)
                         if(!it.data.token.isNullOrEmpty()){
                             Timber.e("test")
-                            Manager(application).isLoggedIn = true
                         }
-                        startActivity(Intent(this@DcmsClientLoginActivity, DcmsSplashActivity::class.java))
                         finish()
-
-
                     }
                     is UiState.Failed->{
                         binding.login.text ="Login"
@@ -125,8 +120,8 @@ class DcmsClientLoginActivity : AppCompatActivity() {
                                 binding.password.text.toString(),
                                 deviceId,
                                 ipAddress,
-                                it.latitude.toString(),
-                                it.longitude.toString()
+                                "123",
+                                "123"
                             )
                         }
                         .addOnFailureListener {

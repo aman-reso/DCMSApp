@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.DCMS" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Theme.DCMS" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#95121e</item>
         <item name="colorPrimaryVariant">#814744</item>

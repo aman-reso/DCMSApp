@@ -52,12 +52,17 @@ class MessageTemplateActivity : AppCompatActivity() {
     private var campaignId: Int? = -1
     var firstTimeOnCreate = false
 
+    private var navIcon:ImageView?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_message_template)
         setUpViews()
         setUpObservers()
         firstTimeOnCreate = true
+        navIcon?.showHideView(true)
+        navIcon?.setOnClickListener {
+            finish()
+        }
     }
 
     private fun setUpViews() {
@@ -67,6 +72,7 @@ class MessageTemplateActivity : AppCompatActivity() {
             dummyImageView = it.dummyImageView
             messageBodyTextView = it.messageTemplateDescTextView
             progressBar = it.progressBar
+            navIcon=it.containerAppBar?.icNavBackIcon
         }
         contactsRecyclerView?.adapter = contactsListAdapter
     }
