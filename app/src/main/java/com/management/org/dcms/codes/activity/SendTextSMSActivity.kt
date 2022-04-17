@@ -47,8 +47,9 @@ class SendTextSMSActivity : AppCompatActivity() {
     private var themeId: Int? = -1
     private var campaignId: Int? = -1
     var firstTimeOnCreate = false
+    var contactList: ArrayList<ContactsModel> = ArrayList()
 
-    private var navIcon: ImageView?=null
+    private var navIcon: ImageView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_send_text_smsactivity)
@@ -59,6 +60,15 @@ class SendTextSMSActivity : AppCompatActivity() {
         navIcon?.setOnClickListener {
             finish()
         }
+        mainActivityBinding?.sentTextMessageToAll?.setOnClickListener {
+            if (!contactList.isNullOrEmpty() && messageTemplateString!=null) {
+                contactList.forEach {
+                    sendSms(it.MobileNo)
+                }
+                mainActivityBinding?.sentTextMessageToAll?.showHideView(false)
+                Utility.showToastMessage("Message send")
+            }
+        }
     }
 
     private fun setUpViews() {
@@ -68,7 +78,7 @@ class SendTextSMSActivity : AppCompatActivity() {
             dummyImageView = it.dummyImageView
             messageBodyTextView = it.messageTemplateDescTextView
             progressBar = it.progressBar
-            navIcon=it.containerAppBar?.icNavBackIcon
+            navIcon = it.containerAppBar?.icNavBackIcon
         }
         contactsRecyclerView?.adapter = contactsListAdapter
     }
@@ -97,6 +107,9 @@ class SendTextSMSActivity : AppCompatActivity() {
                 val successResponse: ContactsMainModel? = response.value
                 println("successResponse-->$successResponse")
                 if (successResponse?.contactList != null) {
+                    mainActivityBinding?.sentTextMessageToAll?.showHideView(true)
+                    contactList.clear()
+                    contactList.addAll(successResponse.contactList!!)
                     contactsListAdapter.submitData(successResponse.contactList!!)
                 }
             }
@@ -138,7 +151,8 @@ class SendTextSMSActivity : AppCompatActivity() {
         if (messageTemplateString != null && templateId != null && templateId != -1) {
             messageTemplateViewModel?.sentWAReportToServer(hhId = contactsMainModel.HHId, templateId = templateId!!, waNum = contactsMainModel.WANo)
             val waMobNumber = contactsMainModel.WANo
-            sendSms(waMobNumber, messageTemplateString!!)
+            Utility.showToastMessage("Message Sent")
+            sendSms(waMobNumber)
         } else {
             Utility.showToastMessage("Please wait Message Template Not Received")
         }
@@ -151,6 +165,10 @@ class SendTextSMSActivity : AppCompatActivity() {
             refreshListAfterSend()
         }
         firstTimeOnCreate = false
+    }
+
+    private fun sendTextMessageToAll() {
+
     }
 
     private fun multipleSMS(phoneNumber: String, message: String) {
@@ -192,9 +210,11 @@ class SendTextSMSActivity : AppCompatActivity() {
 //            }
 //        }, IntentFilter(DELIVERED))
     }
-    private fun sendSms(phoneNumber: String,message: String){
-        val sms: SmsManager = SmsManager.getDefault()
-        sms.sendTextMessage(phoneNumber, null, message,null,null)
-        Utility.showToastMessage("Message Sent")
+
+    private fun sendSms(phoneNumber: String) {
+        if (messageTemplateString!=null) {
+            val sms: SmsManager = SmsManager.getDefault()
+            sms.sendTextMessage(phoneNumber, null, messageTemplateString, null, null)
+        }
     }
 }

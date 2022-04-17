@@ -145,12 +145,11 @@ class HomeLandingMainActivity : AppCompatActivity() {
                     startQuestionActivity()
                 } else {
                     startQuestionActivity()
-                    Utility.showToastMessage("Not enabled right now")
+                   // Utility.showToastMessage("Not enabled right now")
                 }
             }
             else {
                 Utility.showToastMessage("Please Wait")
-
             }
         }
         messageActionView?.setOnClickListener {
@@ -159,7 +158,8 @@ class HomeLandingMainActivity : AppCompatActivity() {
                 if (isMessageEnabled == true) {
                     startMessageTemplateActivity()
                 } else {
-                    Utility.showToastMessage("Please Wait")
+                    startMessageTemplateActivity()
+                   // Utility.showToastMessage("Please Wait")
                 }
             } else {
                 Utility.showToastMessage("Please Wait")

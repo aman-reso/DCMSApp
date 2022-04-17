@@ -21,6 +21,9 @@
         android:theme="@style/Theme.DCMS"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".codes.UploadImageActivity"
+            android:exported="false" />
+        <activity
             android:name=".codes.activity.SendTextSMSActivity"
             android:exported="false" />
         <activity

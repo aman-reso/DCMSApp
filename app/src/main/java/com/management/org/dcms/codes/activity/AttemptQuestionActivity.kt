@@ -1,6 +1,7 @@
 package com.management.org.dcms.codes.activity
 
 import android.annotation.TargetApi
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.management.org.dcms.R
+import com.management.org.dcms.codes.UploadImageActivity
 import com.management.org.dcms.codes.extensions.showHideView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -38,8 +40,8 @@ class AttemptQuestionActivity : AppCompatActivity() {
             mWebView?.clearHistory();
             val webSettings: WebSettings? = mWebView?.settings
             webSettings?.apply {
-                domStorageEnabled=true
-                javaScriptEnabled=true
+                domStorageEnabled = true
+                javaScriptEnabled = true
             }
             delay(1000)
             mWebView?.loadUrl(url)
@@ -96,17 +98,23 @@ class AttemptQuestionActivity : AppCompatActivity() {
 
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
             System.out.println("override-->${url}")
-            if (url?.contains("success",ignoreCase = true) == true) {
+            if (url?.contains("success", ignoreCase = true) == true) {
                 clearWebView()
-                finish()
-            }else{
-                if (url!=null) {
+                startImageVerificationActivity()
+            } else {
+                if (url != null) {
                     mWebView?.loadUrl(url);
                 }
             }
             return true
         }
 
+    }
+
+    fun startImageVerificationActivity() {
+        val intent = Intent(this, UploadImageActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun clearWebView() {
@@ -124,7 +132,7 @@ class AttemptQuestionActivity : AppCompatActivity() {
         clearWebView()
         try {
             System.gc()
-        }catch (e:Exception){
+        } catch (e: Exception) {
 
         }
     }
