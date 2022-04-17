@@ -15,7 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_above="@id/sendWAMessageToAllBtn"
             tools:context=".codes.activity.MessageTemplateActivity">
 
             <include
@@ -84,24 +83,9 @@
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="24dp"
+            android:visibility="gone"
             android:layout_height="24dp"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:visibility="gone" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/sendWAMessageToAllBtn"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/corner_16dp_without_border"
-            android:layout_centerHorizontal="true"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@android:color/holo_red_dark"
-            android:fontFamily="@font/nuntio_bold"
-            android:text="Send To All" />
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 </layout>

@@ -1,11 +1,11 @@
 package com.management.org.dcms.codes.activity
 
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.content.pm.PackageManager.NameNotFoundException
+import android.app.Activity
+import android.app.PendingIntent
+import android.content.*
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
+import android.telephony.SmsManager
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -24,16 +24,19 @@ import com.management.org.dcms.codes.network_res.GlobalNetResponse
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewmodel.MessageTemplateViewModel
 import com.management.org.dcms.databinding.ActivityMessageTemplateBinding
+import com.management.org.dcms.databinding.ActivitySendTextSmsactivityBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.URLEncoder
 
+const val SENT = "SMS_SENT"
+const val DELIVERED = "SMS_DELIVERED"
 
 @AndroidEntryPoint
-class MessageTemplateActivity : AppCompatActivity() {
+class SendTextSMSActivity : AppCompatActivity() {
     private val messageTemplateViewModel: MessageTemplateViewModel? by viewModels()
 
     private var messageTemplateTV: TextView? = null
-    private var mainActivityBinding: ActivityMessageTemplateBinding? = null
+    private var mainActivityBinding: ActivitySendTextSmsactivityBinding? = null
     private var contactsRecyclerView: RecyclerView? = null
     private val contactsListAdapter: ContactsListAdapter by lazy { ContactsListAdapter(callback = callback) }
     private var messageTemplateString: String? = null
@@ -44,23 +47,17 @@ class MessageTemplateActivity : AppCompatActivity() {
     private var themeId: Int? = -1
     private var campaignId: Int? = -1
     var firstTimeOnCreate = false
-    private var sendToAllBtn: View? = null
 
-    private var navIcon: ImageView? = null
+    private var navIcon: ImageView?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_message_template)
+        mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_send_text_smsactivity)
         setUpViews()
         setUpObservers()
         firstTimeOnCreate = true
         navIcon?.showHideView(true)
         navIcon?.setOnClickListener {
             finish()
-        }
-        sendToAllBtn?.setOnClickListener {
-            if (messageTemplateString != null) {
-                openWhatsAppForSendToAll()
-            }
         }
     }
 
@@ -71,20 +68,19 @@ class MessageTemplateActivity : AppCompatActivity() {
             dummyImageView = it.dummyImageView
             messageBodyTextView = it.messageTemplateDescTextView
             progressBar = it.progressBar
-            navIcon = it.containerAppBar?.icNavBackIcon
-            sendToAllBtn = it.sendWAMessageToAllBtn
+            navIcon=it.containerAppBar?.icNavBackIcon
         }
         contactsRecyclerView?.adapter = contactsListAdapter
     }
 
     private fun setUpObservers() {
         messageTemplateViewModel?.apply {
-            messageTemplateLiveData.observe(this@MessageTemplateActivity) { response ->
+            messageTemplateLiveData.observe(this@SendTextSMSActivity) { response ->
                 if (response != null) {
                     parseNetworkResponseForMessageTemplate(response)
                 }
             }
-            contactsListLiveData.observe(this@MessageTemplateActivity) { response ->
+            contactsListLiveData.observe(this@SendTextSMSActivity) { response ->
                 if (response != null) {
                     progressBar?.showHideView(false)
                     parseNetworkResponseForContactList(response)
@@ -142,24 +138,12 @@ class MessageTemplateActivity : AppCompatActivity() {
         if (messageTemplateString != null && templateId != null && templateId != -1) {
             messageTemplateViewModel?.sentWAReportToServer(hhId = contactsMainModel.HHId, templateId = templateId!!, waNum = contactsMainModel.WANo)
             val waMobNumber = contactsMainModel.WANo
-            sendToWhatsApp(waMobNumber, messageTemplateString!!)
+            sendSms(waMobNumber, messageTemplateString!!)
         } else {
             Utility.showToastMessage("Please wait Message Template Not Received")
         }
     }
 
-    private fun sendToWhatsApp(waMobNumber: String, messageTemplateString: String) {
-        try {
-            val mobWithCountryCode = countryCodeIndia + waMobNumber
-            val intent = Intent(Intent.ACTION_VIEW)
-            val message: String = URLEncoder.encode(messageTemplateString, "utf-8")
-            intent.data = Uri.parse("${BASE_URL_FOR_WHATSAPP}send?phone=$mobWithCountryCode&text=$message")
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            startActivity(intent)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 
     override fun onResume() {
         super.onResume()
@@ -169,24 +153,48 @@ class MessageTemplateActivity : AppCompatActivity() {
         firstTimeOnCreate = false
     }
 
-    private fun openWhatsAppForSendToAll() {
-        val pm = packageManager
-        try {
-            val waIntent = Intent(Intent.ACTION_SEND)
-            waIntent.type = "text/plain"
-            val text = messageTemplateString
-            val info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA)
-            waIntent.setPackage("com.whatsapp")
-            waIntent.putExtra(Intent.EXTRA_TEXT, text)
-            startActivity(Intent.createChooser(waIntent, "Share with"))
-        } catch (e: NameNotFoundException) {
-            Toast.makeText(this, "WhatsApp not Installed", Toast.LENGTH_SHORT).show()
-        } catch (e: Exception) {
-            e.localizedMessage
-        }
+    private fun multipleSMS(phoneNumber: String, message: String) {
+//        val sentPI = PendingIntent.getBroadcast(this, 0, Intent(SENT), 0)
+//        val deliveredPI = PendingIntent.getBroadcast(this, 0, Intent(DELIVERED), 0)
+//        // ---when the SMS has been sent---
+//        registerReceiver(object : BroadcastReceiver() {
+//            override fun onReceive(arg0: Context?, arg1: Intent?) {
+//                when (resultCode) {
+//                    Activity.RESULT_OK -> {
+//                        val values = ContentValues()
+//                        var i = 0
+//                        while (i < MobNumber.size() - 1) {
+//                            values.put("address", MobNumber.get(i).toString())
+//                            // txtPhoneNo.getText().toString());
+//                            values.put("body", MessageText.getText().toString())
+//                            i++
+//                        }
+//                        contentResolver.insert(
+//                            Uri.parse("content://sms/sent"), values
+//                        )
+//                        Toast.makeText(baseContext, "SMS sent", Toast.LENGTH_SHORT).show()
+//                    }
+//                    SmsManager.RESULT_ERROR_GENERIC_FAILURE -> Toast.makeText(baseContext, "Generic failure", Toast.LENGTH_SHORT).show()
+//                    SmsManager.RESULT_ERROR_NO_SERVICE -> Toast.makeText(baseContext, "No service", Toast.LENGTH_SHORT).show()
+//                    SmsManager.RESULT_ERROR_NULL_PDU -> Toast.makeText(baseContext, "Null PDU", Toast.LENGTH_SHORT).show()
+//                    SmsManager.RESULT_ERROR_RADIO_OFF -> Toast.makeText(baseContext, "Radio off", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }, IntentFilter(SENT))
+//
+//        // ---when the SMS has been delivered---
+//        registerReceiver(object : BroadcastReceiver() {
+//            override fun onReceive(arg0: Context?, arg1: Intent?) {
+//                when (resultCode) {
+//                    Activity.RESULT_OK -> Toast.makeText(baseContext, "SMS delivered", Toast.LENGTH_SHORT).show()
+//                    Activity.RESULT_CANCELED -> Toast.makeText(baseContext, "SMS not delivered", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }, IntentFilter(DELIVERED))
+    }
+    private fun sendSms(phoneNumber: String,message: String){
+        val sms: SmsManager = SmsManager.getDefault()
+        sms.sendTextMessage(phoneNumber, null, message,null,null)
+        Utility.showToastMessage("Message Sent")
     }
 }
-
-const val countryCodeIndia: String = "+91"
-const val BASE_URL_FOR_WHATSAPP: String = "http://api.whatsapp.com/"
-const val WHATSAPP_PACKAGE = "com.whatsapp"

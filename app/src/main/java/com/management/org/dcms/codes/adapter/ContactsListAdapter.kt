@@ -27,11 +27,7 @@ class ContactsListAdapter(var callback: (ContactsModel) -> Unit) : RecyclerView.
         val item = contactsList[position]
         holder.bindDataWithHolder(item)
         holder.sendToWapIcon?.setOnClickListener {
-            if (item != null && item.SentStatus==0) {
                 callback.invoke(item)
-            }else if (item.SentStatus==1){
-                Utility.showToastMessage("Already send")
-            }
         }
     }
 

@@ -49,14 +49,14 @@ class SplashActivity : AppCompatActivity() {
         finish()
     }
     private  fun setUpLocationUpdatesManager() {
-        GlobalScope.launch(Dispatchers.IO) {
-            while (isActive) {
-                delay(100)
-                getLocation()
-                System.out.println("DecmsLocation-->"+ DcmsApplication.latitude)
-                delay(ONE_MINUTE)
-            }
-        }
+//        GlobalScope.launch(Dispatchers.IO) {
+//            while (isActive) {
+//                delay(100)
+//                getLocation()
+//                System.out.println("DecmsLocation-->"+ DcmsApplication.latitude)
+//                delay(ONE_MINUTE)
+//            }
+//        }
     }
     private fun getLocation() {
         try {

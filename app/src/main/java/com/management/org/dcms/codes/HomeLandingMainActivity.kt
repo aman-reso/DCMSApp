@@ -13,6 +13,7 @@ import com.management.org.dcms.R
 import com.management.org.dcms.codes.activity.MessageTemplateActivity
 import com.management.org.dcms.codes.activity.ProfileActivity
 import com.management.org.dcms.codes.activity.QuestionListingActivity
+import com.management.org.dcms.codes.activity.SendTextSMSActivity
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.dcmsclient.DcmsClientMainActivity
 import com.management.org.dcms.codes.dcmsclient.additem.AddItemActivity
@@ -62,7 +63,7 @@ class HomeLandingMainActivity : AppCompatActivity() {
         mainActivityBinding?.let {
             dashboardBinding = it.mainDashboardContainer
             messageActionView = dashboardBinding?.messageMainAction
-            dataCollectionActionView = dashboardBinding?.datCollectionAction
+            dataCollectionActionView = dashboardBinding?.dataCollectionAction
             questionActionView = dashboardBinding?.questionMainAction
             progressBar = it.progressBar
             instructionTV = it.instructionTitleTextView
@@ -71,7 +72,6 @@ class HomeLandingMainActivity : AppCompatActivity() {
             mobNumTextView = profileSectionBinding?.profileContactNumTV
             nameTextView = profileSectionBinding?.profileNameTV
             seeAddedHouseHoldTv=it.seeAddedHouseHoldTv
-
         }
         mainActivityBinding?.containerAppBar?.appBarTitleTV?.showHideView(false)
         mainActivityBinding?.containerAppBar?.toolbar?.showHideView(true)
@@ -84,6 +84,9 @@ class HomeLandingMainActivity : AppCompatActivity() {
                 performLogoutOperation()
             }
             true
+        }
+        mainActivityBinding?.mainDashboardContainer?.textMessageAction?.setOnClickListener {
+            startTextSmsActivity()
         }
 
     }
@@ -192,6 +195,10 @@ class HomeLandingMainActivity : AppCompatActivity() {
     }
     private fun startSeeAddedHouseHoldIntent(){
         val intent =Intent(this,ViewItemActivity::class.java)
+        startActivity(intent)
+    }
+    private fun startTextSmsActivity(){
+        val intent = Intent(this, SendTextSMSActivity::class.java)
         startActivity(intent)
     }
 
