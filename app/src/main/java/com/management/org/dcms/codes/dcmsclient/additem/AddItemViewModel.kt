@@ -93,7 +93,6 @@ class AddItemViewModel @Inject constructor(private val repository: AddItemReposi
             _registerResponse.value = UiState.Loading
             when (val response = repository.registerHousehold(request,token)) {
                 is ResultWrapper.Success -> {
-                    System.out.println("respone--."+response.value.message)
                     if (response.value.status == 0) {
                        _registerResponse.value =  UiState.Failed(response.value.message)
                     } else {
@@ -104,10 +103,7 @@ class AddItemViewModel @Inject constructor(private val repository: AddItemReposi
                     _registerResponse.value =  UiState.Failed("No Internet")
                 }
                 is ResultWrapper.GenericError -> {
-                    System.out.println("respone--."+response.error)
-
                     _registerResponse.value =  UiState.Failed(response.error.toString())
-
                 }
             }
         }

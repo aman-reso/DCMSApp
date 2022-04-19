@@ -14,15 +14,23 @@ import androidx.lifecycle.lifecycleScope
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.UploadImageActivity
 import com.management.org.dcms.codes.extensions.showHideView
+import com.management.org.dcms.codes.utility.Utility
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.lang.StringBuilder
 
+const val CAMP_ID: String = "camp_id"
+const val THEME_ID: String = "theme_id"
+const val SG_ID: String = "sg_id"
+const val HH_ID: String = "hh_id"
+const val URL_TO_BE_LOAD="url_to_be_load"
 
+//http://dcms.dmi.ac.in/Questionairs/index?campid=1&themeid=1&sgid=1&hhid=1&qtemplateid=1&lat=1&lng=1
 class AttemptQuestionActivity : AppCompatActivity() {
     private var mWebView: WebView? = null
-    private var url: String = "http://dcms.dmi.ac.in/questionairs/index?campid=1&themeid=1&sgid=2"
+    private var url: String? = "http://dcms.dmi.ac.in/questionairs/index?campid=1&themeid=1&sgid=2"
 
     private var progressBar: ProgressBar? = null
     private var progressbarContainer: View? = null
@@ -31,6 +39,7 @@ class AttemptQuestionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_attempt_question)
         mWebView = findViewById(R.id.webView)
+        getDataFromIntent()
         setUpViews()
         hideShowPgContainer(true)
         lifecycleScope?.launch(Dispatchers.Main) {
@@ -44,9 +53,23 @@ class AttemptQuestionActivity : AppCompatActivity() {
                 javaScriptEnabled = true
             }
             delay(1000)
-            mWebView?.loadUrl(url)
+            url?.let { mWebView?.loadUrl(it) }
         }
         // mWebView?.
+    }
+
+    private fun getDataFromIntent() {
+        try {
+            if (intent != null && intent.extras != null) {
+                url = intent.getStringExtra(URL_TO_BE_LOAD)
+            } else {
+                Utility.showToastMessage("Something went wrong")
+                finish()
+            }
+        } catch (e: Exception) {
+            Utility.showToastMessage("Something went wrong")
+            finish()
+        }
     }
 
     private fun setUpViews() {

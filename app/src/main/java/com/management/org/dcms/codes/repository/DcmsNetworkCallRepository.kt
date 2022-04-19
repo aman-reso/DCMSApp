@@ -2,6 +2,7 @@ package com.management.org.dcms.codes.repository
 
 import com.management.org.dcms.codes.models.LoginRequestData
 import com.management.org.dcms.codes.models.SentReportPostModel
+import com.management.org.dcms.codes.models.SentReportQActivityModel
 import com.management.org.dcms.codes.network.path.DcmsApiInterface
 import com.management.org.dcms.codes.network.path.safeApiCall
 import com.management.org.dcms.codes.utility.AndroidDeviceUtils
@@ -59,5 +60,8 @@ class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInt
     }
     suspend fun getProfileDetails(authToken: String)= safeApiCall {
         apiInterface.getProfileDetails(authToken = authToken)
+    }
+    suspend fun sentReportQuestionActivity(sentReportQActivityModel: SentReportQActivityModel,authToken: String)= safeApiCall {
+       apiInterface.sentReportQuestionActivity(sentReportQActivityModel, authToken)
     }
 }

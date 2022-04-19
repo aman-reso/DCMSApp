@@ -10,16 +10,14 @@ import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.management.org.dcms.R
-import com.management.org.dcms.codes.activity.MessageTemplateActivity
-import com.management.org.dcms.codes.activity.ProfileActivity
-import com.management.org.dcms.codes.activity.QuestionListingActivity
-import com.management.org.dcms.codes.activity.SendTextSMSActivity
+import com.management.org.dcms.codes.activity.*
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.dcmsclient.DcmsClientMainActivity
 import com.management.org.dcms.codes.dcmsclient.additem.AddItemActivity
 import com.management.org.dcms.codes.dcmsclient.viewitem.ViewItemActivity
 import com.management.org.dcms.codes.extensions.enableDisableView
 import com.management.org.dcms.codes.extensions.showHideView
+import com.management.org.dcms.codes.models.Task
 import com.management.org.dcms.codes.models.TaskDetailsModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
 import com.management.org.dcms.codes.utility.Utility
@@ -49,7 +47,8 @@ class HomeLandingMainActivity : AppCompatActivity() {
     private var nameTextView: TextView? = null
     private var mobNumTextView: TextView? = null
     private var logoutTextView: TextView? = null
-    private var seeAddedHouseHoldTv:TextView?=null
+    private var seeAddedHouseHoldTv: TextView? = null
+    private var textMessageActionBtn: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,24 +70,21 @@ class HomeLandingMainActivity : AppCompatActivity() {
             logoutTextView = profileSectionBinding?.logoutSection
             mobNumTextView = profileSectionBinding?.profileContactNumTV
             nameTextView = profileSectionBinding?.profileNameTV
-            seeAddedHouseHoldTv=it.seeAddedHouseHoldTv
+            seeAddedHouseHoldTv = it.seeAddedHouseHoldTv
+            textMessageActionBtn = dashboardBinding?.textMessageAction
         }
         mainActivityBinding?.containerAppBar?.appBarTitleTV?.showHideView(false)
         mainActivityBinding?.containerAppBar?.toolbar?.showHideView(true)
         mainActivityBinding?.containerAppBar?.toolbar?.setTitle(R.string.app_name)
 
         mainActivityBinding?.containerAppBar?.toolbar?.setOnMenuItemClickListener {
-            if (it.itemId == R.id.profile){
+            if (it.itemId == R.id.profile) {
                 startActivity(Intent(this, ProfileActivity::class.java))
-            }else{
+            } else {
                 performLogoutOperation()
             }
             true
         }
-        mainActivityBinding?.mainDashboardContainer?.textMessageAction?.setOnClickListener {
-            startTextSmsActivity()
-        }
-
     }
 
     private fun setUpObserver() {
@@ -124,15 +120,23 @@ class HomeLandingMainActivity : AppCompatActivity() {
             val isQuestionEnabled = taskDetailsModel.Task?.Questionaires
             val isMessageEnabled = taskDetailsModel.Task?.WAMessages
             val instruction = taskDetailsModel.Task?.Instructions
-            if (isQuestionEnabled != null) {
-               // questionActionView?.enableDisableView(isEnable = isQuestionEnabled)
-            }
-            if (isMessageEnabled != null) {
-                messageActionView?.enableDisableView(isEnable = isMessageEnabled)
-            }
-            if (instruction != null) {
-                instructionDetailTextView?.text = instruction
-            }
+            val isDataCollectionEnabled = taskDetailsModel.Task?.DataCollection
+            val isTextMessageEnabled = taskDetailsModel.Task?.TextMessage
+//            if (isQuestionEnabled != null) {
+//                questionActionView?.enableDisableView(isEnable = isQuestionEnabled)
+//            }
+//            if (isMessageEnabled != null) {
+//                messageActionView?.enableDisableView(isEnable = isMessageEnabled)
+//            }
+//            if (instruction != null) {
+//                instructionDetailTextView?.text = instruction
+//            }
+//            if (isDataCollectionEnabled != null) {
+//                dataCollectionActionView?.enableDisableView(isEnable = isDataCollectionEnabled)
+//            }
+//            if (isTextMessageEnabled != null) {
+//                textMessageActionBtn?.enableDisableView(isEnable = isTextMessageEnabled)
+//            }
 
         }
     }
@@ -144,29 +148,52 @@ class HomeLandingMainActivity : AppCompatActivity() {
                 if (isQuestionEnabled == true) {
                     startQuestionActivity()
                 } else {
-                    startQuestionActivity()
-                   // Utility.showToastMessage("Not enabled right now")
+                    //startQuestionActivity()
+                    Utility.showToastMessage("Not enabled right now")
                 }
-            }
-            else {
+            } else {
                 Utility.showToastMessage("Please Wait")
             }
         }
         messageActionView?.setOnClickListener {
             if (taskDetailsModel != null) {
+                System.out.println(taskDetailsModel?.Task)
                 val isMessageEnabled = taskDetailsModel?.Task?.WAMessages
                 if (isMessageEnabled == true) {
                     startMessageTemplateActivity()
                 } else {
-                    startMessageTemplateActivity()
-                   // Utility.showToastMessage("Please Wait")
+                    // startMessageTemplateActivity()
+                     Utility.showToastMessage("Not enabled Right now")
                 }
             } else {
                 Utility.showToastMessage("Please Wait")
             }
         }
         dataCollectionActionView?.setOnClickListener {
-            startDataCollectionActivity()
+            if (taskDetailsModel != null) {
+                val isMessageEnabled = taskDetailsModel?.Task?.DataCollection
+                if (isMessageEnabled == true) {
+                    startDataCollectionActivity()
+                } else {
+                    //startDataCollectionActivity()
+                    Utility.showToastMessage("Not enabled Right now")
+                }
+            } else {
+                Utility.showToastMessage("Please Wait")
+            }
+        }
+        textMessageActionBtn?.setOnClickListener {
+            if (taskDetailsModel != null) {
+                val isMessageEnabled = taskDetailsModel?.Task?.TextMessage
+                if (isMessageEnabled == true) {
+                    startTextSmsActivity()
+                } else {
+                    // startTextSmsActivity()
+                     Utility.showToastMessage("Not enabled Right now")
+                }
+            } else {
+                Utility.showToastMessage("Please Wait")
+            }
         }
         seeAddedHouseHoldTv?.setOnClickListener {
             startSeeAddedHouseHoldIntent()
@@ -174,9 +201,13 @@ class HomeLandingMainActivity : AppCompatActivity() {
     }
 
     private fun startQuestionActivity() {
-        val intent = Intent(this, QuestionListingActivity::class.java)
-        startActivity(intent)
+        if (taskDetailsModel?.Task != null) {
+            val intent = Intent(this, QuestionListingActivity::class.java)
+            // intent.putExtra(URL_TO_BE_LOAD, response)
+            startActivity(intent)
+        }
     }
+
 
     private fun startMessageTemplateActivity() {
         val intent = Intent(this, MessageTemplateActivity::class.java)
@@ -188,25 +219,27 @@ class HomeLandingMainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun redirectedToSignInPage(){
-        val intent =Intent(this,LoginActivity::class.java)
+    private fun redirectedToSignInPage() {
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }
-    private fun startSeeAddedHouseHoldIntent(){
-        val intent =Intent(this,ViewItemActivity::class.java)
+
+    private fun startSeeAddedHouseHoldIntent() {
+        val intent = Intent(this, ViewItemActivity::class.java)
         startActivity(intent)
     }
-    private fun startTextSmsActivity(){
+
+    private fun startTextSmsActivity() {
         val intent = Intent(this, SendTextSMSActivity::class.java)
         startActivity(intent)
     }
 
     private fun performLogoutOperation() {
-        if(Utility.isUserLoggedIn()){
+        if (Utility.isUserLoggedIn()) {
             progressBar?.showHideView(true)
             homeViewModel?.performLogoutOperationForServer(callbackForLogoutResponse)
-        }else{
+        } else {
             progressBar?.showHideView(false)
             Utility.showToastMessage("Already logout")
         }

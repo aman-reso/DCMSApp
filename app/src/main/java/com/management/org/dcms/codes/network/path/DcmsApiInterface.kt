@@ -39,5 +39,8 @@ interface DcmsApiInterface {
    @POST("/Api/Account/Profile")
    suspend fun getProfileDetails(@Query("AuthToken")authToken: String):ProfileResponseModel
 
+   @POST("/api/Question/SentReport")
+   suspend fun sentReportQuestionActivity(@Body sentReportQActivityModel: SentReportQActivityModel,@Query("AuthToken")authToken: String):JsonObject
+
 }
 

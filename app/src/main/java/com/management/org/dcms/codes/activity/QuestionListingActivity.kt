@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.adapter.ContactsListAdapter
@@ -18,6 +19,10 @@ import com.management.org.dcms.codes.network_res.GlobalNetResponse
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewmodel.MessageTemplateViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 @AndroidEntryPoint
 class QuestionListingActivity : AppCompatActivity() {
@@ -25,11 +30,24 @@ class QuestionListingActivity : AppCompatActivity() {
     private val contactsListAdapter: QContactsListAdapter by lazy { QContactsListAdapter(callback = callback) }
     private var qContactsRecyclerView: RecyclerView? = null
     private var progressBar: ProgressBar? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_listing)
+        getDataFromIntent()
         setUpViews()
         setUpObservers()
+    }
+
+    private fun getDataFromIntent() {
+        try {
+            if (intent != null && intent.data != null) {
+                //urlToBeLoad = intent.getStringExtra(URL_TO_BE_LOAD)
+            }
+        } catch (e: Exception) {
+            Utility.showToastMessage("Something went wrong")
+            finish()
+        }
     }
 
     private fun setUpViews() {
@@ -70,7 +88,6 @@ class QuestionListingActivity : AppCompatActivity() {
             is GlobalNetResponse.Success -> {
                 val contactsList = networkResponse.value
                 if (contactsList?.qContactsList != null) {
-                    System.out.println("list of contacts-->" + contactsList?.qContactsList)
                     contactsListAdapter.submitData(contactsList = contactsList?.qContactsList!!)
                 }
             }
@@ -84,16 +101,19 @@ class QuestionListingActivity : AppCompatActivity() {
     }
 
     private var callback = fun(contactsMainModel: QContactsModel) {
-        messageTemplateViewModel?.sentWAReportToServer(hhId = contactsMainModel.HHId, templateId = 1, waNum = contactsMainModel.MobileNo)
-
-//        if (messageTemplateString != null && templateId != null && templateId != -1) {
-//            messageTemplateViewModel?.sentWAReportToServer(hhId = contactsMainModel.HHId, templateId = templateId!!, waNum = contactsMainModel.WANo)
-//            val waMobNumber = contactsMainModel.WANo
-//            sendToWhatsApp(waMobNumber, messageTemplateString!!)
-//        } else {
-//            Utility.showToastMessage("Please wait Message Template Not Received")
-//        }
-        val intent = Intent(this, AttemptQuestionActivity::class.java)
-        startActivity(intent)
+        progressBar?.showHideView(true)
+        messageTemplateViewModel?.sentReportForQuestionActivity(hhId = contactsMainModel.HHId, waNum = contactsMainModel.WANo) { url ->
+            lifecycleScope.launch(Dispatchers.Main) {
+                progressBar?.showHideView(false)
+                if (url != null) {
+                    val intent = Intent(this@QuestionListingActivity, AttemptQuestionActivity::class.java)
+                    intent.putExtra(HH_ID, contactsMainModel.HHId)
+                    intent.putExtra(URL_TO_BE_LOAD, url)
+                    startActivity(intent)
+                } else {
+                    Utility.showToastMessage("Something went wrong")
+                }
+            }
+        }
     }
 }

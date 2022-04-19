@@ -62,7 +62,6 @@ class ProfileActivity : AppCompatActivity() {
                 if (successResponse != null) {
                     try {
                         bindResponseWithViews(successResponse.profile)
-
                     } catch (e: Exception) {
 
                     }

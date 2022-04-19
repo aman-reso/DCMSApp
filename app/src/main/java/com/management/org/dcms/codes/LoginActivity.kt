@@ -8,6 +8,7 @@ import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.snackbar.Snackbar
 
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
@@ -41,8 +42,6 @@ class LoginActivity : AppCompatActivity() {
         setUpClickListener()
     }
 
-
-
     private fun setUpViews() {
         loginActivityBinding?.let { activityLoginBinding ->
             phoneNumberET = activityLoginBinding.editTextPhoneNumber
@@ -74,6 +73,10 @@ class LoginActivity : AppCompatActivity() {
                 if (loginResponseData?.authToken != null) {
                     AuthConfigManager.saveAuthToken(loginResponseData.authToken)
                     startHomeLandingActivity()
+                }else{
+                    if (loginResponseData?.message!=null) {
+                        loginActivityBinding?.root?.let { showToastMessage(loginResponseData.message!!) }
+                    }
                 }
             }
         }
@@ -112,7 +115,6 @@ class LoginActivity : AppCompatActivity() {
     private fun startRegistrationActivity() {
         val homeLandingIntent = Intent(this, SignupActivity::class.java)
         startActivity(homeLandingIntent)
-        finish()
     }
 
 }

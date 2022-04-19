@@ -4,9 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
+import com.management.org.dcms.codes.models.SentReportQActivityModel
 import com.management.org.dcms.codes.models.TaskDetailsModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
 import com.management.org.dcms.codes.repository.DcmsNetworkCallRepository
+import com.management.org.dcms.codes.utility.AndroidDeviceUtils
+import com.management.org.dcms.codes.utility.GeneralUtils
 import com.management.org.dcms.codes.utility.Utility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

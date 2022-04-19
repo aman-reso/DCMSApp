@@ -1,21 +1,26 @@
 package com.management.org.dcms.codes.activity
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.easywaylocation.EasyWayLocation
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.management.org.dcms.LocationBuilder
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.DcmsApplication
 import com.management.org.dcms.codes.HomeLandingMainActivity
 import com.management.org.dcms.codes.LoginActivity
-import com.management.org.dcms.codes.ONE_MINUTE
 import com.management.org.dcms.codes.utility.Utility
 import kotlinx.coroutines.*
-import java.lang.Exception
+
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
@@ -24,40 +29,71 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        setUpLocationUpdatesManager()
-        Handler().postDelayed(fun() {
-            if (Utility.isUserLoggedIn()) {
-                startHomeLandingActivity()
-            } else {
-                startLogintActivity()
-            }
-        },3000)
+        setUpPermissions()
+        //setUpLocationUpdatesManager()
     }
 
     override fun onResume() {
         super.onResume()
         locationBuilder.startTracingLocation()
     }
+
     private fun startHomeLandingActivity() {
-        val homeLandingIntent = Intent(this, HomeLandingMainActivity::class.java);
-        startActivity(homeLandingIntent)
-        finish()
+        lifecycleScope.launch {
+            delay(2000)
+            if (Utility.isUserLoggedIn()) {
+                val homeLandingIntent = Intent(this@SplashActivity, HomeLandingMainActivity::class.java);
+                startActivity(homeLandingIntent)
+                finish()
+            } else {
+                startLogintActivity()
+            }
+        }
     }
+
     private fun startLogintActivity() {
         val homeLandingIntent = Intent(this, LoginActivity::class.java);
         startActivity(homeLandingIntent)
         finish()
     }
-    private  fun setUpLocationUpdatesManager() {
+
+    private fun setUpPermissions() {
+        Dexter.withContext(this)
+            .withPermissions(
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ).withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                    report?.let {
+                        if (it.areAllPermissionsGranted()) {
+                           //move forward
+                            startHomeLandingActivity()
+                        }else{
+                            Utility.showToastMessage(getString(R.string.please_allow_all_above_permission))
+                            finish()
+                        }
+                    }
+                }
+
+                override fun onPermissionRationaleShouldBeShown(permissions: List<PermissionRequest?>?, token: PermissionToken?) { /* ... */
+
+                }
+            }).check()
+    }
+
+    private fun setUpLocationUpdatesManager() {
 //        GlobalScope.launch(Dispatchers.IO) {
 //            while (isActive) {
 //                delay(100)
 //                getLocation()
-//                System.out.println("DecmsLocation-->"+ DcmsApplication.latitude)
+//                System.out.println("DcmsLocation-->"+ DcmsApplication.latitude)
 //                delay(ONE_MINUTE)
 //            }
 //        }
     }
+
     private fun getLocation() {
         try {
             if (locationBuilder.getLocation() != null && locationBuilder.getLocation()?.first != null) {

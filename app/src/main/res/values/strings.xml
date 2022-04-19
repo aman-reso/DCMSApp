@@ -20,4 +20,5 @@
     <string name="mother_name">Mother Name</string>
     <string name="document_number">Document Number</string>
     <string name="ward">Ward</string>
+    <string name="please_allow_all_above_permission">Please Allow Above permission</string>
 </resources>

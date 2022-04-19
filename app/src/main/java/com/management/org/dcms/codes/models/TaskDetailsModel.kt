@@ -9,5 +9,6 @@ data class TaskDetailsModel(
 )
 
 data class Task(
-    var Id: Int, var CampaignId: Int, var ThemeId: Int, var WAMessages: Boolean, var Questionaires: Boolean, var Instructions: String, var CampName: String, var ThemeName: String
+    var Id: Int, var CampaignId: Int, var ThemeId: Int, var WAMessages: Boolean, var Questionaires: Boolean, var Instructions: String, var CampName: String, var ThemeName: String,
+    var DataCollection:Boolean,var TextMessage:Boolean
 )
