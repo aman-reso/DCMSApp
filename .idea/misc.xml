@@ -15,6 +15,8 @@
         <entry key="app/src/main/res/drawable/ic_baseline_exit_to_app_24.xml" value="0.173" />
         <entry key="app/src/main/res/drawable/ic_baseline_keyboard_backspace_24.xml" value="0.216" />
         <entry key="app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/ic_icons8_whatsapp.xml" value="0.188" />
+        <entry key="app/src/main/res/drawable/ic_message_paper_plane_svgrepo_com.xml" value="0.188" />
         <entry key="app/src/main/res/layout/activity_add_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_attempt_question.xml" value="0.2484375" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2" />

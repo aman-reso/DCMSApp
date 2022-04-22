@@ -34,7 +34,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/nuntio_bold"
-            android:text="Dcms"
+            android:text="@string/app_name"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:visibility="visible"

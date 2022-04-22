@@ -29,6 +29,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.extensions.showHideView
+import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.databinding.DcmsClientActivityAddItemBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -73,12 +74,10 @@ class AddItemActivity : AppCompatActivity() {
         val villageList = mutableListOf<String>()
         var villageName = ""
         var villageId = 0
-        var wardJob: Job = Job()
         var mobileType = ""
-        val mobileTypeList = listOf("Feature", "Smart")
+        val mobileTypeList = listOf("Feature Phone", "Smart Phone")
         var documentType = ""
         val documentTypeList = listOf("AADHAAR", "VOTERID")
-        val wardList = mutableListOf<String>()
         binding.containerAppBar.icNavBackIcon.showHideView(true)
         binding.containerAppBar.appBarTitleTV.text = getString(R.string.add_household)
         binding.containerAppBar.icNavBackIcon.setOnClickListener {
@@ -130,13 +129,7 @@ class AddItemActivity : AppCompatActivity() {
                                 try {
                                     Timber.i("SELECTED = ${it.data.villages[villageList.indexOf(s.toString())]}")
                                     villageName = s.toString()
-                                    villageId =
-                                        it.data.villages[villageList.indexOf(s.toString())].id
-                                    wardJob.cancel()
-                                    wardJob = lifecycleScope.launch(Dispatchers.IO) {
-                                        viewModel.getWardById(villageId)
-                                    }
-
+                                    villageId = it.data.villages[villageList.indexOf(s.toString())].id
                                 } catch (e: Exception) {
                                 }
                             }
@@ -155,59 +148,6 @@ class AddItemActivity : AppCompatActivity() {
 
                 }
 
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModel.wardById.collect {
-                when (it) {
-                    is UiState.Loading -> {
-                        startLoad()
-                    }
-                    is UiState.Success<*> -> {
-                        stopLoad()
-                        it.data as WardResponse
-                        it.data.wards.forEach {
-                            wardList.add(it.wardNo)
-                        }
-                        val wardAdapter = ArrayAdapter(
-                            this@AddItemActivity,
-                            R.layout.dcms_client_simple_spinner_item,
-                            wardList
-                        )
-                        (binding.ward as? AutoCompleteTextView)?.setAdapter(
-                            wardAdapter
-                        )
-                        binding.ward.addTextChangedListener(object : TextWatcher {
-                            override fun afterTextChanged(s: Editable?) {
-                            }
-
-                            override fun beforeTextChanged(
-                                s: CharSequence?,
-                                start: Int,
-                                count: Int,
-                                after: Int
-                            ) {
-                            }
-
-                            override fun onTextChanged(
-                                s: CharSequence?,
-                                start: Int,
-                                before: Int,
-                                count: Int
-                            ) {
-                                try {
-                                    Timber.i("SELECTED = ${it.data.wards[wardList.indexOf(s.toString())]}")
-                                    mobileType = s.toString()
-                                } catch (e: Exception) {
-                                }
-                            }
-                        })
-                    }
-                    is UiState.Failed -> {
-                        stopLoad()
-                    }
-                }
             }
         }
 
@@ -302,11 +242,42 @@ class AddItemActivity : AppCompatActivity() {
             }
         }
         findViewById<Button>(R.id.submit).setOnClickListener {
-            if (!binding.address.text.isNullOrEmpty() && !binding.email.text.isNullOrEmpty()
-                && !binding.mobile.text.isNullOrEmpty() && !binding.name.text.isNullOrEmpty() && villageName != ""
-                && !binding.landmark.text.isNullOrEmpty() && !binding.whatsapp.text.isNullOrEmpty() && !binding.ward.text.isNullOrEmpty() && villageId != 0
+            if (!binding.address.text.isNullOrEmpty() && !binding.mobile.text.isNullOrEmpty() && !binding.name.text.isNullOrEmpty() && villageName != ""
+                && !binding.landmark.text.isNullOrEmpty()  && !binding.ward.text.isNullOrEmpty() && villageId != 0
                 && fileUri != null && mobileType != "" && documentType != "" && !binding.documentNumber.text.isNullOrEmpty()
             ) {
+                var emailId = ""
+                var whatsAppNum=""
+                if (binding.email.text != null) {
+                    emailId = binding.email.text.toString()
+                }
+                if (!binding.whatsapp.text.isNullOrEmpty()){
+                    whatsAppNum=binding.whatsapp.text.toString()
+                }
+
+                if (binding.ward.text != null) {
+                    try {
+                        var wardNo = binding.ward.text?.toString()?.trim()?.toInt()
+                        if (wardNo != null) {
+                            if (wardNo in 1..30) {
+
+                            }else{
+                                Utility.showToastMessage("Please enter correct ward number")
+                                return@setOnClickListener
+                            }
+                        }else{
+                            Utility.showToastMessage("Please enter correct ward number")
+                            return@setOnClickListener
+                        }
+                    } catch (e: Exception) {
+                        Utility.showToastMessage("Please enter correct ward number")
+                        return@setOnClickListener
+                    }
+                } else {
+                    Utility.showToastMessage("Ward number is missing")
+                    return@setOnClickListener
+                }
+
                 val a = CancellationTokenSource().token
                 fusedLocationClient.getCurrentLocation(
                     LocationRequest.PRIORITY_HIGH_ACCURACY,
@@ -321,8 +292,8 @@ class AddItemActivity : AppCompatActivity() {
                                 villageName,
                                 binding.name.text.toString(),
                                 binding.mobile.text.toString(),
-                                binding.whatsapp.text.toString(),
-                                binding.email.text.toString(),
+                                whatsAppNum,
+                                emailId,
                                 binding.address.text.toString(),
                                 binding.father.text.toString(),
                                 binding.mother.text.toString(),

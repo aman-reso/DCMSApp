@@ -133,14 +133,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:hint="@string/address"
+            android:hint="@string/house_no"
             app:layout_constraintTop_toBottomOf="@+id/outlinedTextEmail">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:fontFamily="@font/nuntio_regular"
-
                 android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -165,7 +164,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/outlinedTextWardNo"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
@@ -174,13 +173,12 @@
             tools:layout_editor_absoluteX="20dp"
             tools:visibility="visible">
 
-            <AutoCompleteTextView
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/ward"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nuntio_regular"
-
-                android:inputType="none" />
+                android:inputType="phone" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

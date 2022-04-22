@@ -5,9 +5,9 @@
     <string name="login">Login</string>
     <string name="instruction_for_you">Instruction For You</string>
     <string name="here_is_the_instruction_please_go_through_this_first">Here is the instruction please go through this first...</string>
-    <string name="attempt">Attempt</string>
+    <string name="attempt">Survey</string>
     <string name="today_s_task">Today\'s Task</string>
-    <string name="text_message">Text Message</string>
+    <string name="text_message">Text message</string>
     <string name="data_collection">Data Collection</string>
     <string name="profile">Profile</string>
     <string name="log_out">Log Out</string>
@@ -21,4 +21,7 @@
     <string name="document_number">Document Number</string>
     <string name="ward">Ward</string>
     <string name="please_allow_all_above_permission">Please Allow Above permission</string>
+    <string name="see_your_report">See your Report</string>
+    <string name="registration">Registration</string>
+    <string name="house_no">House no</string>
 </resources>

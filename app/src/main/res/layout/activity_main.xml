@@ -36,7 +36,7 @@
                     android:fontFamily="@font/nuntio_regular"
                     android:text="@string/instruction_for_you"
                     android:textColor="#272b29"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -45,6 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
+                    android:textSize="16sp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/nuntio_regular"
                     android:text="@string/here_is_the_instruction_please_go_through_this_first"
@@ -82,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:fontFamily="@font/nuntio_bold"
-                    android:text="See your Report"
+                    android:text="@string/see_your_report"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 

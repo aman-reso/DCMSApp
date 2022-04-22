@@ -23,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.LoginActivity
 import com.management.org.dcms.codes.dcmsclient.data.models.*
+import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.databinding.DcmsClientActivitySignupBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -405,12 +406,14 @@ class SignupActivity : AppCompatActivity() {
             viewModel.signupResponse.collect {
                 when(it){
                     is UiState.Success<*>->{
-                        Snackbar.make(binding.root,"Account created",Snackbar.LENGTH_LONG).show()
+                        Utility.showToastMessage("Account created")
+                        //Snackbar.make(binding.root,"Account created",Snackbar.LENGTH_LONG).show()
                         startLoginActivity()
                         finish()
                     }
                     is UiState.Failed ->{
-                        Snackbar.make(binding.root,it.message.toString(),Snackbar.LENGTH_LONG).show()
+                        Utility.showToastMessage(it.message.toString())
+                      //  Snackbar.make(binding.root,it.message.toString(),Snackbar.LENGTH_LONG).show()
                     }
                 }
             }
