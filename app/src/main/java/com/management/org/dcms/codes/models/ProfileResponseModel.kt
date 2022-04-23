@@ -17,19 +17,3 @@ data class Profile(
 )
 
 
-//{
-//  "Message": "string",
-//  "Status": 0,
-//  "Profile": {
-//    "Id": 0,
-//    "Name": "string",
-//    "LoginId": "string",
-//    "MobileNo": "string",
-//    "EmailId": "string",
-//    "StateName": "string",
-//    "DistrictName": "string",
-//    "BlockName": "string",
-//    "GramPanchayatName": "string",
-//    "VillageName": "string"
-//  }
-//}

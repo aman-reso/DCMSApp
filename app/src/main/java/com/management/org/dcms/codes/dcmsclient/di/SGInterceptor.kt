@@ -5,13 +5,12 @@ import okhttp3.Response
 
 class SGInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
+        System.out.println(chain.request().url)
         val requestBuilder = chain.request().newBuilder()
-        if (true) {
-            requestBuilder.addHeader(
-                "Authorization",
-                "Bearer token"
-            )
-        }
+        requestBuilder.addHeader(
+            "Authorization",
+            "Bearer token"
+        )
         return chain.proceed(requestBuilder.build())
     }
 }

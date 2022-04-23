@@ -11,6 +11,7 @@ suspend fun <T> safeApiCall(apiCall: suspend () -> T): GlobalNetResponse<T> {
         try {
             GlobalNetResponse.Success(apiCall.invoke())
         } catch (throwable: Throwable) {
+            System.out.println(throwable.message)
             when (throwable) {
                 is HttpException -> {
                     val code = throwable.code()

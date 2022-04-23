@@ -1,17 +1,12 @@
 package com.management.org.dcms.codes.activity
 
-import android.app.Activity
-import android.app.PendingIntent
 import android.content.*
-import android.net.Uri
 import android.os.Bundle
 import android.telephony.SmsManager
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.management.org.dcms.R
@@ -19,20 +14,19 @@ import com.management.org.dcms.codes.adapter.ContactsListAdapter
 import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.codes.models.ContactsMainModel
 import com.management.org.dcms.codes.models.ContactsModel
+import com.management.org.dcms.codes.models.TextMessageTemplateModel
 import com.management.org.dcms.codes.models.WAMessageTemplateModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewmodel.MessageTemplateViewModel
-import com.management.org.dcms.databinding.ActivityMessageTemplateBinding
 import com.management.org.dcms.databinding.ActivitySendTextSmsactivityBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.net.URLEncoder
 
 const val SENT = "SMS_SENT"
 const val DELIVERED = "SMS_DELIVERED"
 
 @AndroidEntryPoint
-class SendTextSMSActivity : AppCompatActivity() {
+class SendTextSMSActivity : BaseActivity() {
     private val messageTemplateViewModel: MessageTemplateViewModel? by viewModels()
 
     private var messageTemplateTV: TextView? = null
@@ -66,7 +60,7 @@ class SendTextSMSActivity : AppCompatActivity() {
                     sendSms(it.MobileNo)
                 }
                 mainActivityBinding?.sentTextMessageToAll?.showHideView(false)
-                Utility.showToastMessage("Message send")
+                Utility.showToastMessage(getString(R.string.message_sent))
             }
         }
     }
@@ -85,7 +79,7 @@ class SendTextSMSActivity : AppCompatActivity() {
 
     private fun setUpObservers() {
         messageTemplateViewModel?.apply {
-            messageTemplateLiveData.observe(this@SendTextSMSActivity) { response ->
+            textMessageTemplateModel.observe(this@SendTextSMSActivity) { response ->
                 if (response != null) {
                     parseNetworkResponseForMessageTemplate(response)
                 }
@@ -98,14 +92,13 @@ class SendTextSMSActivity : AppCompatActivity() {
             }
         }
         progressBar?.showHideView(true)
-        messageTemplateViewModel?.getWAMessageTemplate()
+        messageTemplateViewModel?.getTextSMSTemplate()
     }
 
     private fun parseNetworkResponseForContactList(response: GlobalNetResponse<ContactsMainModel>) {
         when (response) {
             is GlobalNetResponse.Success -> {
                 val successResponse: ContactsMainModel? = response.value
-                println("successResponse-->$successResponse")
                 if (successResponse?.contactList != null) {
                     mainActivityBinding?.sentTextMessageToAll?.showHideView(true)
                     contactList.clear()
@@ -122,12 +115,12 @@ class SendTextSMSActivity : AppCompatActivity() {
         }
     }
 
-    private fun parseNetworkResponseForMessageTemplate(response: GlobalNetResponse<WAMessageTemplateModel>) {
+    private fun parseNetworkResponseForMessageTemplate(response: GlobalNetResponse<TextMessageTemplateModel>) {
         when (response) {
             is GlobalNetResponse.Success -> {
-                val successResponse: WAMessageTemplateModel = response.value
+                val successResponse: TextMessageTemplateModel = response.value
                 setMessageIntoViews(successResponse)
-                messageTemplateViewModel?.getContactsListForMessage(successResponse.WAMessage.ThemeId, successResponse.WAMessage.CampaignId)
+                messageTemplateViewModel?.getContactsListForMessage(successResponse.TextMessage?.ThemeId, successResponse.TextMessage?.CampaignId)
             }
             is GlobalNetResponse.NetworkFailure -> {
 
@@ -141,20 +134,20 @@ class SendTextSMSActivity : AppCompatActivity() {
         }
     }
 
-    private fun setMessageIntoViews(successResponse: WAMessageTemplateModel) {
-        messageBodyTextView?.text = successResponse.WAMessage.Template
-        messageTemplateString = successResponse.WAMessage.Template
-        templateId = successResponse.WAMessage.Id
+    private fun setMessageIntoViews(successResponse: TextMessageTemplateModel) {
+        messageBodyTextView?.text = successResponse.TextMessage?.Template
+        messageTemplateString = successResponse.TextMessage?.Template
+        templateId = successResponse.TextMessage?.Id
     }
 
     private var callback = fun(contactsMainModel: ContactsModel) {
         if (messageTemplateString != null && templateId != null && templateId != -1) {
-            messageTemplateViewModel?.sentWAReportToServer(hhId = contactsMainModel.HHId, templateId = templateId!!, waNum = contactsMainModel.WANo)
+            messageTemplateViewModel?.sentTextSMSReportToServer(hhId = contactsMainModel.HHId, templateId = templateId!!, waNum = contactsMainModel.WANo)
             val waMobNumber = contactsMainModel.WANo
-            Utility.showToastMessage("Message Sent")
+            Utility.showToastMessage(getString(R.string.message_sent))
             sendSms(waMobNumber)
         } else {
-            Utility.showToastMessage("Please wait Message Template Not Received")
+            Utility.showToastMessage(getString(R.string.please_wait_message_template_not_received))
         }
     }
 
@@ -165,50 +158,6 @@ class SendTextSMSActivity : AppCompatActivity() {
             refreshListAfterSend()
         }
         firstTimeOnCreate = false
-    }
-
-    private fun sendTextMessageToAll() {
-
-    }
-
-    private fun multipleSMS(phoneNumber: String, message: String) {
-//        val sentPI = PendingIntent.getBroadcast(this, 0, Intent(SENT), 0)
-//        val deliveredPI = PendingIntent.getBroadcast(this, 0, Intent(DELIVERED), 0)
-//        // ---when the SMS has been sent---
-//        registerReceiver(object : BroadcastReceiver() {
-//            override fun onReceive(arg0: Context?, arg1: Intent?) {
-//                when (resultCode) {
-//                    Activity.RESULT_OK -> {
-//                        val values = ContentValues()
-//                        var i = 0
-//                        while (i < MobNumber.size() - 1) {
-//                            values.put("address", MobNumber.get(i).toString())
-//                            // txtPhoneNo.getText().toString());
-//                            values.put("body", MessageText.getText().toString())
-//                            i++
-//                        }
-//                        contentResolver.insert(
-//                            Uri.parse("content://sms/sent"), values
-//                        )
-//                        Toast.makeText(baseContext, "SMS sent", Toast.LENGTH_SHORT).show()
-//                    }
-//                    SmsManager.RESULT_ERROR_GENERIC_FAILURE -> Toast.makeText(baseContext, "Generic failure", Toast.LENGTH_SHORT).show()
-//                    SmsManager.RESULT_ERROR_NO_SERVICE -> Toast.makeText(baseContext, "No service", Toast.LENGTH_SHORT).show()
-//                    SmsManager.RESULT_ERROR_NULL_PDU -> Toast.makeText(baseContext, "Null PDU", Toast.LENGTH_SHORT).show()
-//                    SmsManager.RESULT_ERROR_RADIO_OFF -> Toast.makeText(baseContext, "Radio off", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }, IntentFilter(SENT))
-//
-//        // ---when the SMS has been delivered---
-//        registerReceiver(object : BroadcastReceiver() {
-//            override fun onReceive(arg0: Context?, arg1: Intent?) {
-//                when (resultCode) {
-//                    Activity.RESULT_OK -> Toast.makeText(baseContext, "SMS delivered", Toast.LENGTH_SHORT).show()
-//                    Activity.RESULT_CANCELED -> Toast.makeText(baseContext, "SMS not delivered", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }, IntentFilter(DELIVERED))
     }
 
     private fun sendSms(phoneNumber: String) {

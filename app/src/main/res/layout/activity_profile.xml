@@ -14,101 +14,50 @@
             android:id="@+id/containerAppBar"
             layout="@layout/app_title_bar" />
 
-        <LinearLayout
-            android:id="@+id/profileSectionContainer"
+        <TextView
+            android:id="@+id/profileSectionTitle"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/nuntio_bold"
+            android:text="@string/profile_information"
+            android:textColor="#232323"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/profileWebView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/containerAppBar" />
+
+        <WebView
+            android:id="@+id/profileWebView"
+            android:layout_width="0dp"
+            android:layout_height="350dp"
+            android:layout_margin="16dp"
+            android:layout_marginTop="8dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileSectionTitle" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/changePasswordWhenOnProfile"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/corner_16dp_without_border"
+            android:backgroundTint="@color/white"
+            android:elevation="8dp"
+            android:fontFamily="@font/nuntio_regular"
+            android:text="@string/change_password"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/containerAppBar">
-
-            <TextView
-                android:id="@+id/profileSectionTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/nuntio_bold"
-                android:text="Profile"
-                android:textColor="#232323"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/profileNameTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/nuntio_regular"
-                android:text=""
-                android:textColor="#232323"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/profileContactNumTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/nuntio_regular"
-                android:text=""
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/profileEmailIdTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/nuntio_regular"
-                android:text=""
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/profileStateNameTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/nuntio_regular"
-                android:text=""
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/profileDistrictNameTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/nuntio_regular"
-                android:text=""
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/profileBlockNameTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/nuntio_regular"
-                android:text=""
-                android:textSize="16sp" />
-
-
-            <TextView
-                android:id="@+id/profileVillageNameTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/nuntio_regular"
-                android:text=""
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/profilePanchayatNameTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/nuntio_regular"
-                android:text=""
-                android:textSize="16sp" />
-
-
-        </LinearLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"

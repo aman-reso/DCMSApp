@@ -20,48 +20,71 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MessageTemplateViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetworkCallRepository) : ViewModel() {
-    var messageTemplateLiveData: MutableLiveData<GlobalNetResponse<WAMessageTemplateModel>> = MutableLiveData()
+    var wAMessageTemplateLiveData: MutableLiveData<GlobalNetResponse<WAMessageTemplateModel>> = MutableLiveData()
     var contactsListLiveData: MutableLiveData<GlobalNetResponse<ContactsMainModel>> = MutableLiveData()
     var qContactListLiveData: MutableLiveData<GlobalNetResponse<QContactsMainModel>> = MutableLiveData()
+    var textMessageTemplateModel = MutableLiveData<GlobalNetResponse<TextMessageTemplateModel>>()
 
-    //use mediator live data here
     internal fun getWAMessageTemplate() {
         if (Utility.isUserLoggedIn()) {
             viewModelScope.launch(Dispatchers.IO) {
                 val authToken = AuthConfigManager.getAuthToken()
-                async {
-                    val response = dcmsNetworkCallRepository.getWAMessageTemplate(authToken!!)
-                    messageTemplateLiveData.postValue(response)
-                }
+                val response = dcmsNetworkCallRepository.getWAMessageTemplate(authToken)
+                wAMessageTemplateLiveData.postValue(response)
+
             }
         }
     }
 
-    fun getContactsListForMessage(themeId: Int, campaignId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val authToken = AuthConfigManager.getAuthToken()
-            val response = dcmsNetworkCallRepository.getContactsList(authToken!!, themeId, campaignId)
-            contactsListLiveData.postValue(response)
+    internal fun getTextSMSTemplate() {
+        if (Utility.isUserLoggedIn()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val authToken = AuthConfigManager.getAuthToken()
+                val response = dcmsNetworkCallRepository.getTextSMSTemplate(authToken)
+                textMessageTemplateModel.postValue(response)
+            }
+        }
+    }
+
+    fun getContactsListForMessage(themeId: Int?, campaignId: Int?) {
+        if (themeId != null && campaignId != null) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val authToken = AuthConfigManager.getAuthToken()
+                val response = dcmsNetworkCallRepository.getContactsList(authToken, themeId, campaignId)
+                contactsListLiveData.postValue(response)
+            }
         }
     }
 
     fun sentWAReportToServer(hhId: Int, templateId: Int, waNum: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val authToken = AuthConfigManager.getAuthToken()
-            println("authToken==>+$authToken")
-            if (authToken != null) {
-                when (val serverResponse = dcmsNetworkCallRepository.sentWAReport(authToken = authToken, hhId = hhId, templateId = templateId, waNum = waNum)) {
-                    is GlobalNetResponse.Success -> {
-                        println("serverResponse$serverResponse")
-                    }
-                    is GlobalNetResponse.NetworkFailure -> {
+            when (val serverResponse = dcmsNetworkCallRepository.sentWAReport(authToken = authToken, hhId = hhId, templateId = templateId, waNum = waNum)) {
+                is GlobalNetResponse.Success -> {
+                    println("serverResponse$serverResponse")
+                }
+                is GlobalNetResponse.NetworkFailure -> {
 
-                    }
                 }
             }
         }
     }
 
+    fun sentTextSMSReportToServer(hhId: Int, templateId: Int, waNum: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val authToken = AuthConfigManager.getAuthToken()
+            when (val serverResponse = dcmsNetworkCallRepository.sentTextSmsReport(authToken = authToken, hhId = hhId, templateId = templateId, waNum = waNum)) {
+                is GlobalNetResponse.Success -> {
+                    println("serverResponse$serverResponse")
+                }
+                is GlobalNetResponse.NetworkFailure -> {
+
+                }
+            }
+        }
+    }
+
+    //when click on single contacts for start survey
     internal inline fun sentReportForQuestionActivity(hhId: Int, waNum: String, crossinline callback: (String?) -> Unit) {
         if (Utility.isUserLoggedIn()) {
             viewModelScope.launch(Dispatchers.IO) {
@@ -77,12 +100,11 @@ class MessageTemplateViewModel @Inject constructor(var dcmsNetworkCallRepository
                     sentReportQActivityModel.Longitude = "2"
                     when (val response = dcmsNetworkCallRepository.sentReportQuestionActivity(sentReportQActivityModel = sentReportQActivityModel, authToken = authToken)) {
                         is GlobalNetResponse.Success -> {
-                            val successResponseValue:JsonObject=response.value
-                            if (successResponseValue.has("status") && successResponseValue.get("status").asInt==1) {
+                            val successResponseValue: JsonObject = response.value
+                            if (successResponseValue.has("status") && successResponseValue.get("status").asInt == 1) {
                                 callback.invoke(successResponseValue.get("URL").asString)
-                            }
-                            else{
-                                withContext(Dispatchers.Main){
+                            } else {
+                                withContext(Dispatchers.Main) {
                                     Utility.showToastMessage(successResponseValue.get("Message").asString)
                                 }
                                 callback.invoke(null)
@@ -97,13 +119,11 @@ class MessageTemplateViewModel @Inject constructor(var dcmsNetworkCallRepository
         }
     }
 
-    fun getContactsListForQuestion() {
+    internal fun getContactsListForQuestion() {
         viewModelScope.launch(Dispatchers.IO) {
             val authToken = AuthConfigManager.getAuthToken()
-            if (authToken != null) {
-                val serverResponse = dcmsNetworkCallRepository.getContactsListForQuestion(authToken = authToken, themeId = 1, campaignId = 1)
-                qContactListLiveData.postValue(serverResponse)
-            }
+            val serverResponse = dcmsNetworkCallRepository.getContactsListForQuestion(authToken = authToken, themeId = 1, campaignId = 1)
+            qContactListLiveData.postValue(serverResponse)
         }
     }
 }

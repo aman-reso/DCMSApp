@@ -12,28 +12,27 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.management.org.dcms.R
-import com.management.org.dcms.codes.UploadImageActivity
 import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.codes.utility.Utility
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.Exception
-import java.lang.StringBuilder
 
 const val CAMP_ID: String = "camp_id"
 const val THEME_ID: String = "theme_id"
 const val SG_ID: String = "sg_id"
 const val HH_ID: String = "hh_id"
-const val URL_TO_BE_LOAD="url_to_be_load"
+const val URL_TO_BE_LOAD = "url_to_be_load"
 
 //http://dcms.dmi.ac.in/Questionairs/index?campid=1&themeid=1&sgid=1&hhid=1&qtemplateid=1&lat=1&lng=1
-class AttemptQuestionActivity : AppCompatActivity() {
+class AttemptQuestionActivity : BaseActivity() {
     private var mWebView: WebView? = null
     private var url: String? = "http://dcms.dmi.ac.in/questionairs/index?campid=1&themeid=1&sgid=2"
-
+    private var hHid: String? = "-1"
     private var progressBar: ProgressBar? = null
     private var progressbarContainer: View? = null
+    private var qId: String? = "-1"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +61,12 @@ class AttemptQuestionActivity : AppCompatActivity() {
         try {
             if (intent != null && intent.extras != null) {
                 url = intent.getStringExtra(URL_TO_BE_LOAD)
+                if (intent.hasExtra(HH_ID)) {
+                    hHid = intent.getStringExtra(HH_ID)
+                }
+                if (intent.hasExtra(Q_ID)) {
+                    qId = intent.getStringExtra(Q_ID)
+                }
             } else {
                 Utility.showToastMessage("Something went wrong")
                 finish()
@@ -136,6 +141,8 @@ class AttemptQuestionActivity : AppCompatActivity() {
 
     fun startImageVerificationActivity() {
         val intent = Intent(this, UploadImageActivity::class.java)
+        intent.putExtra(HH_ID, hHid)
+        intent.putExtra(Q_ID,qId)
         startActivity(intent)
         finish()
     }

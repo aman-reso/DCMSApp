@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <!-- we can shift this to RecyclerView but at this point no need -->
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,12 +35,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:id="@+id/imageViewForSurvey"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/nuntio_regular"
                     android:text="Hii, Please Go through this survey"
@@ -111,7 +112,7 @@
                 android:elevation="4dp"
                 android:fontFamily="@font/nuntio_bold"
                 android:paddingVertical="12dp"
-                android:text="Send Whatsapp"
+                android:text="@string/send_whatsapp"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -194,12 +195,13 @@
                 app:layout_constraintStart_toEndOf="@id/containerForTextMessage"
                 app:layout_constraintTop_toTopOf="@id/containerForTextMessage">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:id="@+id/imageViewForRegistration"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/nuntio_regular"
                     android:text="Member Registration Section"

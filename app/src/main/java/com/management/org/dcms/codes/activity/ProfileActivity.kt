@@ -1,11 +1,15 @@
 package com.management.org.dcms.codes.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.view.View
+import android.webkit.WebView
 import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import com.google.gson.JsonObject
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.codes.models.Profile
@@ -17,19 +21,20 @@ import com.management.org.dcms.databinding.ActivityProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProfileActivity : AppCompatActivity() {
+class ProfileActivity : BaseActivity() {
 
     private var binding: ActivityProfileBinding? = null
 
     private val viewModel: ProfileViewModel? by viewModels()
     private var progressBar: ProgressBar? = null
+    private var profileWebView: WebView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_profile)
         if (!Utility.isUserLoggedIn()) {
+            with(Utility) { showToastMessage(getString(R.string.please_login)) }
             finish()
-            Utility.showToastMessage("Please Login")
         }
         setUpViews()
         setUpObservers()
@@ -41,7 +46,12 @@ class ProfileActivity : AppCompatActivity() {
         binding?.containerAppBar?.icNavBackIcon?.visibility = View.VISIBLE
         binding?.containerAppBar?.appBarTitleTV?.visibility = View.VISIBLE
         progressBar = binding?.progressBar
+        profileWebView = binding?.profileWebView
         binding?.containerAppBar?.icNavBackIcon?.setOnClickListener { onBackPressed() }
+
+        binding?.changePasswordWhenOnProfile?.setOnClickListener {
+            moveToChangePasswordActivity()
+        }
     }
 
     private fun setUpObservers() {
@@ -58,31 +68,40 @@ class ProfileActivity : AppCompatActivity() {
     private fun parseResponse(response: GlobalNetResponse<*>) {
         when (response) {
             is GlobalNetResponse.Success -> {
-                val successResponse: ProfileResponseModel? = response.value as ProfileResponseModel?
+                val successResponse: JsonObject? = response.value as JsonObject
                 if (successResponse != null) {
                     try {
-                        bindResponseWithViews(successResponse.profile)
+                        if (successResponse.has("Message")) {
+                            val message = successResponse.get("Message").asString
+                            loadWebViewWithHtml(message)
+                        }
                     } catch (e: Exception) {
-
+                        profileWebView?.showHideView(false)
                     }
                 }
             }
             is GlobalNetResponse.NetworkFailure -> {
-
+                Utility.showToastMessage(getString(R.string.something_went_wrong))
             }
         }
     }
 
-    @Throws(Exception::class)
-    private fun bindResponseWithViews(profile: Profile?) {
-        //need to wrap all them into html tag
-        binding?.profileContactNumTV?.text = profile?.MobileNo
-        binding?.profileNameTV?.text = profile?.Name
-        binding?.profileBlockNameTV?.text = profile?.BlockName
-        binding?.profileEmailIdTV?.text = profile?.EmailId
-        binding?.profileStateNameTV?.text = profile?.StateName
-        binding?.profileVillageNameTV?.text = profile?.VillageName
-        binding?.profileDistrictNameTV?.text = profile?.DistrictName
-        binding?.profilePanchayatNameTV?.text = profile?.GramPanchayatName
+    private fun loadWebViewWithHtml(infoString: String) {
+        profileWebView?.showHideView(true)
+        profileWebView?.loadDataWithBaseURL(null, infoString, "text/html", "utf-8", null)
+    }
+
+    private fun destroyWebView() {
+        profileWebView?.destroy()
+        profileWebView = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        destroyWebView()
+    }
+
+    private fun moveToChangePasswordActivity() {
+        startActivity(Intent(this, ChangePasswordActivity::class.java))
     }
 }

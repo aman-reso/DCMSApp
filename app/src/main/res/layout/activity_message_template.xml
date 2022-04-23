@@ -29,7 +29,7 @@
                 android:layout_marginHorizontal="16sp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/nuntio_bold"
-                android:hint="Today's Message"
+                android:hint="@string/today_s_message"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +51,7 @@
                 android:layout_marginHorizontal="16sp"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/nuntio_bold"
-                android:text="Sent to"
+                android:text="@string/sent_to"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -94,14 +94,14 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/corner_16dp_without_border"
             android:layout_centerHorizontal="true"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="@color/white"
             android:layout_marginBottom="8dp"
+            android:background="@drawable/corner_16dp_without_border"
             android:backgroundTint="@android:color/holo_red_dark"
             android:fontFamily="@font/nuntio_bold"
-            android:text="Send To All" />
+            android:text="@string/sent_to_all"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 </layout>

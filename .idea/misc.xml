@@ -13,18 +13,22 @@
         <entry key="app/src/main/res/drawable/corner_8dp_with_border.xml" value="0.2095" />
         <entry key="app/src/main/res/drawable/corner_8dp_without_border.xml" value="0.173" />
         <entry key="app/src/main/res/drawable/ic_baseline_exit_to_app_24.xml" value="0.173" />
+        <entry key="app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.165" />
         <entry key="app/src/main/res/drawable/ic_baseline_keyboard_backspace_24.xml" value="0.216" />
         <entry key="app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_icons8_whatsapp.xml" value="0.188" />
         <entry key="app/src/main/res/drawable/ic_message_paper_plane_svgrepo_com.xml" value="0.188" />
         <entry key="app/src/main/res/layout/activity_add_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_attempt_question.xml" value="0.2484375" />
+        <entry key="app/src/main/res/layout/activity_change_language.xml" value="0.2484375" />
+        <entry key="app/src/main/res/layout/activity_change_password.xml" value="0.2484375" />
+        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_login1.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main1.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_message_template.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_question_listing.xml" value="0.24947916666666667" />
         <entry key="app/src/main/res/layout/activity_send_text_smsactivity.xml" value="0.121875" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.1" />
@@ -33,7 +37,7 @@
         <entry key="app/src/main/res/layout/activity_upload_image.xml" value="0.2484375" />
         <entry key="app/src/main/res/layout/activity_view_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/app_title_bar.xml" value="0.24947916666666667" />
-        <entry key="app/src/main/res/layout/dcms_client_activity_add_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dcms_client_activity_add_item.xml" value="0.165" />
         <entry key="app/src/main/res/layout/dcms_client_activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dcms_client_activity_signup.xml" value="0.12552083333333333" />
         <entry key="app/src/main/res/layout/dcms_client_activity_view_item.xml" value="0.1" />
@@ -42,6 +46,7 @@
         <entry key="app/src/main/res/layout/dcms_client_simple_spinner_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dcms_client_splash_activity.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home_message.xml" value="0.18177083333333333" />
+        <entry key="app/src/main/res/layout/full_screen_loader.xml" value="0.2484375" />
         <entry key="app/src/main/res/layout/house_hold_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/layout_contact_each_item.xml" value="0.22864583333333333" />
         <entry key="app/src/main/res/layout/layput_home_dashboard.xml" value="0.24947916666666667" />

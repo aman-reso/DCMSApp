@@ -97,7 +97,7 @@
                     android:drawablePadding="4dp"
                     android:fontFamily="@font/nuntio_regular"
                     android:paddingVertical="8dp"
-                    android:text="Added Household"
+                    android:text="@string/added_household"
                     android:textAlignment="center"
                     android:textColor="#333"
                     android:textSize="14sp" />

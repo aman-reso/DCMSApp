@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-
-        tools:context=".codes.activity.QuestionListingActivity">
+        tools:context=".codes.activity.ContactsListingForQuestionActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,7 +28,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/nuntio_bold"
-                android:text="Question Session"
+                android:text="@string/question_session"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 

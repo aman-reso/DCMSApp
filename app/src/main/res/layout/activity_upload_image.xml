@@ -11,11 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".codes.UploadImageActivity">
+        tools:context=".codes.activity.UploadImageActivity">
 
         <include
             android:id="@+id/containerAppBar"
-
             layout="@layout/app_title_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +29,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/nuntio_bold"
-            android:text="Verification Please upload User Image"
+            android:text="@string/verification_please_upload_user_image"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +53,7 @@
             android:layout_marginTop="24dp"
             android:background="@drawable/corner_8dp_with_border"
             android:fontFamily="@font/nuntio_regular"
-            android:text="Select Image"
+            android:text="@string/select_image"
             android:id="@+id/selectImageBtn"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -68,7 +67,7 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/corner_16dp_without_border"
             android:backgroundTint="@android:color/holo_red_dark"
-            android:text="Upload"
+            android:text="@string/upload"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,11 +1,14 @@
 package com.management.org.dcms.codes.repository
 
+import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.models.LoginRequestData
+import com.management.org.dcms.codes.models.SentReportInGroupModel
 import com.management.org.dcms.codes.models.SentReportPostModel
 import com.management.org.dcms.codes.models.SentReportQActivityModel
 import com.management.org.dcms.codes.network.path.DcmsApiInterface
 import com.management.org.dcms.codes.network.path.safeApiCall
 import com.management.org.dcms.codes.utility.AndroidDeviceUtils
+import okhttp3.MultipartBody
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,7 +42,7 @@ class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInt
     }
 
     suspend fun getContactsList(authToken: String, themeId: Int, campaignId: Int) = safeApiCall {
-        apiInterface.getContactsList(authToken,themeId,campaignId)
+        apiInterface.getContactsList(authToken, themeId, campaignId)
     }
 
     suspend fun logoutUserFromServer(authToken: String) = safeApiCall {
@@ -53,15 +56,49 @@ class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInt
         val latitude: String = "123"
         val longitude: String = "231"
         val sentReportPostModel = SentReportPostModel(HHId = hhId, WANo = waNum, TemplateId = templateId, deviceId, latitude, longitude, androidVersion, ipAddress)
-        apiInterface.sentWAResponseReport(authToken = authToken, sentReportPostModel = sentReportPostModel)
+        apiInterface.sentWAReport(authToken = authToken, sentReportPostModel = sentReportPostModel)
     }
-    suspend fun getContactsListForQuestion(authToken: String,campaignId: Int,themeId: Int)= safeApiCall {
-        apiInterface.getQuestionContactsList(authToken,campaignId,themeId)
+
+    suspend fun getContactsListForQuestion(authToken: String, campaignId: Int, themeId: Int) = safeApiCall {
+        apiInterface.getQuestionContactsList(authToken, campaignId, themeId)
     }
-    suspend fun getProfileDetails(authToken: String)= safeApiCall {
+
+    suspend fun getProfileDetails(authToken: String) = safeApiCall {
         apiInterface.getProfileDetails(authToken = authToken)
     }
-    suspend fun sentReportQuestionActivity(sentReportQActivityModel: SentReportQActivityModel,authToken: String)= safeApiCall {
-       apiInterface.sentReportQuestionActivity(sentReportQActivityModel, authToken)
+
+    suspend fun sentReportQuestionActivity(sentReportQActivityModel: SentReportQActivityModel, authToken: String) = safeApiCall {
+        apiInterface.sentReportQuestionActivity(sentReportQActivityModel, authToken)
     }
+
+    suspend fun uploadFileToServer(imagePart: MultipartBody.Part, authToken: String, lat: String, lang: String, qId: String, hId: String) = safeApiCall {
+        apiInterface.uploadPicture(authToken = authToken,lat=lat,lang = lang,qId = qId,hhId = hId,part = imagePart)
+    }
+    suspend fun changeUserPassword(authToken: String,oldPassword:String,newPassword:String,confirmPassword:String)= safeApiCall {
+        apiInterface.changeUserPassword(authToken = authToken,oldPassword= oldPassword,newPassword= newPassword,confirmPassword= confirmPassword)
+    }
+    suspend fun forgotUserPassword(mobileNo:String,)= safeApiCall {
+        apiInterface.forgotUserPassword(mobileNo = mobileNo)
+    }
+
+    suspend fun sentTextSmsReport(authToken: String, hhId: Int, templateId: Int, waNum: String) = safeApiCall {
+        val deviceId: String = AndroidDeviceUtils.getDeviceId()
+        val androidVersion: String = AndroidDeviceUtils.getAndroidVersion()
+        val ipAddress: String = AndroidDeviceUtils.getLocalIpAddress()
+        val latitude: String = "123"
+        val longitude: String = "231"
+        val sentReportPostModel = SentReportPostModel(HHId = hhId, WANo = waNum, TemplateId = templateId, deviceId, latitude, longitude, androidVersion, ipAddress)
+        apiInterface.sentTextMessageReport(authToken = authToken, sentReportPostModel = sentReportPostModel)
+    }
+    suspend fun getTextSMSTemplate(authToken: String) = safeApiCall {
+        apiInterface.getTextMessageInfo(authToken)
+    }
+    suspend fun sentTextSMSGroupReport(authToken: String,sentReportInGroupModel: SentReportInGroupModel)= safeApiCall {
+        apiInterface.sentTextMessageGroupReport(authToken = authToken,sentReportPostModel = sentReportInGroupModel)
+    }
+
+    suspend fun sentWAGroupReport(authToken: String,sentReportInGroupModel: SentReportInGroupModel)= safeApiCall {
+        apiInterface.sentWAMessageGroupReport(authToken = authToken,sentReportPostModel = sentReportInGroupModel)
+    }
+
 }

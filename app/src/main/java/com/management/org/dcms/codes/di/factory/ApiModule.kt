@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.management.org.dcms.codes.dcmsclient.di.SGInterceptor
 import com.management.org.dcms.codes.network.path.DcmsApiInterface
 import com.management.org.dcms.codes.utility.GeneralUtils
 import dagger.Module
@@ -31,6 +32,7 @@ import okhttp3.Interceptor.Chain
 
 import okhttp3.Interceptor
 import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
 
 
 @Module
@@ -64,6 +66,7 @@ class ApiModule {
         httpClient.cache(cache)
         httpClient.connectTimeout(30, TimeUnit.SECONDS)
         httpClient.readTimeout(30, TimeUnit.SECONDS)
+
         return httpClient.build()
     }
 
@@ -120,15 +123,11 @@ private fun getUnsafeOkHttpClient(): OkHttpClient {
         val sslContext = SSLContext.getInstance("SSL")
         sslContext.init(null, trustAllCerts, SecureRandom())
         val sslSocketFactory = sslContext.socketFactory
-//        val httpClient=OkHttpClient()
-//        httpClient.networkInterceptors().add(Interceptor { chain ->
-//            val requestBuilder: Request.Builder = chain.request().newBuilder()
-//            requestBuilder.header("Content-Type", "application/json")
-//            chain.proceed(requestBuilder.build())
-//        })
-        val builder = OkHttpClient.Builder()
+        val logging = HttpLoggingInterceptor()
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+        val builder = OkHttpClient.Builder().addInterceptor(logging)
             .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS).addInterceptor(SGInterceptor())
         builder.sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
         builder.hostnameVerifier { _, _ -> true }
         builder.build()

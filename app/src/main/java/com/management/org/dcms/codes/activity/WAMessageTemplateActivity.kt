@@ -11,7 +11,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.management.org.dcms.R
@@ -29,7 +28,7 @@ import java.net.URLEncoder
 
 
 @AndroidEntryPoint
-class MessageTemplateActivity : AppCompatActivity() {
+class MessageTemplateActivity : BaseActivity() {
     private val messageTemplateViewModel: MessageTemplateViewModel? by viewModels()
 
     private var messageTemplateTV: TextView? = null
@@ -79,7 +78,7 @@ class MessageTemplateActivity : AppCompatActivity() {
 
     private fun setUpObservers() {
         messageTemplateViewModel?.apply {
-            messageTemplateLiveData.observe(this@MessageTemplateActivity) { response ->
+            wAMessageTemplateLiveData.observe(this@MessageTemplateActivity) { response ->
                 if (response != null) {
                     parseNetworkResponseForMessageTemplate(response)
                 }
@@ -133,8 +132,15 @@ class MessageTemplateActivity : AppCompatActivity() {
     }
 
     private fun setMessageIntoViews(successResponse: WAMessageTemplateModel) {
-        messageBodyTextView?.text = successResponse.WAMessage.Template
-        messageTemplateString = successResponse.WAMessage.Template
+        if (!successResponse.WAMessage.Template.isNullOrEmpty()) {
+            messageBodyTextView?.text = successResponse.WAMessage.Template
+            messageTemplateString = successResponse.WAMessage.MediaURL
+        }
+        if (!successResponse.WAMessage.MediaURL.isNullOrEmpty()) {
+            messageBodyTextView?.text = successResponse.WAMessage.MediaURL
+            messageTemplateString = successResponse.WAMessage.MediaURL
+        }
+        messageTemplateString = successResponse.WAMessage.MediaURL
         templateId = successResponse.WAMessage.Id
     }
 

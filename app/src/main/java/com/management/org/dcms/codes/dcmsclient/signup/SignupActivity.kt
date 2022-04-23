@@ -21,7 +21,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.snackbar.Snackbar
 import com.management.org.dcms.R
-import com.management.org.dcms.codes.LoginActivity
+import com.management.org.dcms.codes.activity.LoginActivity
 import com.management.org.dcms.codes.dcmsclient.data.models.*
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.databinding.DcmsClientActivitySignupBinding
@@ -368,52 +368,53 @@ class SignupActivity : AppCompatActivity() {
 
         binding.register.setOnClickListener {
             if (stateId != 0 && districtId != 0 && blockId != 0 && gpId != 0 && villageId != 0 && !binding.name.text.isNullOrEmpty() &&
-                !binding.email.text.isNullOrEmpty() && !binding.mobile.text.isNullOrEmpty() && !binding.password.text.isNullOrEmpty()) {
+                !binding.email.text.isNullOrEmpty() && !binding.mobile.text.isNullOrEmpty() && !binding.password.text.isNullOrEmpty()
+            ) {
                 val a = CancellationTokenSource().token
-            fusedLocationClient.getCurrentLocation(
-                LocationRequest.PRIORITY_HIGH_ACCURACY,
-                a
-            ).addOnSuccessListener {
-                val deviceId =
-                    Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
-                val ipAddress: String =
-                    Formatter.formatIpAddress(wifiManager.connectionInfo.ipAddress)
-                viewModel.userRegister(
-                    stateId,
-                    districtId,
-                    blockId,
-                    gpId,
-                    villageId,
-                    binding.name.text.toString(),
-                    binding.password.text.toString(),
-                    binding.email.text.toString(),
-                    binding.mobile.text.toString(),
-                    deviceId,
-                    "123",
-                   "123"
-                )
+                fusedLocationClient.getCurrentLocation(
+                    LocationRequest.PRIORITY_HIGH_ACCURACY,
+                    a
+                ).addOnSuccessListener {
+                    val deviceId =
+                        Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+                    val ipAddress: String =
+                        Formatter.formatIpAddress(wifiManager.connectionInfo.ipAddress)
+                    viewModel.userRegister(
+                        stateId,
+                        districtId,
+                        blockId,
+                        gpId,
+                        villageId,
+                        binding.name.text.toString(),
+                        binding.password.text.toString(),
+                        binding.email.text.toString(),
+                        binding.mobile.text.toString(),
+                        deviceId,
+                        "123",
+                        "123"
+                    )
 
-            }.addOnFailureListener {
+                }.addOnFailureListener {
                     Timber.e("$it")
                 }
-            }else{
-                Snackbar.make(binding.root,"Enter the values",Snackbar.LENGTH_LONG).show()
+            } else {
+                Snackbar.make(binding.root, "Enter the values", Snackbar.LENGTH_LONG).show()
             }
 
         }
 
         lifecycleScope.launch {
             viewModel.signupResponse.collect {
-                when(it){
-                    is UiState.Success<*>->{
+                when (it) {
+                    is UiState.Success<*> -> {
                         Utility.showToastMessage("Account created")
                         //Snackbar.make(binding.root,"Account created",Snackbar.LENGTH_LONG).show()
                         startLoginActivity()
                         finish()
                     }
-                    is UiState.Failed ->{
+                    is UiState.Failed -> {
                         Utility.showToastMessage(it.message.toString())
-                      //  Snackbar.make(binding.root,it.message.toString(),Snackbar.LENGTH_LONG).show()
+                        //  Snackbar.make(binding.root,it.message.toString(),Snackbar.LENGTH_LONG).show()
                     }
                 }
             }
@@ -425,12 +426,11 @@ class SignupActivity : AppCompatActivity() {
         startActivity(homeLandingIntent)
         finish()
     }
-   private fun setLoading() {
+    private fun setLoading() {
         binding.progress.visibility = View.VISIBLE
         binding.register.text = "Loading..."
         binding.register.isEnabled = false
     }
-
     private fun loadingStop() {
         binding.progress.visibility = View.GONE
         binding.register.text = "Register"

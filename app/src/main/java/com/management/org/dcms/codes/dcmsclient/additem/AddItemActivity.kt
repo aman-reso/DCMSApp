@@ -243,16 +243,32 @@ class AddItemActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.submit).setOnClickListener {
             if (!binding.address.text.isNullOrEmpty() && !binding.mobile.text.isNullOrEmpty() && !binding.name.text.isNullOrEmpty() && villageName != ""
-                && !binding.landmark.text.isNullOrEmpty()  && !binding.ward.text.isNullOrEmpty() && villageId != 0
+                && !binding.landmark.text.isNullOrEmpty() && !binding.ward.text.isNullOrEmpty() && villageId != 0
                 && fileUri != null && mobileType != "" && documentType != "" && !binding.documentNumber.text.isNullOrEmpty()
             ) {
                 var emailId = ""
-                var whatsAppNum=""
-                if (binding.email.text != null) {
+                var whatsAppNum = ""
+
+                if (binding.mobile.text != null) {
+                    if (binding.mobile.text?.length != 10) {
+                        Utility.showToastMessage("Please enter correct mobile number")
+                        return@setOnClickListener
+                    }
+                } else {
+                    Utility.showToastMessage("Please Enter mobile number")
+                    return@setOnClickListener
+                }
+
+                if (!binding.email.text.isNullOrEmpty()) {
                     emailId = binding.email.text.toString()
                 }
-                if (!binding.whatsapp.text.isNullOrEmpty()){
-                    whatsAppNum=binding.whatsapp.text.toString()
+                if (!binding.whatsapp.text.isNullOrEmpty()) {
+                    if (binding.whatsapp.text?.length != 10) {
+                        Utility.showToastMessage("Please enter correct Whatsapp number")
+                        return@setOnClickListener
+                    } else {
+                        whatsAppNum = binding.whatsapp.text.toString()
+                    }
                 }
 
                 if (binding.ward.text != null) {
@@ -261,11 +277,11 @@ class AddItemActivity : AppCompatActivity() {
                         if (wardNo != null) {
                             if (wardNo in 1..30) {
 
-                            }else{
+                            } else {
                                 Utility.showToastMessage("Please enter correct ward number")
                                 return@setOnClickListener
                             }
-                        }else{
+                        } else {
                             Utility.showToastMessage("Please enter correct ward number")
                             return@setOnClickListener
                         }

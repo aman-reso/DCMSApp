@@ -1,7 +1,6 @@
 package com.management.org.dcms.codes.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -9,10 +8,8 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.management.org.dcms.R
-import com.management.org.dcms.codes.adapter.ContactsListAdapter
 import com.management.org.dcms.codes.adapter.QContactsListAdapter
 import com.management.org.dcms.codes.extensions.showHideView
-import com.management.org.dcms.codes.models.ContactsModel
 import com.management.org.dcms.codes.models.QContactsMainModel
 import com.management.org.dcms.codes.models.QContactsModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
@@ -21,11 +18,10 @@ import com.management.org.dcms.codes.viewmodel.MessageTemplateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.lang.Exception
 
 @AndroidEntryPoint
-class QuestionListingActivity : AppCompatActivity() {
+class ContactsListingForQuestionActivity : BaseActivity() {
     private val messageTemplateViewModel: MessageTemplateViewModel? by viewModels()
     private val contactsListAdapter: QContactsListAdapter by lazy { QContactsListAdapter(callback = callback) }
     private var qContactsRecyclerView: RecyclerView? = null
@@ -45,7 +41,7 @@ class QuestionListingActivity : AppCompatActivity() {
                 //urlToBeLoad = intent.getStringExtra(URL_TO_BE_LOAD)
             }
         } catch (e: Exception) {
-            Utility.showToastMessage("Something went wrong")
+            Utility.showToastMessage(getString(R.string.something_went_wrong))
             finish()
         }
     }
@@ -63,12 +59,12 @@ class QuestionListingActivity : AppCompatActivity() {
 
     private fun setUpObservers() {
         messageTemplateViewModel?.apply {
-            messageTemplateLiveData.observe(this@QuestionListingActivity) { response ->
+            wAMessageTemplateLiveData.observe(this@ContactsListingForQuestionActivity) { response ->
                 if (response != null) {
                     //  parseNetworkResponseForMessageTemplate(response)
                 }
             }
-            qContactListLiveData.observe(this@QuestionListingActivity) { networkResponse ->
+            qContactListLiveData.observe(this@ContactsListingForQuestionActivity) { networkResponse ->
                 if (networkResponse != null) {
                     progressBar?.showHideView(false)
                     parseNetworkResponse(networkResponse)
@@ -83,7 +79,7 @@ class QuestionListingActivity : AppCompatActivity() {
         progressBar?.showHideView(false)
         when (networkResponse) {
             is GlobalNetResponse.NetworkFailure -> {
-                Utility.showToastMessage("Something went wrong")
+                Utility.showToastMessage(getString(R.string.something_went_wrong))
             }
             is GlobalNetResponse.Success -> {
                 val contactsList = networkResponse.value
@@ -106,12 +102,13 @@ class QuestionListingActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.Main) {
                 progressBar?.showHideView(false)
                 if (url != null) {
-                    val intent = Intent(this@QuestionListingActivity, AttemptQuestionActivity::class.java)
+                    val intent = Intent(this@ContactsListingForQuestionActivity, AttemptQuestionActivity::class.java)
                     intent.putExtra(HH_ID, contactsMainModel.HHId)
+                    intent.putExtra(Q_ID,contactsMainModel.Id)
                     intent.putExtra(URL_TO_BE_LOAD, url)
                     startActivity(intent)
                 } else {
-                    Utility.showToastMessage("Something went wrong")
+                    Utility.showToastMessage(getString(R.string.something_went_wrong))
                 }
             }
         }

@@ -3,7 +3,7 @@ package com.management.org.dcms.codes.di.factory//package com.management.org.dcm
 //import androidx.lifecycle.ViewModel
 //import androidx.lifecycle.ViewModelProvider
 //import com.management.org.dcms.codes.viewmodel.DcmsMainViewModel
-//import com.management.org.dcms.codes.viewmodel.logintvm.LoginViewModel
+//import com.management.org.dcms.codes.viewmodel.LoginViewModel
 //import dagger.Binds
 //import dagger.Module
 //import dagger.multibindings.IntoMap

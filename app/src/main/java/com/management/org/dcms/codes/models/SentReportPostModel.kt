@@ -10,3 +10,12 @@ data class SentReportPostModel(
     var Andversion: String,
     var IPAddress: String
 )
+
+data class SentReportInGroupModel(
+    var TemplateId: Int,
+    var DeviceId: String,
+    var Lattitude: String,
+    var Longitude: String,
+    var Andversion: String,
+    var IPAddress: String
+)

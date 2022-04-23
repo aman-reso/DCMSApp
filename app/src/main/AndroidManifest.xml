@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.management.org.dcms">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -21,7 +20,19 @@
         android:theme="@style/Theme.DCMS"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".codes.UploadImageActivity"
+            android:name=".codes.activity.BaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".codes.activity.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".codes.activity.ChangeLanguageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".codes.activity.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".codes.activity.UploadImageActivity"
             android:exported="false" />
         <activity
             android:name=".codes.activity.SendTextSMSActivity"
@@ -35,7 +46,7 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".codes.LoginActivity"
+            android:name=".codes.activity.LoginActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- <activity -->
         <!-- android:name=".codes.activity.QuestionListingActivity" -->
@@ -46,7 +57,7 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".codes.activity.QuestionListingActivity"
+            android:name=".codes.activity.ContactsListingForQuestionActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
