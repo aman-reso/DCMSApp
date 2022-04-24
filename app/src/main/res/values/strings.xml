@@ -66,5 +66,6 @@
     <string name="english">English</string>
     <string name="sent_to_all">Sent To All</string>
     <string name="start">START</string>
+    <string name="change_langua">Change Language</string>
 
 </resources>

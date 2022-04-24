@@ -33,7 +33,7 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         if (!checkIsOnline()) {
-            Utility.showToastMessage(getString(R.string.no_internet_connection))
+            Utility.showToastMessage(LanguageManager.getStringInfo(R.string.no_internet_connection))
         }
         setUpLanguage(LanguageManager.getLanguageCode())
         setUpPermissions()
@@ -102,7 +102,7 @@ class SplashActivity : BaseActivity() {
                             //move forward
                             navigateForward()
                         } else {
-                            Utility.showToastMessage(getString(R.string.please_allow_all_above_permission))
+                            Utility.showToastMessage(LanguageManager.getStringInfo(R.string.please_allow_all_above_permission))
                             finish()
                         }
                     }

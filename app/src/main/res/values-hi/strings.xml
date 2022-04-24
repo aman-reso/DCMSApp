@@ -39,7 +39,7 @@
     <string name="old_password">वर्तमान पासवर्ड</string>
     <string name="new_password">नया पासवर्ड</string>
     <string name="confirm_password">पासवर्ड की पुष्टि करें</string>
-    <string name="change_password">पासवर्ड परिवर्तित करें</string>
+    <string name="change_password">पासवर्ड परिवर्तित करे</string>
     <string name="new_password_mismatch">नया पासवर्ड बेमेल</string>
     <string name="please_connect_with_internet">कृपया इंटरनेट से कनेक्ट करें</string>
     <string name="we_have_sent_otp_to_your_phone">हमने आपके फोन पर OTP भेजा है</string>
@@ -67,4 +67,5 @@
     <string name="start">प्रारंभ</string>
     <string name="please_wait_message_template_not_received">कृपया प्रतीक्षा करें संदेश टेम्पलेट प्राप्त नहीं हुआ</string>
     <string name="no_internet_connection">कोई इंटरनेट कनेक्शन नहीं</string>
+    <string name="change_langua">भाषा चुनें</string>
 </resources>

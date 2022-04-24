@@ -13,6 +13,7 @@ import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.codes.models.QContactsMainModel
 import com.management.org.dcms.codes.models.QContactsModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
+import com.management.org.dcms.codes.utility.LanguageManager
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewmodel.MessageTemplateViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,7 +42,7 @@ class ContactsListingForQuestionActivity : BaseActivity() {
                 //urlToBeLoad = intent.getStringExtra(URL_TO_BE_LOAD)
             }
         } catch (e: Exception) {
-            Utility.showToastMessage(getString(R.string.something_went_wrong))
+            Utility.showToastMessage(LanguageManager.getStringInfo(R.string.something_went_wrong))
             finish()
         }
     }
@@ -79,7 +80,7 @@ class ContactsListingForQuestionActivity : BaseActivity() {
         progressBar?.showHideView(false)
         when (networkResponse) {
             is GlobalNetResponse.NetworkFailure -> {
-                Utility.showToastMessage(getString(R.string.something_went_wrong))
+                Utility.showToastMessage(LanguageManager.getStringInfo(R.string.something_went_wrong))
             }
             is GlobalNetResponse.Success -> {
                 val contactsList = networkResponse.value
@@ -108,7 +109,7 @@ class ContactsListingForQuestionActivity : BaseActivity() {
                     intent.putExtra(URL_TO_BE_LOAD, url)
                     startActivity(intent)
                 } else {
-                    Utility.showToastMessage(getString(R.string.something_went_wrong))
+                    Utility.showToastMessage(LanguageManager.getStringInfo(R.string.something_went_wrong))
                 }
             }
         }

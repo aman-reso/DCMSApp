@@ -1,9 +1,11 @@
 package com.management.org.dcms.codes.utility
 
 import android.content.Context
+import android.os.Build
 import com.management.org.dcms.codes.DcmsApplication
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.models.LanguageDataClass
+import java.util.*
 
 const val ENGLISH = "English"
 const val HINDI = "Hindi"
@@ -32,11 +34,24 @@ object LanguageManager {
         return sharedPref?.getString(langCode, ENGLISH) ?: ENGLISH
     }
 
-     fun setDoesShownLanguageSettingFirstTime(isShown: Boolean) {
+    fun setDoesShownLanguageSettingFirstTime(isShown: Boolean) {
         sharedPref?.edit()?.putBoolean(doesShownLanguageSettingFirstTime, isShown)?.apply()
     }
 
-     fun getShownLangSettingFirstTime(): Boolean {
+    fun getShownLangSettingFirstTime(): Boolean {
         return sharedPref?.getBoolean(doesShownLanguageSettingFirstTime, false) ?: false
+    }
+
+     fun getStringInfo(int: Int):String {
+        return DcmsApplication.getDcmsAppContext()?.getString(int)?:""
+    }
+     fun setUpLanguage(languageCode: String,context: Context) {
+        val config = context.resources.configuration
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        config.setLocale(locale)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            context.createConfigurationContext(config)
+        context.resources.updateConfiguration(config, context.resources.displayMetrics)
     }
 }

@@ -17,6 +17,7 @@ import com.google.gson.JsonObject
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
+import com.management.org.dcms.codes.utility.LanguageManager
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewmodel.UploadImageViewModel
 import com.management.org.dcms.databinding.ActivityUploadImageBinding
@@ -103,7 +104,7 @@ class UploadImageActivity : BaseActivity() {
                 }
             }
         } else {
-            Utility.showToastMessage(getString(R.string.please_select_a_image))
+            Utility.showToastMessage(LanguageManager.getStringInfo(R.string.please_select_a_image))
         }
     }
 

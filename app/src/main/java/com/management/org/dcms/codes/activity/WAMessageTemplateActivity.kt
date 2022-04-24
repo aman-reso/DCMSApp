@@ -20,6 +20,7 @@ import com.management.org.dcms.codes.models.ContactsMainModel
 import com.management.org.dcms.codes.models.ContactsModel
 import com.management.org.dcms.codes.models.WAMessageTemplateModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
+import com.management.org.dcms.codes.utility.LanguageManager
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewmodel.MessageTemplateViewModel
 import com.management.org.dcms.databinding.ActivityMessageTemplateBinding
@@ -150,7 +151,7 @@ class MessageTemplateActivity : BaseActivity() {
             val waMobNumber = contactsMainModel.WANo
             sendToWhatsApp(waMobNumber, messageTemplateString!!)
         } else {
-            Utility.showToastMessage("Please wait Message Template Not Received")
+            Utility.showToastMessage(LanguageManager.getStringInfo(R.string.please_wait_message_template_not_received))
         }
     }
 

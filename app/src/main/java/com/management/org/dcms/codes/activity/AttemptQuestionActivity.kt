@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.extensions.showHideView
+import com.management.org.dcms.codes.utility.LanguageManager
 import com.management.org.dcms.codes.utility.Utility
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -68,11 +69,12 @@ class AttemptQuestionActivity : BaseActivity() {
                     qId = intent.getStringExtra(Q_ID)
                 }
             } else {
-                Utility.showToastMessage("Something went wrong")
+                Utility.showToastMessage(LanguageManager.getStringInfo(R.string.something_went_wrong))
                 finish()
             }
         } catch (e: Exception) {
-            Utility.showToastMessage("Something went wrong")
+            Utility.showToastMessage(LanguageManager.getStringInfo(R.string.something_went_wrong))
+
             finish()
         }
     }

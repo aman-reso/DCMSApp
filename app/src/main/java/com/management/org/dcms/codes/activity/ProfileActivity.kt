@@ -15,6 +15,8 @@ import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.codes.models.Profile
 import com.management.org.dcms.codes.models.ProfileResponseModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
+import com.management.org.dcms.codes.utility.LanguageManager
+import com.management.org.dcms.codes.utility.LanguageManager.getStringInfo
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewmodel.ProfileViewModel
 import com.management.org.dcms.databinding.ActivityProfileBinding
@@ -31,9 +33,10 @@ class ProfileActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        LanguageManager.setUpLanguage(LanguageManager.getLanguageCode(), this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_profile)
         if (!Utility.isUserLoggedIn()) {
-            with(Utility) { showToastMessage(getString(R.string.please_login)) }
+            with(Utility) { showToastMessage(getStringInfo(R.string.please_login)) }
             finish()
         }
         setUpViews()
@@ -81,7 +84,7 @@ class ProfileActivity : BaseActivity() {
                 }
             }
             is GlobalNetResponse.NetworkFailure -> {
-                Utility.showToastMessage(getString(R.string.something_went_wrong))
+                Utility.showToastMessage(getStringInfo(R.string.something_went_wrong))
             }
         }
     }

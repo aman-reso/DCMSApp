@@ -17,6 +17,7 @@ import com.management.org.dcms.codes.models.ContactsModel
 import com.management.org.dcms.codes.models.TextMessageTemplateModel
 import com.management.org.dcms.codes.models.WAMessageTemplateModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
+import com.management.org.dcms.codes.utility.LanguageManager
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewmodel.MessageTemplateViewModel
 import com.management.org.dcms.databinding.ActivitySendTextSmsactivityBinding
@@ -60,7 +61,7 @@ class SendTextSMSActivity : BaseActivity() {
                     sendSms(it.MobileNo)
                 }
                 mainActivityBinding?.sentTextMessageToAll?.showHideView(false)
-                Utility.showToastMessage(getString(R.string.message_sent))
+                Utility.showToastMessage(LanguageManager.getStringInfo(R.string.message_sent))
             }
         }
     }
@@ -144,10 +145,10 @@ class SendTextSMSActivity : BaseActivity() {
         if (messageTemplateString != null && templateId != null && templateId != -1) {
             messageTemplateViewModel?.sentTextSMSReportToServer(hhId = contactsMainModel.HHId, templateId = templateId!!, waNum = contactsMainModel.WANo)
             val waMobNumber = contactsMainModel.WANo
-            Utility.showToastMessage(getString(R.string.message_sent))
+            Utility.showToastMessage(LanguageManager.getStringInfo(R.string.message_sent))
             sendSms(waMobNumber)
         } else {
-            Utility.showToastMessage(getString(R.string.please_wait_message_template_not_received))
+            Utility.showToastMessage(LanguageManager.getStringInfo(R.string.please_wait_message_template_not_received))
         }
     }
 

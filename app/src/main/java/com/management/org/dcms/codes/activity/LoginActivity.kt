@@ -8,7 +8,6 @@ import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.HomeLandingMainActivity
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
@@ -16,6 +15,7 @@ import com.management.org.dcms.codes.dcmsclient.signup.SignupActivity
 import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.codes.models.LoginResponseData
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
+import com.management.org.dcms.codes.utility.LanguageManager
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.utility.Utility.showToastMessage
 import com.management.org.dcms.codes.viewmodel.LoginViewModel
@@ -86,17 +86,17 @@ class LoginActivity : BaseActivity() {
             val inputPassword: String = passwordET?.text.toString()
             if (inputMobileNumber.isNotEmpty()) {
                 if (inputMobileNumber.length != 10) {
-                    showToastMessage(getString(R.string.enter_correct_mobile_number))
+                    showToastMessage(LanguageManager.getStringInfo(R.string.enter_correct_mobile_number))
                     return@setOnClickListener
                 }
                 if (inputPassword.isNotEmpty()) {
                     progressBar?.showHideView(true)
                     loginViewModel?.submitLoginData(inputPhone = inputMobileNumber, inputPassword = inputPassword)
                 } else {
-                    showToastMessage(getString(R.string.password_is_empty))
+                    showToastMessage(LanguageManager.getStringInfo(R.string.password_is_empty))
                 }
             } else {
-                showToastMessage(getString(R.string.mobile_num_empty))
+                showToastMessage(LanguageManager.getStringInfo(R.string.mobile_num_empty))
             }
         }
         if (Utility.isUserLoggedIn()) {

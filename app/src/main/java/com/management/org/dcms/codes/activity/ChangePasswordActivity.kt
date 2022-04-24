@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.HomeLandingMainActivity
 import com.management.org.dcms.codes.extensions.showHideView
+import com.management.org.dcms.codes.utility.LanguageManager
 import com.management.org.dcms.codes.utility.NetworkImpl
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewmodel.ProfileViewModel
@@ -34,6 +35,7 @@ class ChangePasswordActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        LanguageManager.setUpLanguage(LanguageManager.getLanguageCode(), this)
         parentBinding = DataBindingUtil.setContentView(this, R.layout.activity_change_password)
         setUpHeaders()
         setUpViews()
@@ -45,7 +47,7 @@ class ChangePasswordActivity : BaseActivity() {
         parentBinding?.containerAppBar?.icNavBackIcon?.setOnClickListener {
             onBackPressed()
         }
-        parentBinding?.containerAppBar?.appBarTitleTV?.text = getString(R.string.change_password)
+        parentBinding?.containerAppBar?.appBarTitleTV?.text = LanguageManager.getStringInfo(R.string.change_password)
     }
 
     private fun setUpViews() {
@@ -89,16 +91,16 @@ class ChangePasswordActivity : BaseActivity() {
                     if (newPassEditText?.text.toString() == confirmPassEditText?.text.toString()) {
                         return true
                     } else {
-                        Utility.showToastMessage(getString(R.string.new_password_mismatch))
+                        Utility.showToastMessage(LanguageManager.getStringInfo(R.string.new_password_mismatch))
                     }
                 } else {
-                    Utility.showToastMessage(getString(R.string.confirm_pass_is_empty))
+                    Utility.showToastMessage(LanguageManager.getStringInfo(R.string.confirm_pass_is_empty))
                 }
             } else {
-                Utility.showToastMessage(getString(R.string.new_pass_is_empty))
+                Utility.showToastMessage(LanguageManager.getStringInfo(R.string.new_pass_is_empty))
             }
         } else {
-            Utility.showToastMessage(getString(R.string.old_pass_is_empty))
+            Utility.showToastMessage(LanguageManager.getStringInfo(R.string.old_pass_is_empty))
         }
         return false
     }

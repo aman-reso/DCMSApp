@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.extensions.showHideView
+import com.management.org.dcms.codes.utility.LanguageManager
 import com.management.org.dcms.codes.utility.NetworkImpl
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewmodel.ProfileViewModel
@@ -42,7 +43,7 @@ class ForgotPasswordActivity : BaseActivity() {
         parentBinding?.containerAppBar?.icNavBackIcon?.setOnClickListener {
             onBackPressed()
         }
-        parentBinding?.containerAppBar?.appBarTitleTV?.text = getString(R.string.forgot_pass)
+        parentBinding?.containerAppBar?.appBarTitleTV?.text = LanguageManager.getStringInfo(R.string.forgot_pass)
     }
 
     private fun setUpViews() {
@@ -81,10 +82,10 @@ class ForgotPasswordActivity : BaseActivity() {
             if (mobileNumEt?.text.toString().length == 10) {
                 return true
             } else {
-                Utility.showToastMessage(getString(R.string.enter_correct_mobile_number))
+                Utility.showToastMessage(LanguageManager.getStringInfo(R.string.enter_correct_mobile_number))
             }
         } else {
-            Utility.showToastMessage(getString(R.string.mobile_num_empty))
+            Utility.showToastMessage(LanguageManager.getStringInfo(R.string.mobile_num_empty))
         }
         return false
     }

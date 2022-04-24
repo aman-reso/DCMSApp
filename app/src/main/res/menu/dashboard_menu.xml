@@ -2,8 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/profile"
-        android:title="@string/profile"/>
+        android:title="@string/profile" />
+    <item
+        android:id="@+id/changeLanguage"
+        android:title="@string/change_langua" />
     <item
         android:id="@+id/logout"
-        android:title="@string/log_out"/>
+        android:title="@string/log_out" />
 </menu>

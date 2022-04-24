@@ -1,7 +1,6 @@
 package com.management.org.dcms.codes
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -17,6 +16,7 @@ import com.management.org.dcms.codes.dcmsclient.viewitem.ViewItemActivity
 import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.codes.models.TaskDetailsModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
+import com.management.org.dcms.codes.utility.LanguageManager.getStringInfo
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewmodel.HomeViewModel
 import com.management.org.dcms.databinding.ActivityMainBinding
@@ -36,7 +36,7 @@ class HomeLandingMainActivity : BaseActivity() {
     private var profileSectionBinding: ProfileSectionBinding? = null
 
     private var messageActionView: View? = null
-    private var dataCollectionActionView: View? = null
+    private var registrationActionView: View? = null
     private var questionActionView: View? = null
     private var progressBar: ProgressBar? = null
     private var taskDetailsModel: TaskDetailsModel? = null
@@ -47,8 +47,8 @@ class HomeLandingMainActivity : BaseActivity() {
     private var logoutTextView: TextView? = null
     private var seeAddedHouseHoldTv: TextView? = null
     private var textMessageActionBtn: View? = null
-    private var registrationImageURL:String="http://dcms.dmi.ac.in/content/dist/img/Registration.png"
-    private var surveyImageURL:String="http://dcms.dmi.ac.in/content/dist/img/questionairs.png"
+    private var registrationImageURL: String = "http://dcms.dmi.ac.in/content/dist/img/Registration.png"
+    private var surveyImageURL: String = "http://dcms.dmi.ac.in/content/dist/img/questionairs.png"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +62,8 @@ class HomeLandingMainActivity : BaseActivity() {
         mainActivityBinding?.let {
             dashboardBinding = it.mainDashboardContainer
             messageActionView = dashboardBinding?.messageMainAction
-            dataCollectionActionView = dashboardBinding?.dataCollectionAction
-            questionActionView = dashboardBinding?.questionMainAction
+            registrationActionView = dashboardBinding?.actionBtnForStartReg
+            questionActionView = dashboardBinding?.actionBtnForStartSurvey
             progressBar = it.progressBar
             instructionTV = it.instructionTitleTextView
             instructionDetailTextView = it.instructionDetailTextView
@@ -77,20 +77,26 @@ class HomeLandingMainActivity : BaseActivity() {
         mainActivityBinding?.containerAppBar?.toolbar?.showHideView(true)
         mainActivityBinding?.containerAppBar?.toolbar?.setTitle(R.string.app_name)
         mainActivityBinding?.containerAppBar?.toolbar?.setOnMenuItemClickListener {
-            if (it.itemId == R.id.profile) {
-                startActivity(Intent(this, ProfileActivity::class.java))
-            } else {
-                performLogoutOperation()
+            when (it.itemId) {
+                R.id.profile -> {
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                }
+                R.id.changeLanguage -> {
+                    startActivity(Intent(this, ChangeLanguageActivity::class.java))
+                    finish()
+                }
+                else -> {
+                    performLogoutOperation()
+                }
             }
             true
         }
-        if (dashboardBinding?.imageViewForRegistration!=null) {
+        if (dashboardBinding?.imageViewForRegistration != null) {
             Picasso.get().load(registrationImageURL).into(dashboardBinding?.imageViewForRegistration)
         }
-        if (dashboardBinding?.imageViewForSurvey!=null){
-            Picasso.get().load(surveyImageURL).into(dashboardBinding?.imageViewForSurvey)
+        if (dashboardBinding?.imageViewForStartSurvey != null) {
+            Picasso.get().load(surveyImageURL).into(dashboardBinding?.imageViewForStartSurvey)
         }
-       // dashboardBinding?.imageViewForRegistration?.
     }
 
 
@@ -114,7 +120,6 @@ class HomeLandingMainActivity : BaseActivity() {
             is GlobalNetResponse.Success -> {
                 val successResponse: TaskDetailsModel = response.value
                 this.taskDetailsModel = successResponse
-                setUpContentForViews()
             }
             else -> {
 
@@ -122,15 +127,6 @@ class HomeLandingMainActivity : BaseActivity() {
         }
     }
 
-    private fun setUpContentForViews() {
-        taskDetailsModel?.let { taskDetailsModel: TaskDetailsModel ->
-            val isQuestionEnabled = taskDetailsModel.Task?.Questionaires
-            val isMessageEnabled = taskDetailsModel.Task?.WAMessages
-            val instruction = taskDetailsModel.Task?.Instructions
-            val isDataCollectionEnabled = taskDetailsModel.Task?.DataCollection
-            val isTextMessageEnabled = taskDetailsModel.Task?.TextMessage
-        }
-    }
 
     private fun setUpClickListener() {
         questionActionView?.setOnClickListener {
@@ -139,11 +135,10 @@ class HomeLandingMainActivity : BaseActivity() {
                 if (isQuestionEnabled == true) {
                     startQuestionActivity()
                 } else {
-                    //startQuestionActivity()
-                    Utility.showToastMessage(getString(R.string.not_enabled_right_now))
+                    Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
                 }
             } else {
-                Utility.showToastMessage(getString(R.string.please_wait))
+                Utility.showToastMessage(getStringInfo(R.string.please_wait))
             }
         }
         messageActionView?.setOnClickListener {
@@ -153,24 +148,22 @@ class HomeLandingMainActivity : BaseActivity() {
                 if (isMessageEnabled == true) {
                     startMessageTemplateActivity()
                 } else {
-                    // startMessageTemplateActivity()
-                    Utility.showToastMessage(getString(R.string.not_enabled_right_now))
+                    Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
                 }
             } else {
-                Utility.showToastMessage(getString(R.string.please_wait))
+                Utility.showToastMessage(getStringInfo(R.string.please_wait))
             }
         }
-        dataCollectionActionView?.setOnClickListener {
+        registrationActionView?.setOnClickListener {
             if (taskDetailsModel != null) {
                 val isMessageEnabled = taskDetailsModel?.Task?.DataCollection
                 if (isMessageEnabled == true) {
                     startDataCollectionActivity()
                 } else {
-                    //startDataCollectionActivity()
-                    Utility.showToastMessage(getString(R.string.not_enabled_right_now))
+                    Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
                 }
             } else {
-                Utility.showToastMessage(getString(R.string.please_wait))
+                Utility.showToastMessage(getStringInfo(R.string.please_wait))
             }
         }
         textMessageActionBtn?.setOnClickListener {
@@ -179,11 +172,10 @@ class HomeLandingMainActivity : BaseActivity() {
                 if (isMessageEnabled == true) {
                     startTextSmsActivity()
                 } else {
-                    // startTextSmsActivity()
-                     Utility.showToastMessage(getString(R.string.not_enabled_right_now))
+                    Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
                 }
             } else {
-                Utility.showToastMessage(getString(R.string.please_wait))
+                Utility.showToastMessage(getStringInfo(R.string.please_wait))
             }
         }
         seeAddedHouseHoldTv?.setOnClickListener {
@@ -240,10 +232,10 @@ class HomeLandingMainActivity : BaseActivity() {
         lifecycleScope.launch(Dispatchers.Main) {
             if (isSuccessfullyLogout) {
                 AuthConfigManager.logoutUser();
-                Utility.showToastMessage(getString(R.string.log_out_message))
+                Utility.showToastMessage(getStringInfo(R.string.log_out_message))
                 redirectedToSignInPage()
             } else {
-                Utility.showToastMessage(getString(R.string.something_went_wrong))
+                Utility.showToastMessage(getStringInfo(R.string.something_went_wrong))
             }
             progressBar?.showHideView(false)
         }

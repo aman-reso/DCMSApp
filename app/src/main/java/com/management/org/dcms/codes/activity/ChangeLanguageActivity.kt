@@ -43,7 +43,7 @@ class ChangeLanguageActivity : BaseActivity() {
         parentBinding?.containerAppBar?.icNavBackIcon?.setOnClickListener {
             onBackPressed()
         }
-        parentBinding?.containerAppBar?.appBarTitleTV?.text = getString(R.string.choose_language)
+        parentBinding?.containerAppBar?.appBarTitleTV?.text = LanguageManager.getStringInfo(R.string.choose_language)
     }
 
     private fun setUpViews() {
