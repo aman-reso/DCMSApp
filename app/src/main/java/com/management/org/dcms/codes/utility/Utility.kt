@@ -20,7 +20,8 @@ object Utility {
     fun showToastMessage(message: String) {
         Toast.makeText(DcmsApplication.getDcmsAppContext(), message, Toast.LENGTH_LONG).show()
     }
-    fun checkIsOnline():Boolean{
+
+    fun checkIsOnline(): Boolean {
         val connMgr: ConnectivityManager = DcmsApplication.getDcmsAppContext()?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo: NetworkInfo? = connMgr.activeNetworkInfo
         if (activeNetworkInfo != null) { // connected to the internet
@@ -31,5 +32,18 @@ object Utility {
             }
         }
         return false
+    }
+
+    private fun appendDigitBeforeValue(prefix: String, existingValue: Int): String {
+        if (existingValue < 9) {
+            return prefix + existingValue
+        }
+        return existingValue.toString()
+    }
+
+    fun getDateAsRequiredFormat(year: Int, month: Int, day: Int): String {
+        val reqMonth = appendDigitBeforeValue("0", month+1)
+        val reqDay = appendDigitBeforeValue("0", day)
+        return "$reqDay-$reqMonth-$year"
     }
 }

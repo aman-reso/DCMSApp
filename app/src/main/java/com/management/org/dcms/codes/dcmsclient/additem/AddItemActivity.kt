@@ -18,7 +18,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.management.org.dcms.codes.dcmsclient.data.models.VillageResponse
-import com.management.org.dcms.codes.dcmsclient.data.models.WardResponse
 import com.management.org.dcms.codes.dcmsclient.util.UiState
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -29,11 +28,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.extensions.showHideView
+import com.management.org.dcms.codes.utility.NetworkImpl
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.databinding.DcmsClientActivityAddItemBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
@@ -47,6 +45,14 @@ class AddItemActivity : AppCompatActivity() {
     private lateinit var binding: DcmsClientActivityAddItemBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var fileUri: Uri? = null
+
+    var villageName = ""
+    var villageId = 0
+    var mobileType = ""
+    var documentType = ""
+
+    val mobileTypeList = listOf("Feature Phone", "Smart Phone")
+    val documentTypeList = listOf("AADHAAR", "VOTERID")
 
     @SuppressLint("MissingPermission")
     private val startForProfileImageResult =
@@ -72,12 +78,6 @@ class AddItemActivity : AppCompatActivity() {
         setContentView(binding.root)
         AuthConfigManager.getAuthToken().let { viewModel.getAllVillages(it) }
         val villageList = mutableListOf<String>()
-        var villageName = ""
-        var villageId = 0
-        var mobileType = ""
-        val mobileTypeList = listOf("Feature Phone", "Smart Phone")
-        var documentType = ""
-        val documentTypeList = listOf("AADHAAR", "VOTERID")
         binding.containerAppBar.icNavBackIcon.showHideView(true)
         binding.containerAppBar.appBarTitleTV.text = getString(R.string.add_household)
         binding.containerAppBar.icNavBackIcon.setOnClickListener {
@@ -100,32 +100,16 @@ class AddItemActivity : AppCompatActivity() {
                             villageList.add(it.villageName)
                         }
                         Timber.e("$villageList")
-                        val stateAdapter = ArrayAdapter(
-                            this@AddItemActivity,
-                            R.layout.dcms_client_simple_spinner_item,
-                            villageList
-                        )
+                        val stateAdapter = ArrayAdapter(this@AddItemActivity, R.layout.dcms_client_simple_spinner_item, villageList)
                         (binding.villageSpinner as? AutoCompleteTextView)?.setAdapter(
                             stateAdapter
                         )
                         binding.villageSpinner.addTextChangedListener(object : TextWatcher {
-                            override fun afterTextChanged(s: Editable?) {
-                            }
+                            override fun afterTextChanged(s: Editable?) {}
 
-                            override fun beforeTextChanged(
-                                s: CharSequence?,
-                                start: Int,
-                                count: Int,
-                                after: Int
-                            ) {
-                            }
+                            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-                            override fun onTextChanged(
-                                s: CharSequence?,
-                                start: Int,
-                                before: Int,
-                                count: Int
-                            ) {
+                            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                                 try {
                                     Timber.i("SELECTED = ${it.data.villages[villageList.indexOf(s.toString())]}")
                                     villageName = s.toString()
@@ -164,20 +148,9 @@ class AddItemActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
             }
 
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 try {
                     Timber.i("SELECTED = ${mobileTypeList[mobileTypeList.indexOf(s.toString())]}")
                     mobileType = s.toString()
@@ -187,32 +160,14 @@ class AddItemActivity : AppCompatActivity() {
         })
 
 
-        val documentAdapter = ArrayAdapter(
-            this@AddItemActivity,
-            R.layout.dcms_client_simple_spinner_item,
-            documentTypeList
-        )
-        (binding.documentType as? AutoCompleteTextView)?.setAdapter(
-            documentAdapter
-        )
+        val documentAdapter = ArrayAdapter(this@AddItemActivity, R.layout.dcms_client_simple_spinner_item, documentTypeList)
+        (binding.documentType as? AutoCompleteTextView)?.setAdapter(documentAdapter)
         binding.documentType.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
+            override fun afterTextChanged(s: Editable?) {}
 
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 try {
                     Timber.i("SELECTED = ${documentTypeList[documentTypeList.indexOf(s.toString())]}")
                     documentType = s.toString()
@@ -226,13 +181,14 @@ class AddItemActivity : AppCompatActivity() {
                 when (it) {
                     is UiState.Success<*> -> {
                         stopLoad()
-                        Snackbar.make(binding.root, "Household Created", Snackbar.LENGTH_SHORT)
-                            .show()
+                        Utility.showToastMessage("Household Created SuccessFully")
+                        Snackbar.make(binding.root, "Household Created", Snackbar.LENGTH_SHORT).show()
                         finish()
                     }
                     is UiState.Failed -> {
                         Snackbar.make(binding.root, it.message.toString(), Snackbar.LENGTH_SHORT)
                             .show()
+                        Utility.showToastMessage(it.message.toString())
                         stopLoad()
                     }
                     is UiState.Loading -> {
@@ -242,103 +198,53 @@ class AddItemActivity : AppCompatActivity() {
             }
         }
         findViewById<Button>(R.id.submit).setOnClickListener {
-            if (!binding.address.text.isNullOrEmpty() && !binding.mobile.text.isNullOrEmpty() && !binding.name.text.isNullOrEmpty() && villageName != ""
-                && !binding.landmark.text.isNullOrEmpty() && !binding.ward.text.isNullOrEmpty() && villageId != 0
-                && fileUri != null && mobileType != "" && documentType != "" && !binding.documentNumber.text.isNullOrEmpty()
-            ) {
-                var emailId = ""
-                var whatsAppNum = ""
+            if (NetworkImpl.checkNetworkStatus()) {
+                if (validateInput()) {
+                    if (fileUri != null) {
+                        var emailId = ""
+                        var whatsAppNum = ""
 
-                if (binding.mobile.text != null) {
-                    if (binding.mobile.text?.length != 10) {
-                        Utility.showToastMessage("Please enter correct mobile number")
-                        return@setOnClickListener
-                    }
-                } else {
-                    Utility.showToastMessage("Please Enter mobile number")
-                    return@setOnClickListener
-                }
-
-                if (!binding.email.text.isNullOrEmpty()) {
-                    emailId = binding.email.text.toString()
-                }
-                if (!binding.whatsapp.text.isNullOrEmpty()) {
-                    if (binding.whatsapp.text?.length != 10) {
-                        Utility.showToastMessage("Please enter correct Whatsapp number")
-                        return@setOnClickListener
-                    } else {
-                        whatsAppNum = binding.whatsapp.text.toString()
-                    }
-                }
-
-                if (binding.ward.text != null) {
-                    try {
-                        var wardNo = binding.ward.text?.toString()?.trim()?.toInt()
-                        if (wardNo != null) {
-                            if (wardNo in 1..30) {
-
-                            } else {
-                                Utility.showToastMessage("Please enter correct ward number")
-                                return@setOnClickListener
+                        if (!binding.email.text.isNullOrEmpty()) {
+                            emailId = binding.email.text.toString()
+                        }
+                        if (!binding.whatsapp.text.isNullOrEmpty()) {
+                            if (binding.whatsapp.text?.length == 10) {
+                                whatsAppNum = binding.whatsapp.text.toString()
+                            }else{
+                                Utility.showToastMessage("Enter correct whatsApp number")
                             }
-                        } else {
-                            Utility.showToastMessage("Please enter correct ward number")
-                            return@setOnClickListener
-                        }
-                    } catch (e: Exception) {
-                        Utility.showToastMessage("Please enter correct ward number")
-                        return@setOnClickListener
-                    }
-                } else {
-                    Utility.showToastMessage("Ward number is missing")
-                    return@setOnClickListener
-                }
-
-                val a = CancellationTokenSource().token
-                fusedLocationClient.getCurrentLocation(
-                    LocationRequest.PRIORITY_HIGH_ACCURACY,
-                    a
-                ).addOnSuccessListener {
-                    val file = File("${fileUri?.path}")
-                    val encodedImage: String = Base64.encodeToString(method(file), Base64.DEFAULT)
-                    AuthConfigManager.getAuthToken()?.let { it1 ->
-                        try {
-                            viewModel.registerHousehold(
-                                villageId,
-                                villageName,
-                                binding.name.text.toString(),
-                                binding.mobile.text.toString(),
-                                whatsAppNum,
-                                emailId,
-                                binding.address.text.toString(),
-                                binding.father.text.toString(),
-                                binding.mother.text.toString(),
-                                binding.ward.text.toString(),
-                                binding.landmark.text.toString(),
-                                it1,
-                                "123",
-                                "123",
-                                encodedImage,
-                                ".jpg",
-                                mobileType,
-                                documentType,
-                                binding.documentNumber.text.toString()
-                            )
-                        } catch (e: java.lang.Exception) {
-                            System.out.println("exception-->" + e.localizedMessage)
                         }
 
-                    }
+                        val a = CancellationTokenSource().token
+                        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, a).addOnSuccessListener {
+                            val file = File("${fileUri?.path}")
+                            val encodedImage: String = Base64.encodeToString(method(file), Base64.DEFAULT)
+                            AuthConfigManager.getAuthToken().let { authToken ->
+                                try {
+                                    viewModel.registerHousehold(
+                                        villageId, villageName, binding.name.text.toString(),
+                                        binding.mobile.text.toString(), whatsAppNum, emailId, binding.address.text.toString(),
+                                        binding.father.text.toString(), binding.mother.text.toString(), binding.ward.text.toString(),
+                                        binding.landmark.text.toString(), authToken, "123", "123", encodedImage, ".jpg",
+                                        mobileType, documentType, binding.documentNumber.text.toString()
+                                    )
+                                } catch (e:Exception) {
 
-                }.addOnFailureListener {
-                    Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_SHORT).show()
-//                    Snackbar.make(binding.root, "Not able to Get your location", Snackbar.LENGTH_LONG).show()
+                                }
+
+                            }
+
+                        }.addOnFailureListener {
+                            Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_SHORT).show()
+                        }
+                    }else{
+                        Utility.showToastMessage("Please select Image")
+                    }
                 }
-            } else {
-                Snackbar.make(binding.root, "Enter the correct values", Snackbar.LENGTH_LONG).show()
             }
         }
     }
+
 
     fun startLoad() {
         binding.progress.visibility = View.VISIBLE
@@ -364,7 +270,154 @@ class AddItemActivity : AppCompatActivity() {
             Timber.e("$e")
             null
         }
+    }
+
+    private fun validateInput(): Boolean {
+        if (validateVillageName()) {
+            if (validateWardNo()) {
+                if (validateNameField()) {
+                    if (validateMobileNum()) {
+                        if (validateMobileTypeNum()) {
+                            if (validateAddress()) {
+                                if (validateLandmark()) {
+                                    if (validateDocType()) {
+                                        if (validateDocNum()) {
+                                            if (validateFatherName()) {
+                                                if (validateMotherName()) {
+                                                    return true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false
+    }
+
+    //                && mobileType != "" && documentType != ""
+    private fun validateFatherName(): Boolean {
+        val fatherName: String? = binding.father.text?.toString()
+        if (fatherName != null && fatherName!="") {
+            return true
+        }
+        Utility.showToastMessage("Please enter father's name")
+        return false
+    }
+
+    private fun validateVillageName(): Boolean {
+        if (villageName != "" && villageId != 0) {
+            return true
+        }
+        Utility.showToastMessage("Please select village")
+        return false
+    }
+
+    private fun validateLandmark(): Boolean {
+        val landMark: String? = binding.landmark.text?.toString()
+        if (landMark != null && landMark!="") {
+            return true
+        }
+        Utility.showToastMessage("Please enter Landmark")
+        return false
+    }
+
+    private fun validateMotherName(): Boolean {
+        val motherName: String? = binding.mother.text?.toString()
+        if (motherName != null && motherName!="") {
+            return true
+        }
+        Utility.showToastMessage("Please enter mother's name")
+        return false
+    }
+
+    private fun validateDocNum(): Boolean {
+        val docNum: String? = binding.documentNumber.text?.toString()
+        if (docNum != null && docNum!="") {
+            return true
+        }
+        Utility.showToastMessage("Please enter correct Document number")
+        return false
+    }
+
+    private fun validateDocType(): Boolean {
+        val docType: String? = binding.documentType.text?.toString()
+        if (docType != null && docType != "") {
+            return true
+        }
+        Utility.showToastMessage("Please enter correct document type")
+        return false
+    }
+
+    private fun validateAddress(): Boolean {
+        val address: String? = binding.address.text?.toString()
+        if (address != null && address!="") {
+            return true
+        }
+        Utility.showToastMessage("Please enter correct Address")
+        return false
+    }
 
 
+    private fun validateMobileTypeNum(): Boolean {
+        val mobType: String? = binding.mobileType.text?.toString()
+        if (mobType != null && mobileType != "") {
+            return true
+        }
+        Utility.showToastMessage("Please enter correct mobile type")
+        return false
+    }
+
+    private fun validateMobileNum(): Boolean {
+        val mobNo: String? = binding.mobile.text?.toString()
+        if (mobNo != null && mobNo.length == 10) {
+            return true
+        }
+        Utility.showToastMessage("Please enter correct mobile number")
+        return false
+    }
+
+    private fun validateWAMobileNum(): Boolean {
+        val waNo: String? = binding.whatsapp.text?.toString()
+        if (waNo != null && waNo.length == 10) {
+            return true
+        }
+        Utility.showToastMessage("Please enter correct whatsapp number number")
+        return false
+    }
+
+    private fun validateWardNo(): Boolean {
+        try {
+            val wardNo: String? = binding.ward.text?.toString()?.trim()
+            if (wardNo != null) {
+                var intWardNo = wardNo.toInt()
+                return if (intWardNo in 1..30) {
+                    true
+                } else {
+                    Utility.showToastMessage("Please enter correct ward number")
+                    false
+                }
+            } else {
+                Utility.showToastMessage("Ward number is missing")
+            }
+        } catch (e: Exception) {
+            Utility.showToastMessage("Please enter correct ward number")
+            return false
+        }
+        return false
+    }
+
+    private fun validateNameField(): Boolean {
+        val nameVale = binding.name.text?.toString()
+        if (nameVale != null && nameVale.length > 3) {
+            return true
+        } else {
+            Utility.showToastMessage("Please enter Name")
+        }
+        return false
     }
 }

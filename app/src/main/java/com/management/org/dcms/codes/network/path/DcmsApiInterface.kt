@@ -60,7 +60,7 @@ interface DcmsApiInterface {
     ): JsonObject
 
     @POST("/api/Account/ForgetPassword")
-    suspend fun forgotUserPassword(@Query("mobileno") mobileNo: String,@Query("language")language:String?="hi"): JsonObject
+    suspend fun forgotUserPassword(@Query("mobileno") mobileNo: String, @Query("language") language: String? = "hi"): JsonObject
 
 
     @GET("/api/TextMsg/Message")
@@ -75,6 +75,14 @@ interface DcmsApiInterface {
     @POST("/api/WA/GroupSentReport")
     suspend fun sentWAMessageGroupReport(@Body sentReportPostModel: SentReportInGroupModel, @Query("AuthToken") authToken: String): JsonObject
 
+    @GET("api/Reports/QSentDetails")
+    suspend fun getQSentDetails(@Query("AuthToken") authToken: String, @Query("fromdate") fromDate: String, @Query("todate") toDate: String):QReportDetailModel
+
+    @GET("api/Reports/TextSentDetails")
+    suspend fun getTextSentDetails(@Query("AuthToken") authToken: String, @Query("fromdate") fromDate: String, @Query("todate") toDate: String):TextReportDetailModel
+
+    @GET("api/Reports/WASentDetails")
+    suspend fun getWASentDetails(@Query("AuthToken") authToken: String, @Query("fromdate") fromDate: String, @Query("todate") toDate: String):WAReportDetailModel
+
 }
 
-//@Part part: MultipartBody.Part,

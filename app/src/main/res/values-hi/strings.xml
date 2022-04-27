@@ -68,4 +68,21 @@
     <string name="please_wait_message_template_not_received">कृपया प्रतीक्षा करें संदेश टेम्पलेट प्राप्त नहीं हुआ</string>
     <string name="no_internet_connection">कोई इंटरनेट कनेक्शन नहीं</string>
     <string name="change_langua">भाषा चुनें</string>
+    <string name="select_from_date">Select From Date</string>
+    <string name="from_date">की तिथि से</string>
+    <string name="to_date">तारीख तक</string>
+    <string name="get_result">परिणाम</string>
+    <string name="please_select_from_date">कृपया तिथि से चयन करें</string>
+    <string name="please_select_to_date">कृपया आज तक चुनें</string>
+    <string name="no_report_found">कोई रिपोर्ट नहीं मिली</string>
+    <string name="theme_name">विषय का नाम:-</string>
+    <string name="whatsapp_no">व्हाट्सएप नंबर:-</string>
+    <string name="qreport">QReport</string>
+    <string name="mobile">मोबाइल</string>
+    <string name="whatsapp_number">व्हाट्सएप नंबर</string>
+    <string name="landmark">सीमाचिह्न</string>
+    <string name="document_type">दस्तावेज़ का प्रकार</string>
+    <string name="father_name">पिता का नाम</string>
+    <string name="image">image</string>
+    <string name="submit">Submit</string>
 </resources>

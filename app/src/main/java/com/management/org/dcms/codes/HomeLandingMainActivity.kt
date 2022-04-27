@@ -35,7 +35,7 @@ class HomeLandingMainActivity : BaseActivity() {
     private var dashboardBinding: LayputHomeDashboardBinding? = null
     private var profileSectionBinding: ProfileSectionBinding? = null
 
-    private var messageActionView: View? = null
+    private var wAMessageActionView: View? = null
     private var registrationActionView: View? = null
     private var questionActionView: View? = null
     private var progressBar: ProgressBar? = null
@@ -61,7 +61,7 @@ class HomeLandingMainActivity : BaseActivity() {
     private fun setUpViews() {
         mainActivityBinding?.let {
             dashboardBinding = it.mainDashboardContainer
-            messageActionView = dashboardBinding?.messageMainAction
+            wAMessageActionView = dashboardBinding?.messageMainAction
             registrationActionView = dashboardBinding?.actionBtnForStartReg
             questionActionView = dashboardBinding?.actionBtnForStartSurvey
             progressBar = it.progressBar
@@ -129,57 +129,31 @@ class HomeLandingMainActivity : BaseActivity() {
 
 
     private fun setUpClickListener() {
+        //reprort
         questionActionView?.setOnClickListener {
-            if (taskDetailsModel != null) {
-                val isQuestionEnabled = taskDetailsModel?.Task?.Questionaires
-                if (isQuestionEnabled == true) {
-                    startQuestionActivity()
-                } else {
-                    Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
-                }
-            } else {
-                Utility.showToastMessage(getStringInfo(R.string.please_wait))
-            }
+            handleQuestionaireIntent()
         }
-        messageActionView?.setOnClickListener {
-            if (taskDetailsModel != null) {
-                System.out.println(taskDetailsModel?.Task)
-                val isMessageEnabled = taskDetailsModel?.Task?.WAMessages
-                if (isMessageEnabled == true) {
-                    startMessageTemplateActivity()
-                } else {
-                    Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
-                }
-            } else {
-                Utility.showToastMessage(getStringInfo(R.string.please_wait))
-            }
+        //waMessage
+        wAMessageActionView?.setOnClickListener {
+            handleWAMessageIntent()
         }
         registrationActionView?.setOnClickListener {
-            if (taskDetailsModel != null) {
-                val isMessageEnabled = taskDetailsModel?.Task?.DataCollection
-                if (isMessageEnabled == true) {
-                    startDataCollectionActivity()
-                } else {
-                    Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
-                }
-            } else {
-                Utility.showToastMessage(getStringInfo(R.string.please_wait))
-            }
+            handleDataCollectionIntent()
         }
         textMessageActionBtn?.setOnClickListener {
-            if (taskDetailsModel != null) {
-                val isMessageEnabled = taskDetailsModel?.Task?.TextMessage
-                if (isMessageEnabled == true) {
-                    startTextSmsActivity()
-                } else {
-                    Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
-                }
-            } else {
-                Utility.showToastMessage(getStringInfo(R.string.please_wait))
-            }
+            handleTextMessageIntent()
         }
         seeAddedHouseHoldTv?.setOnClickListener {
             startSeeAddedHouseHoldIntent()
+        }
+        mainActivityBinding?.seeQReportDetailActionBtn?.setOnClickListener {
+            seeSentReport(Q_REPORT_INTENT)
+        }
+        mainActivityBinding?.seeWAReportDetailActionBtn?.setOnClickListener {
+            seeSentReport(WA_REPORT_INTENT)
+        }
+        mainActivityBinding?.seeTextReportDetailActionBtn?.setOnClickListener {
+            seeSentReport(TEXT_REPORT_INTENT)
         }
     }
 
@@ -191,10 +165,67 @@ class HomeLandingMainActivity : BaseActivity() {
         }
     }
 
+    private fun seeSentReport(key: String) {
+        val intent = Intent(this, QSentReportDetailActivity::class.java)
+        intent.putExtra(key, key)
+        startActivity(intent)
+    }
 
     private fun startMessageTemplateActivity() {
         val intent = Intent(this, MessageTemplateActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun handleDataCollectionIntent() {
+        if (taskDetailsModel != null) {
+            val isMessageEnabled = taskDetailsModel?.Task?.DataCollection
+            if (isMessageEnabled == true) {
+                startDataCollectionActivity()
+            } else {
+                Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
+            }
+        } else {
+            Utility.showToastMessage(getStringInfo(R.string.please_wait))
+        }
+    }
+
+    private fun handleTextMessageIntent() {
+        if (taskDetailsModel != null) {
+            val isMessageEnabled = taskDetailsModel?.Task?.TextMessage
+            if (isMessageEnabled == true) {
+                startTextSmsActivity()
+            } else {
+                Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
+            }
+        } else {
+            Utility.showToastMessage(getStringInfo(R.string.please_wait))
+        }
+    }
+
+    private fun handleWAMessageIntent() {
+        if (taskDetailsModel != null) {
+            val isMessageEnabled = taskDetailsModel?.Task?.WAMessages
+            if (isMessageEnabled == true) {
+                startMessageTemplateActivity()
+            } else {
+                Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
+            }
+        } else {
+            Utility.showToastMessage(getStringInfo(R.string.please_wait))
+        }
+    }
+
+    private fun handleQuestionaireIntent() {
+        if (taskDetailsModel != null) {
+            val isQuestionEnabled = taskDetailsModel?.Task?.Questionaires
+            if (isQuestionEnabled == true) {
+                startQuestionActivity()
+            } else {
+                Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
+            }
+        } else {
+            Utility.showToastMessage(getStringInfo(R.string.please_wait))
+        }
     }
 
     private fun startDataCollectionActivity() {

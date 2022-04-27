@@ -20,6 +20,9 @@
         android:theme="@style/Theme.DCMS"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".codes.activity.QSentReportDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".codes.activity.BaseActivity"
             android:exported="false" />
         <activity

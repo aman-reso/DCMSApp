@@ -67,5 +67,22 @@
     <string name="sent_to_all">Sent To All</string>
     <string name="start">START</string>
     <string name="change_langua">Change Language</string>
+    <string name="select_from_date">Select From Date</string>
+    <string name="from_date">From Date</string>
+    <string name="to_date">To Date</string>
+    <string name="get_result">Get Result</string>
+    <string name="please_select_from_date">Please select from date</string>
+    <string name="please_select_to_date">Please select to date</string>
+    <string name="no_report_found">No report found</string>
+    <string name="theme_name">Theme Name:-</string>
+    <string name="whatsapp_no">WhatsApp No:-</string>
+    <string name="qreport">QReport</string>
+    <string name="mobile">Mobile</string>
+    <string name="whatsapp_number">Whatsapp Number</string>
+    <string name="landmark">Landmark</string>
+    <string name="document_type">Document Type</string>
+    <string name="father_name">Father Name</string>
+    <string name="image">image</string>
+    <string name="submit">Submit</string>
 
 </resources>
