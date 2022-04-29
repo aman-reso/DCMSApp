@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.management.org.dcms">
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+
+    <application
+        android:name=".codes.DcmsApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/dmilogo_1"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/dmilogo_1"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.DCMS"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".codes.activity.QSentReportDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".codes.activity.BaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".codes.activity.ChangePasswordActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".codes.activity.Call_details"
+            android:exported="false" />
+
+        <activity
+            android:name=".codes.activity.ChangeLanguageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".codes.activity.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".codes.activity.UploadImageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".codes.activity.SendTextSMSActivity"
+            android:exported="false" />
+        <activity
+            android:name=".codes.activity.AttemptQuestionActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".codes.activity.CallLogs"
+            android:exported="false"
+             />
+
+        <activity
+            android:name=".codes.activity.ProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".codes.activity.LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- <activity -->
+        <!-- android:name=".codes.activity.QuestionListingActivity" -->
+        <!-- android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" -->
+        <!-- android:exported="false" /> -->
+        <activity
+            android:name=".codes.activity.MessageTemplateActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".codes.activity.ContactsListingForQuestionActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".codes.activity.SplashActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".codes.HomeLandingMainActivity"
+            android:configChanges="orientation"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity
+            android:name=".codes.dcmsclient.viewitem.ViewItemActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".codes.dcmsclient.additem.AddItemActivity"
+            android:exported="false"
+            android:theme="@style/Theme.DCMS" />
+        <activity
+            android:name=".codes.dcmsclient.signup.SignupActivity"
+            android:exported="false"
+            android:theme="@style/Theme.DCMS" />
+        <activity
+            android:name=".codes.dcmsclient.login.DcmsClientLoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".codes.dcmsclient.DcmsClientMainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+    </application>
+
+</manifest>
