@@ -1,6 +1,7 @@
 package com.management.org.dcms.codes.activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import android.os.Bundle
@@ -16,7 +17,7 @@ import java.util.ArrayList
 class CallLogs : AppCompatActivity() {
     private var textView: TextView? = null
 
-    private var callArray: ArrayList<CallLogClass> = ArrayList()
+    private var callArrayList: ArrayList<CallLogClass> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,30 +30,32 @@ class CallLogs : AppCompatActivity() {
         textView = findViewById(R.id.textView)
     }
 
+    @SuppressLint("Range")
     fun buttonCallLog(view: View?) {
-        textView!!.text = "Call Logging Started ... "
-        var stringOutput = ""
+        callArrayList.clear()
         val uriCallLogs = Uri.parse("content://call_log/calls")
         val cursorCallLogs = contentResolver.query(uriCallLogs, null, null, null)
         cursorCallLogs!!.moveToFirst()
         do {
-            val stringNumber =
-                cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.NUMBER))
-            val stringName =
-                cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.CACHED_NAME))
-            val stringDuration =
-                cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.DURATION))
-            val stringType =
-                cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.TYPE))
-            val stringLocation =
-                cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.GEOCODED_LOCATION))
-            stringOutput = """${stringOutput} Number: $stringNumber
-                                             Name: $stringName
-                                             Duration: $stringDuration
-                                             Type: $stringType
-                                             Location: $stringLocation
-                           """
+            val stringNumber = cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.NUMBER))
+            val stringName = cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.CACHED_NAME))
+            val stringDuration = cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.DURATION))
+            val stringType = cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.TYPE))
+            val stringLocation = cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.GEOCODED_LOCATION))
+            callArrayList.add(CallLogClass(stringNumber, dur = stringDuration))
+
         } while (cursorCallLogs.moveToNext())
-        textView!!.text = stringOutput
+
+        System.out.println("callArray-->" + callArrayList)
+    }
+
+    //use this function for getting call log for specific number
+    private fun getCallLogsBasedOnMobileNum(mobileNum: String):ArrayList<CallLogClass> {
+        if (callArrayList.size > 0) {
+            callArrayList.filter{
+                it.num==mobileNum
+            }
+        }
+        return ArrayList()
     }
 }
