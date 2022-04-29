@@ -1,18 +1,15 @@
 package com.management.org.dcms.codes.dcmsclient.viewitem
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.PopupWindow
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.management.org.dcms.R
+import com.management.org.dcms.codes.activity.PopScreen
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.dcmsclient.data.models.HouseHoldsResponse
 import com.management.org.dcms.codes.dcmsclient.util.UiState
@@ -20,6 +17,7 @@ import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.databinding.DcmsClientActivityViewItemBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class ViewItemActivity : AppCompatActivity() {
@@ -87,12 +85,12 @@ class ViewItemActivity : AppCompatActivity() {
 
 
         // inflate the layout of the popup window
-        val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        /*val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val popupView: View = inflater.inflate(R.layout.popup_window, null)
 
         // create the popup window
-        val width = LinearLayout.LayoutParams.WRAP_CONTENT
-        val height = LinearLayout.LayoutParams.WRAP_CONTENT
+        val width = LinearLayout.LayoutParams.MATCH_PARENT
+        val height = LinearLayout.LayoutParams.MATCH_PARENT
         val focusable = true // lets taps outside the popup also dismiss it
         val popupWindow = PopupWindow(popupView, width, height, focusable)
 
@@ -104,6 +102,10 @@ class ViewItemActivity : AppCompatActivity() {
         popupView.setOnTouchListener { v, event ->
             popupWindow.dismiss()
             true
-        }
+        }*/
+
+        val intent = Intent(this, PopScreen::class.java)
+        startActivity(intent)
+        finish()
     }
 }

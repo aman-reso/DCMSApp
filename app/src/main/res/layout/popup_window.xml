@@ -1,67 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+        <include
+            android:id="@+id/containerAppBarPop"
+            layout="@layout/app_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedWardNo"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:hint="@string/ward"
+        app:layout_constraintTop_toBottomOf="@+id/village_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/wardPop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nuntio_regular"
+            android:inputType="phone" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:hint="@string/name"
+        app:layout_constraintTop_toBottomOf="@+id/outlinedTextWardNo">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/namePop"
+            android:fontFamily="@font/nuntio_regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedMobile"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:hint="@string/mobile"
+        app:layout_constraintTop_toBottomOf="@+id/outlinedTextName">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/mobilePop"
+            android:layout_width="match_parent"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:fontFamily="@font/nuntio_regular"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedWhatsapp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:hint="@string/whatsapp_number"
+        app:layout_constraintTop_toBottomOf="@+id/outlinedTextMobile">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/whatsappPop"
+            android:layout_width="match_parent"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:fontFamily="@font/nuntio_regular"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedEmail"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:hint="@string/email"
+        app:layout_constraintTop_toBottomOf="@+id/outlinedTextType">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/emailPop"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/nuntio_regular"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedAddress"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:hint="@string/house_no"
+        app:layout_constraintTop_toBottomOf="@+id/outlinedTextEmail">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/addressPop"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/nuntio_regular"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedLandMark"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:hint="@string/landmark"
+            app:layout_constraintTop_toBottomOf="@+id/outlinedTextAddress">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/landmarkPop"
+                android:layout_width="match_parent"
+                android:fontFamily="@font/nuntio_regular"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedDocumentNumber"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:hint="@string/document_number"
+            app:layout_constraintTop_toBottomOf="@+id/outlinedTextDocumentType">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/document_numberPop"
+                android:layout_width="match_parent"
+                android:fontFamily="@font/nuntio_regular"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedFather"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:hint="@string/father_name"
+            app:layout_constraintTop_toBottomOf="@+id/outlinedTextDocumentNumber"
+            tools:layout_editor_absoluteX="20dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fatherPop"
+                android:layout_width="match_parent"
+                android:fontFamily="@font/nuntio_regular"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedMother"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:hint="@string/mother_name"
+            app:layout_constraintTop_toBottomOf="@+id/outlinedTextFather">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/motherPop"
+                android:layout_width="match_parent"
+                android:fontFamily="@font/nuntio_regular"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/editTextTextPersonName"
+        <Button
+            android:id="@+id/cancelBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Name"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/editTextTextPersonName2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Mobile Number"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/editTextTextPersonName3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Ward Number"
-            android:inputType="textPersonName" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:backgroundTint="#FF4444"
+            android:text="Cancel"
+            android:onClick="btnCancelEvent"
+            app:cornerRadius="10dp" />
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:backgroundTint="#FF4444"
-                android:text="Cancel"
-                app:cornerRadius="10dp" />
-
-            <Button
-                android:id="@+id/update"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:backgroundTint="#FF4444"
-                android:text="UPDATE"
-                app:cornerRadius="10dp" />
-        </LinearLayout>
-
+        <Button
+            android:id="@+id/updateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="#FF4444"
+            android:text="UPDATE"
+            app:cornerRadius="10dp" />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
+
+</ScrollView>

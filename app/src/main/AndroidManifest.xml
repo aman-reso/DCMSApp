@@ -39,6 +39,10 @@
         <activity
             android:name=".codes.activity.ChangeLanguageActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".codes.activity.PopScreen"
+            android:exported="false" />
         <activity
             android:name=".codes.activity.ForgotPasswordActivity"
             android:exported="false" />
