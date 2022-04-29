@@ -5,9 +5,10 @@
     <string name="login">Login</string>
     <string name="instruction_for_you">Instruction For You</string>
     <string name="here_is_the_instruction_please_go_through_this_first">Here is the instruction please go through this first…</string>
-    <string name="attempt">Survey</string>
+    <string name="attempt">House Hold Visit</string>
     <string name="today_s_task">Today\'s Task</string>
     <string name="text_message">Text message</string>
+    <string name="call">Calls</string>
     <string name="data_collection">Data Collection</string>
     <string name="profile">Profile</string>
     <string name="log_out">Log Out</string>
@@ -21,7 +22,8 @@
     <string name="document_number">Document Number</string>
     <string name="ward">Ward</string>
     <string name="please_allow_all_above_permission">Please Allow Above permission</string>
-    <string name="see_your_report">See your Report</string>
+    <string name="view_entries">View Entries</string>
+    <string name="done">Done</string>
     <string name="registration">Registration</string>
     <string name="house_no">House no</string>
     <string name="please_select_a_image">Please select a Image</string>
@@ -29,7 +31,11 @@
     <string name="please_wait">Please Wait</string>
     <string name="log_out_message">You have successfully Logout</string>
     <string name="something_went_wrong">Something went wrong</string>
-    <string name="added_household">Added Household</string>
+    <string name="house_hold_list">House Hold List</string>
+    <string name="whatsapp_msg">Whatsapp Message Sent</string>
+    <string name="text_msg">Text Message Sent</string>
+    <string name="call_report">Call Report</string>
+    <string name="house_hold_visit">House Hold Visited</string>
     <string name="mobile_num_empty">Mobile number is empty</string>
     <string name="password_is_empty">Password is empty</string>
     <string name="enter_correct_mobile_number">Enter correct mobile number</string>

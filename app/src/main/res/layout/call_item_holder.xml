@@ -50,14 +50,15 @@
         android:fontFamily="@font/nuntio_regular"
         android:gravity="center"
         android:paddingHorizontal="8dp"
-        android:text=" Done "
+        android:text="@string/done"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/contactsItemMobileNum"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+         />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
