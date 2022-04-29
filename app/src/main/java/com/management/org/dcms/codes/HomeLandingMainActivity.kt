@@ -3,13 +3,11 @@ package com.management.org.dcms.codes
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import androidx.media.session.MediaButtonReceiver.handleIntent
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.activity.*
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
@@ -186,7 +184,7 @@ class HomeLandingMainActivity : BaseActivity() {
     }
 
     private fun startCallActivity() {
-        val intent = Intent(this, Call_details::class.java)
+        val intent = Intent(this, CallLogsSentReportActivity::class.java)
         startActivity(intent)
     }
 

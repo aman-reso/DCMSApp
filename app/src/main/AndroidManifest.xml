@@ -33,7 +33,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".codes.activity.Call_details"
+            android:name=".codes.activity.CallDetailsActivity"
             android:exported="false" />
 
         <activity
@@ -54,7 +54,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".codes.activity.CallLogs"
+            android:name=".codes.activity.CallLogsSentReportActivity"
             android:exported="false"
              />
 

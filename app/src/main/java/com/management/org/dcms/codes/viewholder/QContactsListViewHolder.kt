@@ -11,7 +11,7 @@ class QContactsListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
     private var contactListItemCheckBox: CheckBox? = itemView.findViewById(R.id.contactsEachItemCheckBox)
     private var contactListItemMobNumTV: TextView? = itemView.findViewById(R.id.contactsItemMobileNum)
     var sendToWapIcon: View? = itemView.findViewById(R.id.modify)
-    var btn: TextView? = itemView.findViewById(R.id.done)
+    var actionBtn: TextView? = itemView.findViewById(R.id.done)
     fun bindDataWithHolder(item: QContactsModel) {
         contactListItemMobNumTV?.text = item.MobileNo
         if(item.SentStatus==0){

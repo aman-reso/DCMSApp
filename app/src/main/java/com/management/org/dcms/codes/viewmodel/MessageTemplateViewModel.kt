@@ -1,6 +1,11 @@
 package com.management.org.dcms.codes.viewmodel
 
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.database.Cursor
+import android.provider.ContactsContract
+import android.telecom.Call
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -125,5 +130,10 @@ class MessageTemplateViewModel @Inject constructor(var dcmsNetworkCallRepository
             val serverResponse = dcmsNetworkCallRepository.getContactsListForQuestion(authToken = authToken, themeId = 1, campaignId = 1)
             qContactListLiveData.postValue(serverResponse)
         }
+    }
+
+    @SuppressLint("Range")
+    fun getCallHistory(activity:Activity?) {
+
     }
 }

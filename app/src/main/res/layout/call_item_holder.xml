@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".codes.activity.Call_details">
+    tools:context=".codes.activity.CallDetailsActivity">
 
     <CheckBox
         android:id="@+id/contactsEachItemCheckBox"
@@ -36,9 +36,6 @@
         app:layout_constraintStart_toEndOf="@+id/contactsEachItemCheckBox"
         app:layout_constraintTop_toTopOf="@+id/contactsEachItemCheckBox"
         app:layout_constraintEnd_toStartOf="@id/done"/>
-
-
-
 
     <TextView
         android:id="@+id/done"

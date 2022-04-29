@@ -66,6 +66,9 @@
         <entry key="app/src/main/res/layout/activity_upload_image.xml" value="0.2484375" />
         <entry key="app/src/main/res/layout/activity_view_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/app_title_bar.xml" value="0.24947916666666667" />
+        <entry key="app/src/main/res/layout/call_detail.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/call_item_holder.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/calllogs.xml" value="0.24739583333333334" />
         <entry key="app/src/main/res/layout/dcms_client_activity_add_item.xml" value="0.165" />
         <entry key="app/src/main/res/layout/dcms_client_activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dcms_client_activity_signup.xml" value="0.12552083333333333" />

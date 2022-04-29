@@ -10,29 +10,29 @@ import androidx.core.app.ActivityCompat
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.CallLog
-import android.view.View
-import com.management.org.dcms.codes.models.CallLogClass
+import android.widget.Button
+import com.management.org.dcms.codes.models.UserCallLogsModel
 import java.util.ArrayList
 
-class CallLogs : AppCompatActivity() {
+class CallLogsSentReportActivity : AppCompatActivity() {
     private var textView: TextView? = null
-
-    private var callArrayList: ArrayList<CallLogClass> = ArrayList()
+    private var userCallArrayList: ArrayList<UserCallLogsModel> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.calllogs)
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.READ_CALL_LOG),
-            PackageManager.PERMISSION_GRANTED
-        )
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CALL_LOG), PackageManager.PERMISSION_GRANTED)
         textView = findViewById(R.id.textView)
+
+        findViewById<Button>(R.id.button).setOnClickListener {
+            buttonCallLog()
+        }
+
     }
 
     @SuppressLint("Range")
-    fun buttonCallLog(view: View?) {
-        callArrayList.clear()
+    fun buttonCallLog() {
+        userCallArrayList.clear()
         val uriCallLogs = Uri.parse("content://call_log/calls")
         val cursorCallLogs = contentResolver.query(uriCallLogs, null, null, null)
         cursorCallLogs!!.moveToFirst()
@@ -42,19 +42,21 @@ class CallLogs : AppCompatActivity() {
             val stringDuration = cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.DURATION))
             val stringType = cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.TYPE))
             val stringLocation = cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.GEOCODED_LOCATION))
-            callArrayList.add(CallLogClass(stringNumber, dur = stringDuration))
+            userCallArrayList.add(UserCallLogsModel(num = stringNumber, dur = stringDuration))
 
         } while (cursorCallLogs.moveToNext())
 
-        System.out.println("callArray-->" + callArrayList)
+        var x = getCallLogsBasedOnMobileNum("8210463654")
     }
 
     //use this function for getting call log for specific number
-    private fun getCallLogsBasedOnMobileNum(mobileNum: String):ArrayList<CallLogClass> {
-        if (callArrayList.size > 0) {
-            callArrayList.filter{
-                it.num==mobileNum
-            }
+    private fun getCallLogsBasedOnMobileNum(mobileNum: String): ArrayList<UserCallLogsModel> {
+        if (userCallArrayList.size > 0) {
+           val filteredLog=  userCallArrayList.filter {
+                it.num.contains(mobileNum)
+            } as ArrayList
+
+            return filteredLog
         }
         return ArrayList()
     }

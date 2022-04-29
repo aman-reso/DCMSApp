@@ -31,10 +31,9 @@ class CallListAdapter(var callback: (QContactsModel) -> Unit) : RecyclerView.Ada
     override fun onBindViewHolder(holder: QContactsListViewHolder, position: Int) {
         val item = contactsList[position]
         holder.bindDataWithHolder(item)
-        holder.sendToWapIcon?.setOnClickListener {
+        holder.actionBtn?.setOnClickListener {
             if (item != null) {
                 callback.invoke(item)
-
             }
         }
     }
