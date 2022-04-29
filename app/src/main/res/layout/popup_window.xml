@@ -150,7 +150,6 @@
             android:id="@+id/outlinedDocumentType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
             android:layout_margin="20dp"
             android:hint="@string/document_type"
             app:layout_constraintTop_toBottomOf="@+id/outlinedLandMark"
