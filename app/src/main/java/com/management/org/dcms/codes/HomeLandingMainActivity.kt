@@ -1,15 +1,14 @@
 package com.management.org.dcms.codes
 
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import androidx.media.session.MediaButtonReceiver.handleIntent
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.activity.*
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
@@ -28,6 +27,7 @@ import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class HomeLandingMainActivity : BaseActivity() {
@@ -58,6 +58,12 @@ class HomeLandingMainActivity : BaseActivity() {
         setUpViews()
         setUpObserver()
         setUpClickListener()
+
+        val textView1 = findViewById<View>(R.id.viewEntries) as TextView
+        textView1.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+
+        val textView = findViewById<View>(R.id.instructionTitleTextView) as TextView
+        textView.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
     }
 

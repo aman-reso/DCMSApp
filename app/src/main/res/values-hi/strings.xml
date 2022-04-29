@@ -6,9 +6,10 @@
     <string name="login">लॉगिन</string>
     <string name="instruction_for_you">आपके लिए निर्देश</string>
     <string name="here_is_the_instruction_please_go_through_this_first">यहाँ निर्देश है कृपया इस माध्यम से जाना है …</string>
-    <string name="attempt">सर्वेक्षण</string>
+    <string name="attempt">हाउस होल्ड विजिट</string>
     <string name="today_s_task">आज का कार्य</string>
     <string name="text_message">टेक्स्ट संदेश</string>
+    <string name="call">कॉल</string>
     <string name="data_collection">डेटा संग्रह</string>
     <string name="profile">प्रोफाइल</string>
     <string name="log_out">लॉग आउट करें</string>
@@ -22,7 +23,7 @@
     <string name="document_number">दस्तावेज़ संख्या</string>
     <string name="ward">वार्ड</string>
     <string name="please_allow_all_above_permission">कृपया ऊपर की अनुमति दें</string>
-    <string name="see_your_report">अपनी रिपोर्ट देखें</string>
+    <string name="view_entries">प्रविष्टियां देखें</string>
     <string name="registration">पंजीकरण</string>
     <string name="house_no">मकान नंबर</string>
     <string name="please_select_a_image">कृपया किसी छवि का चयन करें</string>
@@ -30,7 +31,12 @@
     <string name="please_wait">कृपया प्रतीक्षा करें</string>
     <string name="log_out_message">आपने सफलतापूर्वक लॉगआउट किया है</string>
     <string name="something_went_wrong">कुछ गलत हो गया</string>
-    <string name="added_household">जोड़े गए सदस्य</string>
+    <string name="house_hold_list">  हाउस होल्ड लिस्ट</string>
+    <string name="whatsapp_msg">WhatsApp संदेश भेजा गया</string>
+    <string name="text_msg">पाठ संदेश भेजा गया</string>
+    <string name="call_report">कॉल रिपोर्ट</string>
+    <string name="done">पूर्ण</string>
+    <string name="house_hold_visit">हाउस होल्ड विजिटएड</string>
     <string name="mobile_num_empty">मोबाइल नंबर खाली है</string>
     <string name="password_is_empty">पासवर्ड खाली है</string>
     <string name="enter_correct_mobile_number">सही मोबाइल नंबर दर्ज करें</string>

@@ -54,19 +54,6 @@
                     app:layout_constraintStart_toStartOf="@+id/instructionTitleTextView"
                     app:layout_constraintTop_toBottomOf="@+id/instructionTitleTextView" />
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/nuntio_bold"
-                    android:text="@string/today_s_task"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
 
                 <include
                     android:id="@+id/mainDashboardContainer"
@@ -79,62 +66,95 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
                 <TextView
+                    android:id="@+id/viewEntries"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="5dp"
                     android:fontFamily="@font/nuntio_bold"
-                    android:text="@string/see_your_report"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:padding="5dp"
+                    android:text="@string/view_entries"
+                    android:textColor="#272b29"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/seeAddedHouseHoldTv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="8dp"
+                    android:drawableLeft="@drawable/ic_house"
+                    android:drawableRight="@drawable/ic_arrows"
                     android:drawablePadding="4dp"
                     android:fontFamily="@font/nuntio_regular"
+                    android:padding="10dp"
                     android:paddingVertical="8dp"
-                    android:text="@string/added_household"
-                    android:textAlignment="center"
+                    android:text="@string/house_hold_list"
                     android:textColor="#333"
-                    android:textSize="14sp"
-                    app:drawableEndCompat="@drawable/ic_baseline_double_arrow_24" />
-
-                <TextView
-                    android:id="@+id/seeQReportDetailActionBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:fontFamily="@font/nuntio_regular"
-                    android:paddingBottom="8dp"
-                    android:text="See Q Report"
-                    android:textColor="#333"
-                    android:textSize="14sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/seeWAReportDetailActionBtn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
+                    android:drawableLeft="@drawable/ic_icons8_whatsapp"
+                    android:drawableRight="@drawable/ic_arrows"
+                    android:drawablePadding="4dp"
                     android:fontFamily="@font/nuntio_regular"
-                    android:paddingBottom="8dp"
-                    android:text="See WA Report"
+                    android:padding="10dp"
+                    android:text="@string/whatsapp_msg"
                     android:textColor="#333"
-
-                    android:textSize="14sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/seeTextReportDetailActionBtn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
+                    android:drawableLeft="@drawable/ic_baseline_send_24"
+                    android:drawableRight="@drawable/ic_arrows"
+                    android:drawablePadding="4dp"
                     android:fontFamily="@font/nuntio_regular"
-                    android:paddingBottom="8dp"
-                    android:text="See Text Report"
+                    android:padding="10dp"
+                    android:text="@string/text_msg"
                     android:textColor="#333"
-                    android:textSize="14sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/callReport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:drawableLeft="@drawable/ic_call_icon"
+                    android:drawableRight="@drawable/ic_arrows"
+                    android:drawablePadding="4dp"
+                    android:fontFamily="@font/nuntio_regular"
+                    android:padding="10dp"
+                    android:text="@string/call_report"
+                    android:textColor="#333"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/seeQReportDetailActionBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:drawableLeft="@drawable/ic_home"
+                    android:drawableRight="@drawable/ic_arrows"
+                    android:drawablePadding="4dp"
+                    android:fontFamily="@font/nuntio_regular"
+                    android:padding="10dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/house_hold_visit"
+                    android:textColor="#333"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <ProgressBar

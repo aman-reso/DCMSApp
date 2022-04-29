@@ -9,8 +9,10 @@ import com.management.org.dcms.R
 import androidx.core.app.ActivityCompat
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.provider.CallLog
 import android.view.View
+import androidx.annotation.RequiresApi
 import com.management.org.dcms.codes.models.CallLogClass
 import java.util.ArrayList
 
@@ -42,15 +44,17 @@ class CallLogs : AppCompatActivity() {
             val stringDuration = cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.DURATION))
             val stringType = cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.TYPE))
             val stringLocation = cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.GEOCODED_LOCATION))
-            callArrayList.add(CallLogClass(stringNumber, dur = stringDuration))
+            callArrayList.add(CallLogClass(stringNumber, dur = stringDuration, type = stringType, name = stringName, location = stringLocation))
+
 
         } while (cursorCallLogs.moveToNext())
 
         System.out.println("callArray-->" + callArrayList)
+
     }
 
     //use this function for getting call log for specific number
-    private fun getCallLogsBasedOnMobileNum(mobileNum: String):ArrayList<CallLogClass> {
+      private fun getCallLogsBasedOnMobileNum(mobileNum: String):ArrayList<CallLogClass> {
         if (callArrayList.size > 0) {
             callArrayList.filter{
                 it.num==mobileNum
@@ -59,3 +63,4 @@ class CallLogs : AppCompatActivity() {
         return ArrayList()
     }
 }
+

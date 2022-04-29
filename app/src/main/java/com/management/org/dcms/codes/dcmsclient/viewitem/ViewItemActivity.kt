@@ -83,27 +83,6 @@ class ViewItemActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     fun onButtonShowPopupWindowClick(view: View?) {
 
-
-        // inflate the layout of the popup window
-        /*val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val popupView: View = inflater.inflate(R.layout.popup_window, null)
-
-        // create the popup window
-        val width = LinearLayout.LayoutParams.MATCH_PARENT
-        val height = LinearLayout.LayoutParams.MATCH_PARENT
-        val focusable = true // lets taps outside the popup also dismiss it
-        val popupWindow = PopupWindow(popupView, width, height, focusable)
-
-        // show the popup window
-        // which view you pass in doesn't matter, it is only used for the window tolken
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0)
-
-        // dismiss the popup window when touched
-        popupView.setOnTouchListener { v, event ->
-            popupWindow.dismiss()
-            true
-        }*/
-
         val intent = Intent(this, PopScreen::class.java)
         startActivity(intent)
         finish()
