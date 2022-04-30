@@ -2,6 +2,7 @@ package com.management.org.dcms.codes.network.path
 
 import com.google.gson.JsonObject
 import com.management.org.dcms.codes.models.*
+import com.management.org.dcms.codes.viewmodel.MessageTemplateViewModel
 import okhttp3.MultipartBody
 import org.json.JSONObject
 import retrofit2.http.*
@@ -76,13 +77,25 @@ interface DcmsApiInterface {
     suspend fun sentWAMessageGroupReport(@Body sentReportPostModel: SentReportInGroupModel, @Query("AuthToken") authToken: String): JsonObject
 
     @GET("api/Reports/QSentDetails")
-    suspend fun getQSentDetails(@Query("AuthToken") authToken: String, @Query("fromdate") fromDate: String, @Query("todate") toDate: String):QReportDetailModel
+    suspend fun getQSentDetails(@Query("AuthToken") authToken: String, @Query("fromdate") fromDate: String, @Query("todate") toDate: String): QReportDetailModel
 
     @GET("api/Reports/TextSentDetails")
-    suspend fun getTextSentDetails(@Query("AuthToken") authToken: String, @Query("fromdate") fromDate: String, @Query("todate") toDate: String):TextReportDetailModel
+    suspend fun getTextSentDetails(@Query("AuthToken") authToken: String, @Query("fromdate") fromDate: String, @Query("todate") toDate: String): TextReportDetailModel
 
     @GET("api/Reports/WASentDetails")
-    suspend fun getWASentDetails(@Query("AuthToken") authToken: String, @Query("fromdate") fromDate: String, @Query("todate") toDate: String):WAReportDetailModel
+    suspend fun getWASentDetails(@Query("AuthToken") authToken: String, @Query("fromdate") fromDate: String, @Query("todate") toDate: String): WAReportDetailModel
+
+
+    @POST("/api/CallLog/SentReport")
+    suspend fun submitCallLog(
+        @Query("AuthToken") authToken: String,
+        @Query("DeviceId") deviceId: String,
+        @Query("Lattitude") lattitude: String,
+        @Query("Longitude") longitude: String,
+        @Query("AndVersion") androidVersion: String,
+        @Query("IpAddress") ipAddress: String,
+        @Body userCallLogsModel: MessageTemplateViewModel.callLogReport
+    ): JsonObject
 
 }
 

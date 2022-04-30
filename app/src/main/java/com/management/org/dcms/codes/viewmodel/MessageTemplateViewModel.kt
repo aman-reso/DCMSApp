@@ -1,11 +1,6 @@
 package com.management.org.dcms.codes.viewmodel
 
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.database.Cursor
-import android.provider.ContactsContract
-import android.telecom.Call
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,7 +13,6 @@ import com.management.org.dcms.codes.utility.AndroidDeviceUtils
 import com.management.org.dcms.codes.utility.Utility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -132,8 +126,13 @@ class MessageTemplateViewModel @Inject constructor(var dcmsNetworkCallRepository
         }
     }
 
-    @SuppressLint("Range")
-    fun getCallHistory(activity:Activity?) {
-
+    internal fun submitCallReport(list: ArrayList<UserCallLogsModel>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val authToken = AuthConfigManager.getAuthToken()
+            val serverResponse = dcmsNetworkCallRepository.submitCallReport(authToken = authToken, callLogReport(list = list))
+            System.out.println("serverResponse-->" + serverResponse)
+        }
     }
+
+    data class callLogReport(var list: ArrayList<UserCallLogsModel>)
 }
