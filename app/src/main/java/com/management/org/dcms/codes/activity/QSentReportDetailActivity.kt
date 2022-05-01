@@ -240,13 +240,13 @@ class QSentReportDetailActivity : AppCompatActivity() {
     private fun getTitleValue(): String? {
         return when {
             isQReport -> {
-                "Q Report"
+                "House Hold Visited"
             }
             isWAReport -> {
-                "WA Report"
+                "WhatsApp Message Sent"
             }
             isTextReport -> {
-                "Text Report"
+                "Text Message Sent"
             }
             else -> {
                 null

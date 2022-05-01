@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -38,6 +39,7 @@ class HomeLandingMainActivity : BaseActivity() {
     private var profileSectionBinding: ProfileSectionBinding? = null
     private var wAMessageActionView: View? = null
     private var registrationActionView: View? = null
+    private var viewEntriesView: View? = null
     private var questionActionView: View? = null
     private var progressBar: ProgressBar? = null
     private var taskDetailsModel: TaskDetailsModel? = null
@@ -59,14 +61,10 @@ class HomeLandingMainActivity : BaseActivity() {
         setUpObserver()
         setUpClickListener()
 
-        val textView1 = findViewById<View>(R.id.viewEntries) as TextView
-        textView1.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-
         val textView = findViewById<View>(R.id.instructionTitleTextView) as TextView
         textView.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
     }
-
 
     private fun setUpViews() {
         mainActivityBinding?.let {
@@ -74,15 +72,15 @@ class HomeLandingMainActivity : BaseActivity() {
             wAMessageActionView = dashboardBinding?.messageMainAction
             registrationActionView = dashboardBinding?.actionBtnForStartReg
             questionActionView = dashboardBinding?.actionBtnForStartSurvey
+            viewEntriesView = dashboardBinding?.actionBtnForViewEntries
             progressBar = it.progressBar
             instructionTV = it.instructionTitleTextView
             instructionDetailTextView = it.instructionDetailTextView
             logoutTextView = profileSectionBinding?.logoutSection
             mobNumTextView = profileSectionBinding?.profileContactNumTV
             nameTextView = profileSectionBinding?.profileNameTV
-            seeAddedHouseHoldTv = it.seeAddedHouseHoldTv
             textMessageActionBtn = dashboardBinding?.textMessageAction
-            callActionBtn = dashboardBinding?.Callbtn
+            callActionBtn = dashboardBinding?.CallBtn
         }
         mainActivityBinding?.containerAppBar?.appBarTitleTV?.showHideView(false)
         mainActivityBinding?.containerAppBar?.toolbar?.showHideView(true)
@@ -148,6 +146,10 @@ class HomeLandingMainActivity : BaseActivity() {
         wAMessageActionView?.setOnClickListener {
             handleWAMessageIntent()
         }
+        //viewEntries
+        viewEntriesView?.setOnClickListener {
+            viewEntriesClass()
+        }
         registrationActionView?.setOnClickListener {
             handleDataCollectionIntent()
         }
@@ -161,15 +163,7 @@ class HomeLandingMainActivity : BaseActivity() {
         seeAddedHouseHoldTv?.setOnClickListener {
             startSeeAddedHouseHoldIntent()
         }
-        mainActivityBinding?.seeQReportDetailActionBtn?.setOnClickListener {
-            seeSentReport(Q_REPORT_INTENT)
-        }
-        mainActivityBinding?.seeWAReportDetailActionBtn?.setOnClickListener {
-            seeSentReport(WA_REPORT_INTENT)
-        }
-        mainActivityBinding?.seeTextReportDetailActionBtn?.setOnClickListener {
-            seeSentReport(TEXT_REPORT_INTENT)
-        }
+
     }
 
     private fun startQuestionActivity() {
@@ -178,12 +172,6 @@ class HomeLandingMainActivity : BaseActivity() {
             // intent.putExtra(URL_TO_BE_LOAD, response)
             startActivity(intent)
         }
-    }
-
-    private fun seeSentReport(key: String) {
-        val intent = Intent(this, QSentReportDetailActivity::class.java)
-        intent.putExtra(key, key)
-        startActivity(intent)
     }
 
     private fun startMessageTemplateActivity() {
@@ -224,9 +212,14 @@ class HomeLandingMainActivity : BaseActivity() {
 
     private fun handleCallIntent() {
         if (taskDetailsModel != null) {
-            startCallActivity()
+            val isMessageEnabled = taskDetailsModel?.Task?.Questionaires
+            if (isMessageEnabled == true) {
+                startCallActivity()
+            } else {
+                Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
+            }
         } else {
-            Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
+            Utility.showToastMessage(getStringInfo(R.string.please_wait))
         }
     }
 
@@ -298,6 +291,11 @@ class HomeLandingMainActivity : BaseActivity() {
             }
             progressBar?.showHideView(false)
         }
+    }
+
+    private fun viewEntriesClass(){
+        val intent = Intent(this, ViewEntries::class.java)
+        startActivity(intent)
     }
 
 

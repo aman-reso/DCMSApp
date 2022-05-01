@@ -234,7 +234,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/container3"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="150dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/container2">
@@ -245,39 +245,37 @@
                 android:layout_height="110dp"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="205dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/corner_8dp_without_border"
-                android:backgroundTint="#ff7648"
+                android:backgroundTint="#F3C942"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/containerForViewEntries"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/callid"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginHorizontal="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginEnd="2dp"
                     android:fontFamily="@font/nuntio_regular"
-                    android:src="@drawable/call"
+                    android:src="@drawable/phone_call"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/Callbtn"
+                android:id="@+id/CallBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:layout_marginBottom="35dp"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/corner_16dp_without_border"
-                android:backgroundTint="#209724"
+                android:backgroundTint="#24A629"
                 android:elevation="4dp"
                 android:fontFamily="@font/nuntio_bold"
                 android:paddingHorizontal="8dp"
@@ -288,7 +286,58 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/containerForCalls"
                 app:layout_constraintStart_toStartOf="@id/containerForCalls"
-                app:layout_constraintTop_toBottomOf="@+id/containerForCalls" />
+                app:layout_constraintTop_toTopOf="@id/containerForCalls"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerForViewEntries"
+                android:layout_width="0dp"
+                android:layout_height="110dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/corner_8dp_without_border"
+                android:backgroundTint="#F06292"
+                app:layout_constraintBottom_toBottomOf="@id/containerForCalls"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/containerForCalls"
+                app:layout_constraintTop_toTopOf="@id/containerForCalls">
+
+                <ImageView
+                    android:id="@+id/imageViewForViewEntries"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nuntio_regular"
+                    android:src="@drawable/documents"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/actionBtnForViewEntries"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/corner_16dp_without_border"
+                android:backgroundTint="@color/black"
+                android:elevation="4dp"
+                android:fontFamily="@font/nuntio_bold"
+                android:paddingVertical="12dp"
+                android:text="@string/view_entries"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/containerForViewEntries"
+                app:layout_constraintStart_toStartOf="@id/containerForViewEntries"
+                app:layout_constraintTop_toTopOf="@id/containerForViewEntries"
+                app:layout_constraintVertical_bias="1.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

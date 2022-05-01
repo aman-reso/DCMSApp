@@ -35,7 +35,7 @@ class ViewItemActivity : AppCompatActivity() {
         binding.households.adapter = adapter
         binding.households.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        binding.containerAppBar.appBarTitleTV.text="Added Household"
+        binding.containerAppBar.appBarTitleTV.text="House Hold List"
         binding.containerAppBar.icNavBackIcon.showHideView(true)
 
         binding.containerAppBar.icNavBackIcon.setOnClickListener {
