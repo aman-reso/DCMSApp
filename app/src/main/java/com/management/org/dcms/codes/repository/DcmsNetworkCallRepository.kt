@@ -1,13 +1,10 @@
 package com.management.org.dcms.codes.repository
 
-import com.management.org.dcms.codes.authConfig.AuthConfigManager
-import com.management.org.dcms.codes.models.LoginRequestData
-import com.management.org.dcms.codes.models.SentReportInGroupModel
-import com.management.org.dcms.codes.models.SentReportPostModel
-import com.management.org.dcms.codes.models.SentReportQActivityModel
+import com.management.org.dcms.codes.models.*
 import com.management.org.dcms.codes.network.path.DcmsApiInterface
 import com.management.org.dcms.codes.network.path.safeApiCall
 import com.management.org.dcms.codes.utility.AndroidDeviceUtils
+import com.management.org.dcms.codes.viewmodel.MessageTemplateViewModel
 import okhttp3.MultipartBody
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -115,6 +112,10 @@ class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInt
 
     suspend fun getTextSentDetails(authToken: String, fromDate: String, toDate: String) = safeApiCall {
         apiInterface.getTextSentDetails(authToken, fromDate, toDate)
+    }
+
+    suspend fun submitCallReport(authToken: String, userCallLogsModel: MessageTemplateViewModel.callLogReport) = safeApiCall {
+        apiInterface.submitCallLog(authToken, "", "", "", "", "",  userCallLogsModel)
     }
 
 }

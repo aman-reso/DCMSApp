@@ -192,7 +192,7 @@ class HomeLandingMainActivity : BaseActivity() {
     }
 
     private fun startCallActivity() {
-        val intent = Intent(this, CallLogsSentReportActivity::class.java)
+        val intent = Intent(this, CallDetailsActivity::class.java)
         startActivity(intent)
     }
 
@@ -224,14 +224,9 @@ class HomeLandingMainActivity : BaseActivity() {
 
     private fun handleCallIntent() {
         if (taskDetailsModel != null) {
-            val isMessageEnabled = taskDetailsModel?.Task?.Questionaires
-            if (isMessageEnabled == true) {
-                startCallActivity()
-            } else {
-                Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
-            }
+            startCallActivity()
         } else {
-            Utility.showToastMessage(getStringInfo(R.string.please_wait))
+            Utility.showToastMessage(getStringInfo(R.string.not_enabled_right_now))
         }
     }
 

@@ -41,6 +41,7 @@
         <entry key="app/mylibrary/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/mylibrary/src/main/res/layout/activity_splash.xml" value="0.309375" />
         <entry key="app/mylibrary/src/main/res/menu/home_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.253" />
         <entry key="app/src/main/res/drawable/corner_16dp_without_border.xml" value="0.173" />
         <entry key="app/src/main/res/drawable/corner_8dp_with_border.xml" value="0.2095" />
         <entry key="app/src/main/res/drawable/corner_8dp_without_border.xml" value="0.173" />
