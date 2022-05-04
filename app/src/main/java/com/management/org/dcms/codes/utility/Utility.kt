@@ -18,7 +18,7 @@ object Utility {
     }
 
     fun showToastMessage(message: String) {
-        Toast.makeText(DcmsApplication.getDcmsAppContext(), message, Toast.LENGTH_LONG).show()
+        Toast.makeText(DcmsApplication.getDcmsAppContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     fun checkIsOnline(): Boolean {

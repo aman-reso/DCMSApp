@@ -14,11 +14,17 @@ class QContactsListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
     var actionBtn: TextView? = itemView.findViewById(R.id.done)
     fun bindDataWithHolder(item: QContactsModel) {
         contactListItemMobNumTV?.text = item.MobileNo
-        if(item.SentStatus==0){
+        if(item.QStatus==0){
+            if (item.SentStatus==1){
+                contactListItemCheckBox?.isChecked=true
+                return
+            }
             contactListItemCheckBox?.isChecked=false
         }
-        else if (item.SentStatus==1){
+        else if (item.QStatus==1){
             contactListItemCheckBox?.isChecked=true
+        }else{
+            contactListItemCheckBox?.isChecked=false
         }
     }
 

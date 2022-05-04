@@ -110,6 +110,7 @@ class HomeLandingMainActivity : BaseActivity() {
 
 
     private fun setUpObserver() {
+        homeViewModel?.makeApiCall()
         homeViewModel?.getTaskDetails()
         progressBar?.showHideView(true)
         homeViewModel?.apply {
@@ -118,6 +119,7 @@ class HomeLandingMainActivity : BaseActivity() {
                 parseNetworkResponse(it)
             }
         }
+
     }
 
     private fun parseNetworkResponse(response: GlobalNetResponse<TaskDetailsModel>?) {
@@ -129,6 +131,7 @@ class HomeLandingMainActivity : BaseActivity() {
             is GlobalNetResponse.Success -> {
                 val successResponse: TaskDetailsModel = response.value
                 this.taskDetailsModel = successResponse
+                instructionDetailTextView?.text=taskDetailsModel?.Task?.Instructions
             }
             else -> {
 
@@ -297,6 +300,7 @@ class HomeLandingMainActivity : BaseActivity() {
         val intent = Intent(this, ViewEntries::class.java)
         startActivity(intent)
     }
+
 
 
 }

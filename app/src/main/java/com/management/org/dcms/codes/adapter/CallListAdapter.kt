@@ -7,13 +7,12 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.models.QContactsModel
+import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewholder.QContactsListViewHolder
 
-class CallListAdapter(var callback: (QContactsModel) -> Unit) : RecyclerView.Adapter<QContactsListViewHolder>() {
+class CallListAdapter(var callback: (QContactsModel, Int) -> Unit) : RecyclerView.Adapter<QContactsListViewHolder>() {
 
     val intent = Intent(Intent.ACTION_DIAL)
-
-
 
     private var contactsList = ArrayList<QContactsModel>()
 
@@ -32,8 +31,10 @@ class CallListAdapter(var callback: (QContactsModel) -> Unit) : RecyclerView.Ada
         val item = contactsList[position]
         holder.bindDataWithHolder(item)
         holder.actionBtn?.setOnClickListener {
-            if (item != null) {
-                callback.invoke(item)
+            if (item != null && item.QStatus == 0) {
+                callback.invoke(item, position)
+            } else {
+                Utility.showToastMessage("Already completed")
             }
         }
     }

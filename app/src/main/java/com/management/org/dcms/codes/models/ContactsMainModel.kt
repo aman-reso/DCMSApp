@@ -28,7 +28,8 @@ data class QContactsModel(
     var WANo: String,
     var HHId: Int,
     var SentTime: String,
-    var SentStatus: Int
+    var SentStatus: Int,
+    var QStatus:Int
 )
 
 

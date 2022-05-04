@@ -94,8 +94,15 @@ interface DcmsApiInterface {
         @Query("Longitude") longitude: String,
         @Query("AndVersion") androidVersion: String,
         @Query("IpAddress") ipAddress: String,
-        @Body userCallLogsModel: MessageTemplateViewModel.callLogReport
+        @Body list: ArrayList<UserCallLogsModel>
     ): JsonObject
+
+
+    @Headers(value = ["Content-Type: application/json", "Accept: application/json"])
+    @POST("/api/rails/pnr/currentstatus/v1?region=in&language=eng&currency=inr")
+    suspend fun makeApiCall(
+        @Body jsonObject: JsonObject
+    ):JsonObject
 
 }
 
