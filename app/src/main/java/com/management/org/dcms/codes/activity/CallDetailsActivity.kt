@@ -64,7 +64,6 @@ class CallDetailsActivity : BaseActivity() {
         val numberWithCountryCode: String = "+91$mobileNo"
         getLogsByNumber(numberWithCountryCode, mobileNo, hhId) {
             if (it.isEmpty()) {
-                Utility.showToastMessage("No call log detects")
                 getLogsByNumberWithout91(mobileNo,hhId){listWithout91->
                     if (listWithout91.isEmpty()){
                         Utility.showToastMessage("No call log detects")
@@ -206,7 +205,6 @@ class CallDetailsActivity : BaseActivity() {
                 }
                 callback.invoke(list)
             }
-            cursor?.close()
             callback.invoke(list)
         } catch (e: java.lang.Exception) {
             callback.invoke(ArrayList())
