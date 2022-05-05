@@ -29,7 +29,7 @@ class CallLogsSentReportActivity : AppCompatActivity() {
         calendar.add(Calendar.HOUR, 0)
         calendar.add(Calendar.MINUTE, 0)
 
-        findViewById<Button>(R.id.callReportBtn).setOnClickListener {
+        findViewById<TextView>(R.id.callReportBtn).setOnClickListener {
             getLogsByNumber("") {
                  if (it.isEmpty()){
                      //empty call log

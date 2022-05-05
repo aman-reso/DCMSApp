@@ -10,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PopScreen : BaseActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.popup_window)
@@ -17,10 +18,11 @@ class PopScreen : BaseActivity() {
     }
 
     fun btnCancelEvent (view: View?){
-        val intent = Intent(this, ViewItemActivity::class.java)
+       val intent = Intent(this, ViewItemActivity::class.java)
         startActivity(intent)
         finish()
 
     }
+
 }
 

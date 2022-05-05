@@ -13,7 +13,8 @@ data class ContactsModel(
     var Id: Int, var MobileNo: String, var WANo: String,
     var HHId: Int,
     var SentTime: String,
-    var SentStatus: Int
+    var SentStatus: Int,
+    var HHName:String=""
 )
 
 data class QContactsMainModel(
