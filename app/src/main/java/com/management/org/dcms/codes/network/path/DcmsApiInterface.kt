@@ -30,6 +30,10 @@ interface DcmsApiInterface {
         @Query("AuthToken") authToken: String, @Query("CampaignId") CampaignId: Int, @Query("ThemeId") ThemeId: Int
     ): QContactsMainModel
 
+
+    @GET("/api/SGAccount/CallContacts")
+    suspend fun getContactListForCall( @Query("AuthToken") authToken: String, @Query("CampaignId") CampaignId: Int, @Query("ThemeId") ThemeId: Int):QContactsMainModel
+
     @GET("/api/WA/Message")
     suspend fun getWaMessage(@Query("AuthToken") token: String): WAMessageTemplateModel
 
@@ -59,6 +63,7 @@ interface DcmsApiInterface {
         @Query("AuthToken") authToken: String, @Query("oldpassword") oldPassword: String,
         @Query("newpassword") newPassword: String, @Query("confirmpassword") confirmPassword: String
     ): JsonObject
+
 
     @POST("/api/Account/ForgetPassword")
     suspend fun forgotUserPassword(@Query("mobileno") mobileNo: String, @Query("language") language: String? = "hi"): JsonObject

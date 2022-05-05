@@ -10,8 +10,6 @@ import com.management.org.dcms.codes.dcmsclient.viewitem.ViewItemActivity
 
 class ViewEntries : BaseActivity() {
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.view_entries)
@@ -53,11 +51,7 @@ class ViewEntries : BaseActivity() {
         })
 
         var callReport = findViewById<TextView>(R.id.callReport)
-        callReport.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                callReportClass()
-            }
-        })
+        callReport.setOnClickListener { callReportClass() }
     }
 
     private fun startSeeAddedHouseHoldIntent() {

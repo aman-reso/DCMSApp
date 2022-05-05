@@ -127,6 +127,13 @@ class MessageTemplateViewModel @Inject constructor(var dcmsNetworkCallRepository
         }
     }
 
+   fun getContactListForCall(){
+       viewModelScope.launch(Dispatchers.IO) {
+           val authToken = AuthConfigManager.getAuthToken()
+           val serverResponse = dcmsNetworkCallRepository.getContactListForCall(authToken = authToken, themeId = 1, campaignId = 1)
+           qContactListLiveData.postValue(serverResponse)
+       }
+   }
     internal fun submitCallReport(list: ArrayList<UserCallLogsModel>, hhId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val authToken = AuthConfigManager.getAuthToken()
