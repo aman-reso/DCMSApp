@@ -4,5 +4,7 @@
         <domain includeSubdomains="true">fms.farmserp.in</domain>
         <domain includeSubdomains="true">dcmshost.dmi.ac.in</domain>
         <domain includeSubdomains="true">railsinfo-services.makemytrip.com</domain>
+        <domain includeSubdomains="true">dev.flightman.in</domain>
+
     </domain-config>
 </network-security-config>

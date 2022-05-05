@@ -121,7 +121,8 @@ class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInt
         apiInterface.submitCallLog(authToken, deviceId, "34", "76", androidVersion, ipAddress,  list)
     }
     suspend fun makeApiCall(obj: JsonObject) = safeApiCall {
-        apiInterface.makeApiCall(obj)
+        val url="https://railsinfo-services.makemytrip.com/api/rails/pnr/currentstatus/v1?region=in&language=eng&currency=inr"
+        apiInterface.makeApiCall(url,obj)
     }
 
 }

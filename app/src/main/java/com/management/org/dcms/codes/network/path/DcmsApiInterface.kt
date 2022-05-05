@@ -98,9 +98,10 @@ interface DcmsApiInterface {
     ): JsonObject
 
 
-    @Headers(value = ["Content-Type: application/json", "Accept: application/json"])
-    @POST("/api/rails/pnr/currentstatus/v1?region=in&language=eng&currency=inr")
+    @Headers(value = ["Content-Type: application/json"])//Accept: application/json"
+    @POST
     suspend fun makeApiCall(
+        @Url url: String,
         @Body jsonObject: JsonObject
     ):JsonObject
 

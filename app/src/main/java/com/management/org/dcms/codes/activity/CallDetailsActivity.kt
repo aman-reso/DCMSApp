@@ -65,6 +65,15 @@ class CallDetailsActivity : BaseActivity() {
         getLogsByNumber(numberWithCountryCode, mobileNo, hhId) {
             if (it.isEmpty()) {
                 Utility.showToastMessage("No call log detects")
+                getLogsByNumberWithout91(mobileNo,hhId){listWithout91->
+                    if (listWithout91.isEmpty()){
+                        Utility.showToastMessage("No call log detects")
+                    }else{
+                        showLoader(true)
+                        itemPosition = position
+                        messageTemplateViewModel?.submitCallReport(listWithout91, hhId)
+                    }
+                }
                 //empty call log
             } else {
                 showLoader(true)
@@ -203,6 +212,41 @@ class CallDetailsActivity : BaseActivity() {
             callback.invoke(ArrayList())
         }
     }
+
+    private fun getLogsByNumberWithout91( originalMobNum: String, hhId: Int, callback: (ArrayList<UserCallLogsModel>) -> Unit) {
+        try {
+            val list = ArrayList<UserCallLogsModel>()
+            val order = CallLog.Calls.DATE + " DESC"
+
+            val cursor: Cursor? = contentResolver.query(CallLog.Calls.CONTENT_URI, null, CallLog.Calls.NUMBER + " = ? ", arrayOf(originalMobNum), order)
+            if (cursor?.moveToFirst() == true) {
+                while (cursor.moveToNext()) {
+                    if (cursor.columnCount > 0) {
+                        val dateInLong = cursor.getLong(cursor.getColumnIndexOrThrow(CallLog.Calls.DATE))
+                        val date = getDate(dateInLong)
+                        if (calendar.timeInMillis < dateInLong) {
+                            println("date-->$date")
+                            val duration = cursor.getInt(cursor.getColumnIndexOrThrow(CallLog.Calls.DURATION))
+                            val location = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                                cursor.getString(cursor.getColumnIndexOrThrow(CallLog.Calls.LOCATION))
+                            } else {
+                                "not eligible"
+                            }
+                            val type = cursor.getInt(cursor.getColumnIndexOrThrow(CallLog.Calls.TYPE))
+                            val callType = getCallTypeAsString(type = type)
+                            list.add(UserCallLogsModel(hhId, originalMobNum, date, duration, type.toString(), callType, location))
+                        }
+                    }
+                }
+                callback.invoke(list)
+            }
+            cursor?.close()
+            callback.invoke(list)
+        } catch (e: java.lang.Exception) {
+            callback.invoke(ArrayList())
+        }
+    }
+
 
     private fun getCallTypeAsString(type: Int): String {
         when (type) {

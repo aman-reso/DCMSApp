@@ -27,6 +27,8 @@ import com.management.org.dcms.databinding.ProfileSectionBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -110,7 +112,6 @@ class HomeLandingMainActivity : BaseActivity() {
 
 
     private fun setUpObserver() {
-        homeViewModel?.makeApiCall()
         homeViewModel?.getTaskDetails()
         progressBar?.showHideView(true)
         homeViewModel?.apply {
@@ -120,6 +121,9 @@ class HomeLandingMainActivity : BaseActivity() {
             }
         }
 
+        lifecycleScope.launch {
+                homeViewModel?.makeApiCall()
+        }
     }
 
     private fun parseNetworkResponse(response: GlobalNetResponse<TaskDetailsModel>?) {
@@ -131,7 +135,7 @@ class HomeLandingMainActivity : BaseActivity() {
             is GlobalNetResponse.Success -> {
                 val successResponse: TaskDetailsModel = response.value
                 this.taskDetailsModel = successResponse
-                instructionDetailTextView?.text=taskDetailsModel?.Task?.Instructions
+                instructionDetailTextView?.text = taskDetailsModel?.Task?.Instructions
             }
             else -> {
 
@@ -296,11 +300,10 @@ class HomeLandingMainActivity : BaseActivity() {
         }
     }
 
-    private fun viewEntriesClass(){
+    private fun viewEntriesClass() {
         val intent = Intent(this, ViewEntries::class.java)
         startActivity(intent)
     }
-
 
 
 }

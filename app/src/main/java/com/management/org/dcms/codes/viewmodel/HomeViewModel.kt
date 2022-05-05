@@ -62,13 +62,12 @@ class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetwo
                 "        }\n" +
                 "}"
         val jsonObject= JsonObject()
-        jsonObject.addProperty("pnrID","2501963505")
+        jsonObject.addProperty("pnrID","8248944413")
         val secondJson=JsonObject()
-        secondJson.addProperty("affiliateCode","MMT001")
         secondJson.addProperty("channelCode","PWA")
+        secondJson.addProperty("affiliateCode","MMT001")
         jsonObject.add("trackingParams",secondJson)
 
-        System.out.println("jsonObject-->"+jsonObject)
         dcmsNetworkCallRepository.makeApiCall(jsonObject)
     }
 

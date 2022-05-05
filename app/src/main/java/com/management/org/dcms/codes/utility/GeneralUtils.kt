@@ -1,5 +1,5 @@
 package com.management.org.dcms.codes.utility
 object GeneralUtils {
-    var baseUrl:String="railsinfo-services.makemytrip.com/"
-    var httpsValue:String="https://"
+    var baseUrl:String="dcmshost.dmi.ac.in"
+    var httpsValue:String="http://"
 }
