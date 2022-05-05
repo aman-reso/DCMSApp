@@ -59,6 +59,9 @@ class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInt
     suspend fun getContactsListForQuestion(authToken: String, campaignId: Int, themeId: Int) = safeApiCall {
         apiInterface.getQuestionContactsList(authToken, campaignId, themeId)
     }
+    suspend fun getContactListForCall(authToken: String, campaignId: Int, themeId: Int) = safeApiCall {
+        apiInterface.getContactListForCall(authToken, campaignId, themeId)
+    }
 
     suspend fun getProfileDetails(authToken: String) = safeApiCall {
         apiInterface.getProfileDetails(authToken = authToken)

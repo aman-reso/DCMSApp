@@ -85,8 +85,6 @@ class CallDetailsActivity : BaseActivity() {
     private fun checkPermission(permission: String, requestCode: Int) {
         if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
-        } else {
-            Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -149,7 +147,7 @@ class CallDetailsActivity : BaseActivity() {
             }
         }
         progressBar?.showHideView(true)
-        messageTemplateViewModel?.getContactsListForQuestion()
+        messageTemplateViewModel?.getContactListForCall()
     }
 
     private fun parseNetworkResponse(networkResponse: GlobalNetResponse<QContactsMainModel>?) {
@@ -160,9 +158,9 @@ class CallDetailsActivity : BaseActivity() {
             }
             is GlobalNetResponse.Success -> {
                 val contactsList = networkResponse.value
-                if (contactsList?.qContactsList != null) {
-                    arrayList.addAll(contactsList?.qContactsList!!)
-                    contactsListAdapter.submitData(contactsList = contactsList?.qContactsList!!)
+                if (contactsList?.contactsList != null) {
+                    arrayList.addAll(contactsList?.contactsList!!)
+                    contactsListAdapter.submitData(contactsList = contactsList?.contactsList!!)
                 }
             }
         }

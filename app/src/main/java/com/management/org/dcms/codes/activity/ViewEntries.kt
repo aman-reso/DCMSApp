@@ -53,11 +53,7 @@ class ViewEntries : BaseActivity() {
         })
 
         var callReport = findViewById<TextView>(R.id.callReport)
-        callReport.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                callReportClass()
-            }
-        })
+        callReport.setOnClickListener { callReportClass() }
     }
 
     private fun startSeeAddedHouseHoldIntent() {
