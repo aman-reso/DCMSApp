@@ -135,13 +135,12 @@ class MessageTemplateActivity : BaseActivity() {
     private fun setMessageIntoViews(successResponse: WAMessageTemplateModel) {
         if (!successResponse.WAMessage.Template.isNullOrEmpty()) {
             messageBodyTextView?.text = successResponse.WAMessage.Template
-            messageTemplateString = successResponse.WAMessage.MediaURL
+            messageTemplateString = successResponse.WAMessage.Template
         }
-        if (!successResponse.WAMessage.MediaURL.isNullOrEmpty()) {
+       else if (!successResponse.WAMessage.MediaURL.isNullOrEmpty()) {
             messageBodyTextView?.text = successResponse.WAMessage.MediaURL
             messageTemplateString = successResponse.WAMessage.MediaURL
         }
-        messageTemplateString = successResponse.WAMessage.MediaURL
         templateId = successResponse.WAMessage.Id
     }
 

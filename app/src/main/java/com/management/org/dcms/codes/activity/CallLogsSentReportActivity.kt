@@ -70,6 +70,7 @@ class CallLogsSentReportActivity : AppCompatActivity() {
                 }
                 callback.invoke(list)
             }
+            cursor?.close()
         } catch (e: Exception) {
             callback.invoke(ArrayList())
         }

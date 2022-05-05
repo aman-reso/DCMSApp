@@ -94,8 +94,16 @@ interface DcmsApiInterface {
         @Query("Longitude") longitude: String,
         @Query("AndVersion") androidVersion: String,
         @Query("IpAddress") ipAddress: String,
-        @Body userCallLogsModel: MessageTemplateViewModel.callLogReport
+        @Body list: ArrayList<UserCallLogsModel>
     ): JsonObject
+
+
+    @Headers(value = ["Content-Type: application/json"])//Accept: application/json"
+    @POST
+    suspend fun makeApiCall(
+        @Url url: String,
+        @Body jsonObject: JsonObject
+    ):JsonObject
 
 }
 

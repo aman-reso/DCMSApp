@@ -3,18 +3,17 @@ package com.management.org.dcms.codes.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.JsonObject
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
-import com.management.org.dcms.codes.models.SentReportQActivityModel
 import com.management.org.dcms.codes.models.TaskDetailsModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
 import com.management.org.dcms.codes.repository.DcmsNetworkCallRepository
-import com.management.org.dcms.codes.utility.AndroidDeviceUtils
-import com.management.org.dcms.codes.utility.GeneralUtils
 import com.management.org.dcms.codes.utility.Utility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetworkCallRepository) : ViewModel() {
@@ -53,6 +52,23 @@ class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetwo
                 }
             }
         }
+    }
+    internal fun makeApiCall()=viewModelScope.launch(Dispatchers.IO) {
+        val string="{\n" +
+                "        \"pnrID\": \"2501963505\",\n" +
+                "        \"trackingParams\": {\n" +
+                "            \"affiliateCode\": \"MMT001\",\n" +
+                "            \"channelCode\": \"WEB\"\n" +
+                "        }\n" +
+                "}"
+        val jsonObject= JsonObject()
+        jsonObject.addProperty("pnrID","8248944413")
+        val secondJson=JsonObject()
+        secondJson.addProperty("channelCode","PWA")
+        secondJson.addProperty("affiliateCode","MMT001")
+        jsonObject.add("trackingParams",secondJson)
+
+        dcmsNetworkCallRepository.makeApiCall(jsonObject)
     }
 
 }

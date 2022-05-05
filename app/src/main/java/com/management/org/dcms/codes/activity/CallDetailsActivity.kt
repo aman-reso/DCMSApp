@@ -9,9 +9,10 @@ import android.os.Bundle
 import android.provider.CallLog
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.adapter.CallListAdapter
@@ -22,10 +23,14 @@ import com.management.org.dcms.codes.models.UserCallLogsModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
 import com.management.org.dcms.codes.utility.LanguageManager
 import com.management.org.dcms.codes.utility.Utility
+import com.management.org.dcms.codes.viewmodel.FAILURE
 import com.management.org.dcms.codes.viewmodel.MessageTemplateViewModel
+import com.management.org.dcms.codes.viewmodel.SUCCESS
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+
 
 @AndroidEntryPoint
 class CallDetailsActivity : BaseActivity() {
@@ -34,9 +39,9 @@ class CallDetailsActivity : BaseActivity() {
     private var callContactsRecyclerView: RecyclerView? = null
     private var progressBar: ProgressBar? = null
 
-    private var textView: TextView? = null
-    private var userCallArrayList: ArrayList<UserCallLogsModel> = ArrayList()
     private val calendar: Calendar by lazy { Calendar.getInstance() }
+    private var itemPosition: Int? = -1
+    private var arrayList: ArrayList<QContactsModel> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,18 +56,42 @@ class CallDetailsActivity : BaseActivity() {
         getDataFromIntent()
         setUpViews()
         setUpObservers()
-
+        checkPermission(Manifest.permission.READ_CALL_LOG, PERMISSION_CODE_CALL_LOG)
     }
 
-    private fun getCallLogForParticularNumber() {
+    private fun getCallLogForParticularNumber(mobileNo: String, hhId: Int, position: Int) {
         //+91 is mandatory
-        getLogsByNumber("+91 8210463654") {
+        val numberWithCountryCode: String = "+91$mobileNo"
+        getLogsByNumber(numberWithCountryCode, mobileNo, hhId) {
             if (it.isEmpty()) {
+                getLogsByNumberWithout91(mobileNo,hhId){listWithout91->
+                    if (listWithout91.isEmpty()){
+                        Utility.showToastMessage("No call log detects")
+                    }else{
+                        showLoader(true)
+                        itemPosition = position
+                        messageTemplateViewModel?.submitCallReport(listWithout91, hhId)
+                    }
+                }
                 //empty call log
             } else {
-                messageTemplateViewModel?.submitCallReport(it)
+                showLoader(true)
+                itemPosition = position
+                messageTemplateViewModel?.submitCallReport(it, hhId)
             }
         }
+    }
+
+    private fun checkPermission(permission: String, requestCode: Int) {
+        if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
+        } else {
+            Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showLoader(canShow: Boolean) {
+        progressBar?.showHideView(canShow = canShow)
     }
 
     private fun getDataFromIntent() {
@@ -90,15 +119,32 @@ class CallDetailsActivity : BaseActivity() {
 
     private fun setUpObservers() {
         messageTemplateViewModel?.apply {
-            wAMessageTemplateLiveData.observe(this@CallDetailsActivity) { response ->
-                if (response != null) {
-                    //  parseNetworkResponseForMessageTemplate(response)
-                }
-            }
             qContactListLiveData.observe(this@CallDetailsActivity) { networkResponse ->
                 if (networkResponse != null) {
                     progressBar?.showHideView(false)
                     parseNetworkResponse(networkResponse)
+                }
+            }
+            liveDataForCallLog.observe(this@CallDetailsActivity) {
+                showLoader(false)
+                when (it) {
+                    SUCCESS -> {
+                        Utility.showToastMessage("Data uploaded successfully")
+                        if (itemPosition != null && itemPosition != -1) {
+                            try {
+                                arrayList[itemPosition!!].QStatus=1
+                            }catch (e:Exception){
+
+                            }
+                            contactsListAdapter.notifyDataSetChanged()
+                        }
+                    }
+                    FAILURE -> {
+                        Utility.showToastMessage("Something went wrong")
+                    }
+                    else -> {
+                        Utility.showToastMessage(it)
+                    }
                 }
             }
         }
@@ -115,33 +161,36 @@ class CallDetailsActivity : BaseActivity() {
             is GlobalNetResponse.Success -> {
                 val contactsList = networkResponse.value
                 if (contactsList?.qContactsList != null) {
+                    arrayList.addAll(contactsList?.qContactsList!!)
                     contactsListAdapter.submitData(contactsList = contactsList?.qContactsList!!)
                 }
             }
         }
     }
 
-    private var callback = fun(contactsMainModel: QContactsModel) {
+    private var callback = fun(contactsMainModel: QContactsModel, position: Int) {
         if (contactsMainModel.MobileNo != "") {
 //            val intent = Intent(Intent.ACTION_DIAL)
 //            intent.data = Uri.parse("tel:${contactsMainModel.MobileNo}")
 //            startActivity(intent)
-            getCallLogForParticularNumber()
+
+            getCallLogForParticularNumber(contactsMainModel.MobileNo, contactsMainModel.HHId, position)
         }
     }
 
-    private fun getLogsByNumber(strNumber: String, callback: (ArrayList<UserCallLogsModel>) -> Unit) {
+    private fun getLogsByNumber(strNumberWithCountryCode: String, originalMobNum: String, hhId: Int, callback: (ArrayList<UserCallLogsModel>) -> Unit) {
         try {
             val list = ArrayList<UserCallLogsModel>()
-            val cursor: Cursor? = contentResolver.query(CallLog.Calls.CONTENT_URI, null, CallLog.Calls.NUMBER + " = ? ", arrayOf(strNumber), CallLog.Calls.DATE)
+            val order = CallLog.Calls.DATE + " DESC"
+
+            val cursor: Cursor? = contentResolver.query(CallLog.Calls.CONTENT_URI, null, CallLog.Calls.NUMBER + " = ? ", arrayOf(strNumberWithCountryCode), order)
             if (cursor?.moveToFirst() == true) {
                 while (cursor.moveToNext()) {
                     if (cursor.columnCount > 0) {
                         val dateInLong = cursor.getLong(cursor.getColumnIndexOrThrow(CallLog.Calls.DATE))
-                        val date=getDate(dateInLong)
-                        System.out.println("date-->"+date)
+                        val date = getDate(dateInLong)
                         if (calendar.timeInMillis < dateInLong) {
-                            val number = cursor.getString(cursor.getColumnIndexOrThrow(CallLog.Calls.NUMBER))
+                            println("date-->$date")
                             val duration = cursor.getInt(cursor.getColumnIndexOrThrow(CallLog.Calls.DURATION))
                             val location = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                                 cursor.getString(cursor.getColumnIndexOrThrow(CallLog.Calls.LOCATION))
@@ -150,16 +199,52 @@ class CallDetailsActivity : BaseActivity() {
                             }
                             val type = cursor.getInt(cursor.getColumnIndexOrThrow(CallLog.Calls.TYPE))
                             val callType = getCallTypeAsString(type = type)
-                            list.add(UserCallLogsModel(1, number, date.toString(), duration, type.toString(), callType, location))
+                            list.add(UserCallLogsModel(hhId, originalMobNum, date, duration, type.toString(), callType, location))
                         }
                     }
                 }
                 callback.invoke(list)
             }
+            callback.invoke(list)
         } catch (e: java.lang.Exception) {
             callback.invoke(ArrayList())
         }
     }
+
+    private fun getLogsByNumberWithout91( originalMobNum: String, hhId: Int, callback: (ArrayList<UserCallLogsModel>) -> Unit) {
+        try {
+            val list = ArrayList<UserCallLogsModel>()
+            val order = CallLog.Calls.DATE + " DESC"
+
+            val cursor: Cursor? = contentResolver.query(CallLog.Calls.CONTENT_URI, null, CallLog.Calls.NUMBER + " = ? ", arrayOf(originalMobNum), order)
+            if (cursor?.moveToFirst() == true) {
+                while (cursor.moveToNext()) {
+                    if (cursor.columnCount > 0) {
+                        val dateInLong = cursor.getLong(cursor.getColumnIndexOrThrow(CallLog.Calls.DATE))
+                        val date = getDate(dateInLong)
+                        if (calendar.timeInMillis < dateInLong) {
+                            println("date-->$date")
+                            val duration = cursor.getInt(cursor.getColumnIndexOrThrow(CallLog.Calls.DURATION))
+                            val location = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                                cursor.getString(cursor.getColumnIndexOrThrow(CallLog.Calls.LOCATION))
+                            } else {
+                                "not eligible"
+                            }
+                            val type = cursor.getInt(cursor.getColumnIndexOrThrow(CallLog.Calls.TYPE))
+                            val callType = getCallTypeAsString(type = type)
+                            list.add(UserCallLogsModel(hhId, originalMobNum, date, duration, type.toString(), callType, location))
+                        }
+                    }
+                }
+                callback.invoke(list)
+            }
+            cursor?.close()
+            callback.invoke(list)
+        } catch (e: java.lang.Exception) {
+            callback.invoke(ArrayList())
+        }
+    }
+
 
     private fun getCallTypeAsString(type: Int): String {
         when (type) {
@@ -176,12 +261,31 @@ class CallDetailsActivity : BaseActivity() {
             val calendar = Calendar.getInstance()
             calendar.timeInMillis = milliSeconds
             return formatter.format(calendar.time)
-        }catch (e:java.lang.Exception){
+        } catch (e: java.lang.Exception) {
             return milliSeconds.toString()
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_CODE_CALL_LOG) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission Call log Granted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
-
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
 }
-const val DATE_FORMAT="dd/MM/yyyy hh:mm:ss.SSS"
+
+const val PERMISSION_CODE_CALL_LOG = 101
+const val DATE_FORMAT = "dd/MM/yyyy hh:mm:ss.SSS"

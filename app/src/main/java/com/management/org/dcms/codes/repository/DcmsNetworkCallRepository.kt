@@ -1,10 +1,10 @@
 package com.management.org.dcms.codes.repository
 
+import com.google.gson.JsonObject
 import com.management.org.dcms.codes.models.*
 import com.management.org.dcms.codes.network.path.DcmsApiInterface
 import com.management.org.dcms.codes.network.path.safeApiCall
 import com.management.org.dcms.codes.utility.AndroidDeviceUtils
-import com.management.org.dcms.codes.viewmodel.MessageTemplateViewModel
 import okhttp3.MultipartBody
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -114,8 +114,15 @@ class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInt
         apiInterface.getTextSentDetails(authToken, fromDate, toDate)
     }
 
-    suspend fun submitCallReport(authToken: String, userCallLogsModel: MessageTemplateViewModel.callLogReport) = safeApiCall {
-        apiInterface.submitCallLog(authToken, "", "", "", "", "",  userCallLogsModel)
+    suspend fun submitCallReport(authToken: String, list: ArrayList<UserCallLogsModel>, hhId: Int) = safeApiCall {
+        val deviceId: String = AndroidDeviceUtils.getDeviceId()
+        val androidVersion: String = AndroidDeviceUtils.getAndroidVersion()
+        val ipAddress: String = AndroidDeviceUtils.getLocalIpAddress()
+        apiInterface.submitCallLog(authToken, deviceId, "34", "76", androidVersion, ipAddress,  list)
+    }
+    suspend fun makeApiCall(obj: JsonObject) = safeApiCall {
+        val url="https://railsinfo-services.makemytrip.com/api/rails/pnr/currentstatus/v1?region=in&language=eng&currency=inr"
+        apiInterface.makeApiCall(url,obj)
     }
 
 }

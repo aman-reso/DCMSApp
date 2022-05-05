@@ -23,6 +23,7 @@ class MessageTemplateViewModel @Inject constructor(var dcmsNetworkCallRepository
     var contactsListLiveData: MutableLiveData<GlobalNetResponse<ContactsMainModel>> = MutableLiveData()
     var qContactListLiveData: MutableLiveData<GlobalNetResponse<QContactsMainModel>> = MutableLiveData()
     var textMessageTemplateModel = MutableLiveData<GlobalNetResponse<TextMessageTemplateModel>>()
+    var liveDataForCallLog = MutableLiveData<String>()
 
     internal fun getWAMessageTemplate() {
         if (Utility.isUserLoggedIn()) {
@@ -126,13 +127,32 @@ class MessageTemplateViewModel @Inject constructor(var dcmsNetworkCallRepository
         }
     }
 
-    internal fun submitCallReport(list: ArrayList<UserCallLogsModel>) {
+    internal fun submitCallReport(list: ArrayList<UserCallLogsModel>, hhId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val authToken = AuthConfigManager.getAuthToken()
-            val serverResponse = dcmsNetworkCallRepository.submitCallReport(authToken = authToken, callLogReport(list = list))
-            System.out.println("serverResponse-->" + serverResponse)
+            when (val response=dcmsNetworkCallRepository.submitCallReport(authToken = authToken,  list,hhId)) {
+                is GlobalNetResponse.NetworkFailure -> {
+                    liveDataForCallLog.postValue(FAILURE)
+                }
+                is GlobalNetResponse.Success -> {
+                    var jsonObject= response.value
+                    if (jsonObject.has("Message")){
+                        if (jsonObject["Message"].asString=="Call Logging Done"){
+                            liveDataForCallLog.postValue(SUCCESS)
+                            return@launch
+                        }
+                        else{
+                            liveDataForCallLog.postValue(jsonObject["Message"].asString)
+                            return@launch
+                        }
+                    }
+                    liveDataForCallLog.postValue(FAILURE)
+                }
+            }
         }
     }
 
-    data class callLogReport(var list: ArrayList<UserCallLogsModel>)
+    data class CallLogReport(var callLogReport: ArrayList<UserCallLogsModel>)
 }
+const val SUCCESS="SUCCESS"
+const val FAILURE="FAILURE"
