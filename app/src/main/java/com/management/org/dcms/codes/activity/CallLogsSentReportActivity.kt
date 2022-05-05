@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.models.UserCallLogsModel
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -23,15 +22,15 @@ class CallLogsSentReportActivity : AppCompatActivity() {
     private val calendar: Calendar by lazy { Calendar.getInstance() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.calllogs)
+        setContentView(R.layout.call_report)
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CALL_LOG), PackageManager.PERMISSION_GRANTED)
         textView = findViewById(R.id.textView)
         calendar.add(Calendar.DAY_OF_YEAR, 0);
         calendar.add(Calendar.HOUR, 0)
         calendar.add(Calendar.MINUTE, 0)
 
-        findViewById<Button>(R.id.button).setOnClickListener {
-            getLogsByNumber("8210463654") {
+        findViewById<Button>(R.id.callReportBtn).setOnClickListener {
+            getLogsByNumber("") {
                  if (it.isEmpty()){
                      //empty call log
                  }else{

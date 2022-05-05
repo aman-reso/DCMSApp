@@ -10,8 +10,6 @@ import com.management.org.dcms.codes.dcmsclient.viewitem.ViewItemActivity
 
 class ViewEntries : BaseActivity() {
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.view_entries)
@@ -21,6 +19,8 @@ class ViewEntries : BaseActivity() {
 
         onClickListeners()
     }
+
+
 
     private fun onClickListeners()
     {
