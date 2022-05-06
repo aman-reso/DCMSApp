@@ -20,7 +20,9 @@ data class ContactsModel(
 data class QContactsMainModel(
     var Message: String,
     @SerializedName("SGQAccount")
-    var qContactsList: ArrayList<QContactsModel>?
+    var qContactsList: ArrayList<QContactsModel>?,
+    @SerializedName("SGAccount")
+    var contactsList: ArrayList<QContactsModel>?
 )
 
 data class QContactsModel(
@@ -30,8 +32,8 @@ data class QContactsModel(
     var HHId: Int,
     var SentTime: String,
     var SentStatus: Int,
-    var QStatus:Int,
-    var HHName:String=""
+    var QStatus: Int,
+    var HHName: String = ""
 )
 
 
