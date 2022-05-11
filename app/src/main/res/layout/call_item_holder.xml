@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,94 +7,73 @@
     tools:context=".codes.activity.CallDetailsActivity">
 
 
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/containerForFirst"
-        android:layout_width="10dp"
+    <CheckBox
+        android:id="@+id/contactsEachItemCheckBox"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_row="1"
-        android:layout_columnWeight="1"
-        android:layout_margin="5dp"
-        android:background="@color/white"
-        app:cardCornerRadius="7dp"
-        app:cardElevation="10dp">
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/contactsItemMobileNum"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/contactsItemMobileNum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autoLink="phone"
+        android:linksClickable="true"
+        android:fontFamily="@font/nuntio_regular"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/contactsEachItemCheckBox"
+        app:layout_constraintTop_toBottomOf="@+id/callItemNameTV"
+        app:layout_constraintEnd_toStartOf="@+id/done"/>
 
-            <CheckBox
-                android:id="@+id/contactsEachItemCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:clickable="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/contactsItemMobileNum"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/contactsItemMobileNum"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:autoLink="phone"
-                android:fontFamily="@font/nuntio_regular"
-                android:linksClickable="true"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/done"
-                app:layout_constraintStart_toEndOf="@+id/contactsEachItemCheckBox"
-                app:layout_constraintTop_toBottomOf="@+id/callItemNameTV" />
+    <TextView
+        android:id="@+id/callItemNameTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nuntio_regular"
+        android:text=""
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/contactsItemMobileNum"
+        app:layout_constraintEnd_toStartOf="@+id/done"
+        app:layout_constraintStart_toEndOf="@+id/contactsEachItemCheckBox"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 
-            <TextView
-                android:id="@+id/done"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/corner_8dp_with_border"
-                android:backgroundTint="#D32215"
-                android:fontFamily="@font/nuntio_regular"
-                android:gravity="center"
-                android:paddingHorizontal="8dp"
-                android:text="@string/done"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/contactsItemMobileNum"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+    <TextView
+        android:id="@+id/done"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/corner_8dp_with_border"
+        android:backgroundTint="@android:color/holo_red_light"
+        android:fontFamily="@font/nuntio_regular"
+        android:gravity="center"
+        android:paddingHorizontal="8dp"
+        android:text="Complete"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/contactsItemMobileNum"
+        app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/callItemNameTV"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:autoLink="phone"
-                android:fontFamily="@font/nuntio_regular"
-                android:linksClickable="true"
-                android:text=""
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/contactsItemMobileNum"
-                app:layout_constraintEnd_toStartOf="@id/done"
-                app:layout_constraintStart_toEndOf="@+id/contactsEachItemCheckBox"
-                app:layout_constraintTop_toTopOf="parent"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
 
-</GridLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

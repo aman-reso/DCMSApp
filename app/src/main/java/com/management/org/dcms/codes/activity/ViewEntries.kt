@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import com.management.org.dcms.R
+import com.management.org.dcms.codes.dcmsclient.util.CallTest
 import com.management.org.dcms.codes.dcmsclient.viewitem.ViewItemActivity
 
 class ViewEntries : BaseActivity() {
@@ -52,8 +53,10 @@ class ViewEntries : BaseActivity() {
             }
         })
 
+
         var callReport = findViewById<TextView>(R.id.callReport)
         callReport.setOnClickListener { callReportClass() }
+
     }
 
     private fun startSeeAddedHouseHoldIntent() {
@@ -68,8 +71,10 @@ class ViewEntries : BaseActivity() {
     }
 
     private fun callReportClass(){
-        val intent = Intent(this, CallLogsSentReportActivity::class.java)
+        val intent = Intent(this, CallTest::class.java)
         startActivity(intent)
     }
+
+
 
 }

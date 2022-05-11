@@ -10,7 +10,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInterface) {
+class
+DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInterface) {
 
     suspend fun submitRequestForLogin(inputPhone: String, inputPassword: String) = safeApiCall {
         val id: Int = 0

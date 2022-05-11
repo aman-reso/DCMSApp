@@ -127,9 +127,6 @@
                 android:background="@drawable/border_textview"/>
 
 
-
-
-
     </LinearLayout>
 
 </ScrollView>
