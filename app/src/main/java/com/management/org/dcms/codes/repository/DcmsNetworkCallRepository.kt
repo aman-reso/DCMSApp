@@ -1,6 +1,7 @@
 package com.management.org.dcms.codes.repository
 
 import com.google.gson.JsonObject
+import com.management.org.dcms.codes.activity.LocationValue
 import com.management.org.dcms.codes.models.*
 import com.management.org.dcms.codes.network.path.DcmsApiInterface
 import com.management.org.dcms.codes.network.path.safeApiCall
@@ -19,8 +20,8 @@ class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInt
         val deviceId: String = AndroidDeviceUtils.getDeviceId()
         val androidVersion: String = AndroidDeviceUtils.getAndroidVersion()
         val ipAddress: String = AndroidDeviceUtils.getLocalIpAddress()
-        val latitude: String = "123"
-        val longitude: String = "231"
+        val latitude: String = LocationValue.latitude
+        val longitude: String = LocationValue.longitude
         val loginRequestData = LoginRequestData(
             id, mobileNumber, password, deviceId, androidVersion,
             ipAddress, latitude, longitude
@@ -50,8 +51,8 @@ class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInt
         val deviceId: String = AndroidDeviceUtils.getDeviceId()
         val androidVersion: String = AndroidDeviceUtils.getAndroidVersion()
         val ipAddress: String = AndroidDeviceUtils.getLocalIpAddress()
-        val latitude: String = "123"
-        val longitude: String = "231"
+        val latitude: String = LocationValue.latitude
+        val longitude: String = LocationValue.longitude
         val sentReportPostModel = SentReportPostModel(HHId = hhId, WANo = waNum, TemplateId = templateId, deviceId, latitude, longitude, androidVersion, ipAddress)
         apiInterface.sentWAReport(authToken = authToken, sentReportPostModel = sentReportPostModel)
     }
@@ -87,8 +88,8 @@ class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInt
         val deviceId: String = AndroidDeviceUtils.getDeviceId()
         val androidVersion: String = AndroidDeviceUtils.getAndroidVersion()
         val ipAddress: String = AndroidDeviceUtils.getLocalIpAddress()
-        val latitude: String = "123"
-        val longitude: String = "231"
+        val latitude: String = LocationValue.latitude
+        val longitude: String = LocationValue.longitude
         val sentReportPostModel = SentReportPostModel(HHId = hhId, WANo = waNum, TemplateId = templateId, deviceId, latitude, longitude, androidVersion, ipAddress)
         apiInterface.sentTextMessageReport(authToken = authToken, sentReportPostModel = sentReportPostModel)
     }
@@ -121,7 +122,9 @@ class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInt
         val deviceId: String = AndroidDeviceUtils.getDeviceId()
         val androidVersion: String = AndroidDeviceUtils.getAndroidVersion()
         val ipAddress: String = AndroidDeviceUtils.getLocalIpAddress()
-        apiInterface.submitCallLog(authToken, deviceId, "34", "76", androidVersion, ipAddress,  list)
+        val latitude: String = LocationValue.latitude
+        val longitude: String = LocationValue.longitude
+        apiInterface.submitCallLog(authToken, deviceId, latitude, longitude, androidVersion, ipAddress,  list)
     }
     suspend fun makeApiCall(obj: JsonObject) = safeApiCall {
         val url="https://railsinfo-services.makemytrip.com/api/rails/pnr/currentstatus/v1?region=in&language=eng&currency=inr"

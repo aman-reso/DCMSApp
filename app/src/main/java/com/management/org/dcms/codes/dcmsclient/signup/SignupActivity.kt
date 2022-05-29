@@ -21,6 +21,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.snackbar.Snackbar
 import com.management.org.dcms.R
+import com.management.org.dcms.codes.activity.LocationValue
 import com.management.org.dcms.codes.activity.LoginActivity
 import com.management.org.dcms.codes.dcmsclient.data.models.*
 import com.management.org.dcms.codes.utility.Utility
@@ -370,6 +371,8 @@ class SignupActivity : AppCompatActivity() {
             if (stateId != 0 && districtId != 0 && blockId != 0 && gpId != 0 && villageId != 0 && !binding.name.text.isNullOrEmpty() &&
                 !binding.email.text.isNullOrEmpty() && !binding.mobile.text.isNullOrEmpty() && !binding.password.text.isNullOrEmpty()
             ) {
+                val latitude: String = LocationValue.latitude
+                val longitude: String = LocationValue.longitude
                 val a = CancellationTokenSource().token
                 fusedLocationClient.getCurrentLocation(
                     LocationRequest.PRIORITY_HIGH_ACCURACY,
@@ -390,8 +393,7 @@ class SignupActivity : AppCompatActivity() {
                         binding.email.text.toString(),
                         binding.mobile.text.toString(),
                         deviceId,
-                        "123",
-                        "123"
+                        latitude,longitude
                     )
 
                 }.addOnFailureListener {

@@ -16,4 +16,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/gettingLocationTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/nuntio_regular"
+        android:text="Fetching Location"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appLogoOnSplashImg" />
+
+    <ProgressBar
+        android:id="@+id/pgBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/gettingLocationTV"
+        app:layout_constraintEnd_toStartOf="@+id/gettingLocationTV"
+        app:layout_constraintTop_toTopOf="@+id/gettingLocationTV" />
 </androidx.constraintlayout.widget.ConstraintLayout>

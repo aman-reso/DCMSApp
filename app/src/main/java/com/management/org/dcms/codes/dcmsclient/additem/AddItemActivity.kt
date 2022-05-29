@@ -26,6 +26,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.snackbar.Snackbar
 import com.management.org.dcms.R
+import com.management.org.dcms.codes.activity.LocationValue
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.extensions.showHideView
 import com.management.org.dcms.codes.utility.NetworkImpl
@@ -215,6 +216,8 @@ class AddItemActivity : AppCompatActivity() {
                             }
                         }
 
+                        val latitude: String = LocationValue.latitude
+                        val longitude: String = LocationValue.longitude
                         val a = CancellationTokenSource().token
                         fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, a).addOnSuccessListener {
                             val file = File("${fileUri?.path}")
@@ -225,7 +228,7 @@ class AddItemActivity : AppCompatActivity() {
                                         villageId, villageName, binding.name.text.toString(),
                                         binding.mobile.text.toString(), whatsAppNum, emailId, binding.address.text.toString(),
                                         binding.father.text.toString(), binding.mother.text.toString(), binding.ward.text.toString(),
-                                        binding.landmark.text.toString(), authToken, "123", "123", encodedImage, ".jpg",
+                                        binding.landmark.text.toString(), authToken, latitude, longitude, encodedImage, ".jpg",
                                         mobileType, documentType, binding.documentNumber.text.toString()
                                     )
                                 } catch (e:Exception) {
