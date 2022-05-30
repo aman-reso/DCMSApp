@@ -11,7 +11,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInterface) {
+class
+DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInterface) {
 
     suspend fun submitRequestForLogin(inputPhone: String, inputPassword: String) = safeApiCall {
         val id: Int = 0
@@ -129,6 +130,14 @@ class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInt
     suspend fun makeApiCall(obj: JsonObject) = safeApiCall {
         val url="https://railsinfo-services.makemytrip.com/api/rails/pnr/currentstatus/v1?region=in&language=eng&currency=inr"
         apiInterface.makeApiCall(url,obj)
+    }
+    suspend fun getCallLogsReport(authToken: String)= safeApiCall{
+        val deviceId: String = AndroidDeviceUtils.getDeviceId()
+        val androidVersion: String = AndroidDeviceUtils.getAndroidVersion()
+        val ipAddress: String = AndroidDeviceUtils.getLocalIpAddress()
+        val latitude: String = LocationValue.latitude
+        val longitude: String = LocationValue.longitude
+        apiInterface.getCallLogsReport(authToken, deviceId, latitude, longitude, androidVersion, ipAddress)
     }
 
 }

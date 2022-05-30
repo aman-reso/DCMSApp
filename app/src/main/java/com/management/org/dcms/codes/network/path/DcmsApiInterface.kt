@@ -110,5 +110,15 @@ interface DcmsApiInterface {
         @Body jsonObject: JsonObject
     ):JsonObject
 
+    @POST("/api/CallLog/SentReport")
+    suspend fun getCallLogsReport(
+        @Query("AuthToken") authToken: String,
+        @Query("DeviceId") deviceId: String,
+        @Query("Lattitude") lattitude: String,
+        @Query("Longitude") longitude: String,
+        @Query("AndVersion") androidVersion: String,
+        @Query("IpAddress") ipAddress: String,
+    ):CallSentReportResponse
+
 }
 

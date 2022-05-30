@@ -27,6 +27,9 @@
             android:name=".codes.activity.QSentReportDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".codes.dcmsclient.util.CallTest"
+            android:exported="false" />
+        <activity
             android:name=".codes.activity.BaseActivity"
             android:exported="false" />
         <activity

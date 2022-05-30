@@ -68,7 +68,7 @@ class ViewEntries : BaseActivity() {
     }
 
     private fun callReportClass(){
-        val intent = Intent(this, CallDetailsActivity::class.java)
+        val intent = Intent(this, CallLogsSentReportActivity::class.java)
         startActivity(intent)
     }
 

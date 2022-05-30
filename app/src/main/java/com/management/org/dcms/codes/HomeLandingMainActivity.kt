@@ -121,9 +121,6 @@ class HomeLandingMainActivity : BaseActivity() {
             }
         }
 
-        lifecycleScope.launch {
-                homeViewModel?.makeApiCall()
-        }
     }
 
     private fun parseNetworkResponse(response: GlobalNetResponse<TaskDetailsModel>?) {
