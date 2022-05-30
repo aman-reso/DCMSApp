@@ -148,18 +148,18 @@ class MessageTemplateActivity : BaseActivity() {
         if (messageTemplateString != null && templateId != null && templateId != -1) {
             messageTemplateViewModel?.sentWAReportToServer(hhId = contactsMainModel.HHId, templateId = templateId!!, waNum = contactsMainModel.WANo)
             val waMobNumber = contactsMainModel.WANo
-            sendToWhatsApp(waMobNumber, messageTemplateString!!)
+            sendToWhatsApp(waMobNumber, messageTemplateString!!,contactsMainModel.HHId)
         } else {
             Utility.showToastMessage(LanguageManager.getStringInfo(R.string.please_wait_message_template_not_received))
         }
     }
 
-    private fun sendToWhatsApp(waMobNumber: String, messageTemplateString: String) {
+    private fun sendToWhatsApp(waMobNumber: String, messageTemplateString: String, hhId: Int) {
         try {
             val mobWithCountryCode = countryCodeIndia + waMobNumber
             val intent = Intent(Intent.ACTION_VIEW)
             val message: String = URLEncoder.encode(messageTemplateString, "utf-8")
-            intent.data = Uri.parse("${BASE_URL_FOR_WHATSAPP}send?phone=$mobWithCountryCode&text=$message")
+            intent.data = Uri.parse("${BASE_URL_FOR_WHATSAPP}send?phone=$mobWithCountryCode&text=$message$hhId")
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             startActivity(intent)
         } catch (e: Exception) {

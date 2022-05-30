@@ -20,6 +20,8 @@ class ViewEntries : BaseActivity() {
         onClickListeners()
     }
 
+
+
     private fun onClickListeners()
     {
         var seeAddedHouseHoldTv = findViewById<TextView>(R.id.seeAddedHouseHoldTv)
@@ -66,7 +68,7 @@ class ViewEntries : BaseActivity() {
     }
 
     private fun callReportClass(){
-        val intent = Intent(this, CallLogsSentReportActivity::class.java)
+        val intent = Intent(this, CallDetailsActivity::class.java)
         startActivity(intent)
     }
 

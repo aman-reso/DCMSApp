@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/containerAppBar"
+                layout="@layout/app_title_bar" />
+
+        <TextView
+            android:id="@+id/selectFromDateTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/corner_8dp_with_border"
+            android:fontFamily="@font/nuntio_regular"
+            android:gravity="center"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="8dp"
+            android:text="@string/from_date"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/containerAppBar" />
+
+        <TextView
+            android:id="@+id/selectToDateTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:background="@drawable/corner_8dp_with_border"
+            android:fontFamily="@font/nuntio_regular"
+            android:gravity="center"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="8dp"
+            android:text="@string/to_date"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/selectFromDateTV"
+            app:layout_constraintStart_toEndOf="@+id/selectFromDateTV"
+            app:layout_constraintTop_toTopOf="@+id/selectFromDateTV" />
+
+        <TextView
+            android:id="@+id/callReportBtn"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/corner_16dp_without_border"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:fontFamily="@font/nuntio_bold"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/get_result"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/selectFromDateTV"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/selectFromDateTV" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="409dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selectFromDateTV" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reportRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#EFEFEF"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
