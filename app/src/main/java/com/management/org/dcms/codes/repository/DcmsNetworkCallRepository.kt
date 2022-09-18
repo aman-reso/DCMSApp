@@ -127,5 +127,8 @@ class DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInt
         val url="https://railsinfo-services.makemytrip.com/api/rails/pnr/currentstatus/v1?region=in&language=eng&currency=inr"
         apiInterface.makeApiCall(url,obj)
     }
+    suspend fun makeApiCallForGettingCampaign(authToken: String)= safeApiCall {
+        apiInterface.getCampaignListFrom(authToken)
+    }
 
 }

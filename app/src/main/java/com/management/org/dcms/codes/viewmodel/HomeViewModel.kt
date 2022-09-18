@@ -16,7 +16,8 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetworkCallRepository) : ViewModel() {
+class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetworkCallRepository) :
+    ViewModel() {
     var taskDetailLiveData: MutableLiveData<GlobalNetResponse<TaskDetailsModel>?> = MutableLiveData()
 
     internal fun getTaskDetails() {
@@ -36,7 +37,8 @@ class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetwo
             viewModelScope.launch(Dispatchers.IO) {
                 val authToken: String? = AuthConfigManager.getAuthToken()
                 if (authToken != null) {
-                    when (val response = dcmsNetworkCallRepository.logoutUserFromServer(authToken = authToken)) {
+                    when (val response =
+                        dcmsNetworkCallRepository.logoutUserFromServer(authToken = authToken)) {
                         is GlobalNetResponse.Success -> {
                             val successResponseValue = response.value
                             if (successResponseValue.Status == 1) {
@@ -53,22 +55,34 @@ class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetwo
             }
         }
     }
-    internal fun makeApiCall()=viewModelScope.launch(Dispatchers.IO) {
-        val string="{\n" +
+
+    internal fun makeApiCall() = viewModelScope.launch(Dispatchers.IO) {
+        val string = "{\n" +
                 "        \"pnrID\": \"2501963505\",\n" +
                 "        \"trackingParams\": {\n" +
                 "            \"affiliateCode\": \"MMT001\",\n" +
                 "            \"channelCode\": \"WEB\"\n" +
                 "        }\n" +
                 "}"
-        val jsonObject= JsonObject()
-        jsonObject.addProperty("pnrID","8248944413")
-        val secondJson=JsonObject()
-        secondJson.addProperty("channelCode","PWA")
-        secondJson.addProperty("affiliateCode","MMT001")
-        jsonObject.add("trackingParams",secondJson)
+        val jsonObject = JsonObject()
+        jsonObject.addProperty("pnrID", "8248944413")
+        val secondJson = JsonObject()
+        secondJson.addProperty("channelCode", "PWA")
+        secondJson.addProperty("affiliateCode", "MMT001")
+        jsonObject.add("trackingParams", secondJson)
 
         dcmsNetworkCallRepository.makeApiCall(jsonObject)
+    }
+
+    internal fun getCampaignList() {
+        if (Utility.isUserLoggedIn()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val authToken: String = AuthConfigManager.getAuthToken()
+                val response = dcmsNetworkCallRepository.makeApiCallForGettingCampaign(authToken)
+            }
+        } else {
+            taskDetailLiveData.postValue(null)
+        }
     }
 
 }

@@ -110,5 +110,9 @@ interface DcmsApiInterface {
         @Body jsonObject: JsonObject
     ):JsonObject
 
+    @GET("/api/sg/Campaigns")
+    suspend fun getCampaignListFrom(
+        @Query("AuthToken") authToken: String,
+    ): CampaignListModel
 }
 
