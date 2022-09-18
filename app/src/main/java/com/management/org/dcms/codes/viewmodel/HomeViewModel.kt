@@ -23,6 +23,9 @@ class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetwo
         MutableLiveData()
     var callLogSentReportLiveData: MutableLiveData<GlobalNetResponse<CallSentReportResponse>?> =
         MutableLiveData()
+class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetworkCallRepository) :
+    ViewModel() {
+    var taskDetailLiveData: MutableLiveData<GlobalNetResponse<TaskDetailsModel>?> = MutableLiveData()
 
     internal fun getTaskDetails() {
         if (Utility.isUserLoggedIn()) {
@@ -76,6 +79,17 @@ class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetwo
         jsonObject.add("trackingParams", secondJson)
 
         dcmsNetworkCallRepository.makeApiCall(jsonObject)
+    }
+
+    internal fun getCampaignList() {
+        if (Utility.isUserLoggedIn()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val authToken: String = AuthConfigManager.getAuthToken()
+                val response = dcmsNetworkCallRepository.makeApiCallForGettingCampaign(authToken)
+            }
+        } else {
+            taskDetailLiveData.postValue(null)
+        }
     }
 
     internal fun getCallLogsReport() = viewModelScope.launch(Dispatchers.IO) {

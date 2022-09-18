@@ -139,5 +139,8 @@ DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInterface
         val longitude: String = LocationValue.longitude
         apiInterface.getCallLogsReport(authToken, deviceId, latitude, longitude, androidVersion, ipAddress)
     }
+    suspend fun makeApiCallForGettingCampaign(authToken: String)= safeApiCall {
+        apiInterface.getCampaignListFrom(authToken)
+    }
 
 }

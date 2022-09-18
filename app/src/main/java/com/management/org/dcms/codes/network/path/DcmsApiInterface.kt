@@ -120,5 +120,9 @@ interface DcmsApiInterface {
         @Query("IpAddress") ipAddress: String,
     ):CallSentReportResponse
 
+    @GET("/api/sg/Campaigns")
+    suspend fun getCampaignListFrom(
+        @Query("AuthToken") authToken: String,
+    ): CampaignListModel
 }
 

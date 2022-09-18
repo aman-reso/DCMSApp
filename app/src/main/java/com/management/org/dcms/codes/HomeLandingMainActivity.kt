@@ -24,6 +24,7 @@ import com.management.org.dcms.codes.viewmodel.HomeViewModel
 import com.management.org.dcms.databinding.ActivityMainBinding
 import com.management.org.dcms.databinding.LayputHomeDashboardBinding
 import com.management.org.dcms.databinding.ProfileSectionBinding
+import com.skydoves.powerspinner.PowerSpinnerView
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +54,9 @@ class HomeLandingMainActivity : BaseActivity() {
     private var seeAddedHouseHoldTv: TextView? = null
     private var textMessageActionBtn: View? = null
     private var callActionBtn: View? = null
+    //added skyDovesPowerSpinner
+    private val campaignSpinner:PowerSpinnerView? by lazy { mainActivityBinding?.campaignPowerSpinner }
+
     private var registrationImageURL: String = "http://dcms.dmi.ac.in/content/dist/img/Registration.png"
     private var surveyImageURL: String = "http://dcms.dmi.ac.in/content/dist/img/questionairs.png"
 
@@ -301,6 +305,8 @@ class HomeLandingMainActivity : BaseActivity() {
         val intent = Intent(this, ViewEntries::class.java)
         startActivity(intent)
     }
+    private fun bindDataWithSpinner(){
 
+    }
 
 }
