@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonObject
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.models.CallSentReportResponse
+import com.management.org.dcms.codes.models.CampaignListModel
+import com.management.org.dcms.codes.models.CampaignModel
 import com.management.org.dcms.codes.models.TaskDetailsModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
 import com.management.org.dcms.codes.repository.DcmsNetworkCallRepository
@@ -19,19 +21,19 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetworkCallRepository) :
     ViewModel() {
-    var taskDetailLiveData: MutableLiveData<GlobalNetResponse<TaskDetailsModel>?> =
+    internal var taskDetailLiveData: MutableLiveData<GlobalNetResponse<TaskDetailsModel>?> =
         MutableLiveData()
-    var callLogSentReportLiveData: MutableLiveData<GlobalNetResponse<CallSentReportResponse>?> =
+    internal var callLogSentReportLiveData: MutableLiveData<GlobalNetResponse<CallSentReportResponse>?> =
         MutableLiveData()
-class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetworkCallRepository) :
-    ViewModel() {
-    var taskDetailLiveData: MutableLiveData<GlobalNetResponse<TaskDetailsModel>?> = MutableLiveData()
+    internal var campaignListLiveData: MutableLiveData<GlobalNetResponse<CampaignListModel>?> =
+        MutableLiveData()
+    internal var campList:ArrayList<CampaignModel> = ArrayList()
 
     internal fun getTaskDetails() {
         if (Utility.isUserLoggedIn()) {
             viewModelScope.launch(Dispatchers.IO) {
-                val authToken: String? = AuthConfigManager.getAuthToken()
-                var response = authToken?.let { dcmsNetworkCallRepository.getTaskDetail(it) }
+                val authToken: String = AuthConfigManager.getAuthToken()
+                val response = authToken.let { dcmsNetworkCallRepository.getTaskDetail(it) }
                 taskDetailLiveData.postValue(response)
             }
         } else {
@@ -63,32 +65,16 @@ class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetwo
         }
     }
 
-    internal fun makeApiCall() = viewModelScope.launch(Dispatchers.IO) {
-        val string = "{\n" +
-                "        \"pnrID\": \"2501963505\",\n" +
-                "        \"trackingParams\": {\n" +
-                "            \"affiliateCode\": \"MMT001\",\n" +
-                "            \"channelCode\": \"WEB\"\n" +
-                "        }\n" +
-                "}"
-        val jsonObject = JsonObject()
-        jsonObject.addProperty("pnrID", "8248944413")
-        val secondJson = JsonObject()
-        secondJson.addProperty("channelCode", "PWA")
-        secondJson.addProperty("affiliateCode", "MMT001")
-        jsonObject.add("trackingParams", secondJson)
-
-        dcmsNetworkCallRepository.makeApiCall(jsonObject)
-    }
-
     internal fun getCampaignList() {
         if (Utility.isUserLoggedIn()) {
             viewModelScope.launch(Dispatchers.IO) {
                 val authToken: String = AuthConfigManager.getAuthToken()
+                System.out.println("authToken-->$authToken")
                 val response = dcmsNetworkCallRepository.makeApiCallForGettingCampaign(authToken)
+                campaignListLiveData.postValue(response)
             }
         } else {
-            taskDetailLiveData.postValue(null)
+            campaignListLiveData.postValue(null)
         }
     }
 
@@ -97,7 +83,8 @@ class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetwo
             viewModelScope.launch(Dispatchers.IO) {
                 val authToken: String? = AuthConfigManager.getAuthToken()
                 if (authToken != null) {
-                    val response = dcmsNetworkCallRepository.getCallLogsReport(authToken = authToken)
+                    val response =
+                        dcmsNetworkCallRepository.getCallLogsReport(authToken = authToken)
                     callLogSentReportLiveData.postValue(response)
                 }
             }

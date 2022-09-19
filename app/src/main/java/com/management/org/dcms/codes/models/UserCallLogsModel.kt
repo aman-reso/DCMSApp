@@ -7,5 +7,5 @@ data class UserCallLogsModel(
     var Duration: Int,
     var CallTypeCode: String,
     var CallType: String,
-    var GeoCodeLocation: String
+    var GeoCodeLocation: String?=""
 )

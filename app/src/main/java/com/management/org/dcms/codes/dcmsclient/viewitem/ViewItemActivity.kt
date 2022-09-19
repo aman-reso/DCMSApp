@@ -9,8 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.management.org.dcms.codes.activity.PopScreen
+import com.management.org.dcms.codes.activity.ModifyHouseHoldActivity
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
+import com.management.org.dcms.codes.dcmsclient.data.models.HouseHold
 import com.management.org.dcms.codes.dcmsclient.data.models.HouseHoldsResponse
 import com.management.org.dcms.codes.dcmsclient.util.UiState
 import com.management.org.dcms.codes.extensions.showHideView
@@ -30,8 +31,11 @@ class ViewItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DcmsClientActivityViewItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        AuthConfigManager.getAuthToken()?.let { viewModel.getHouseholds(it) }
-        adapter = ViewItemAdapter()
+        AuthConfigManager.getAuthToken().let { viewModel.getHouseholds(it) }
+        adapter = ViewItemAdapter {
+            handleModifyAction(it)
+        }
+
         binding.households.adapter = adapter
         binding.households.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -61,8 +65,6 @@ class ViewItemActivity : AppCompatActivity() {
                         stopLoad()
                         Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_LONG).show()
                     }
-
-
                 }
             }
         }
@@ -80,11 +82,13 @@ class ViewItemActivity : AppCompatActivity() {
     }
 
 
-    @SuppressLint("ClickableViewAccessibility")
-    fun onButtonShowPopupWindowClick(view: View?) {
-
-        val intent = Intent(this, PopScreen::class.java)
+    private fun handleModifyAction(houseHold: HouseHold?) {
+        if (houseHold==null){
+            return
+        }
+        val hhId=houseHold.id
+        val intent = Intent(this, ModifyHouseHoldActivity::class.java)
+        intent.putExtra("hhId",hhId)
         startActivity(intent)
-        finish()
     }
 }

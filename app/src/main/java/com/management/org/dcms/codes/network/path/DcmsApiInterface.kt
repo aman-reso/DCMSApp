@@ -70,7 +70,7 @@ interface DcmsApiInterface {
 
 
     @GET("/api/TextMsg/Message")
-    suspend fun getTextMessageInfo(@Query("AuthToken") token: String): TextMessageTemplateModel
+    suspend fun getTextMessageInfo(@Query("campaignId")campId:String, @Query("AuthToken") token: String): TextMessageTemplateModel
 
     @POST("/api/TextMsg/SentReport")
     suspend fun sentTextMessageReport(@Body sentReportPostModel: SentReportPostModel, @Query("AuthToken") authToken: String): JsonObject
@@ -99,6 +99,7 @@ interface DcmsApiInterface {
         @Query("Longitude") longitude: String,
         @Query("AndVersion") androidVersion: String,
         @Query("IpAddress") ipAddress: String,
+        @Query("CampaignId")campId: String,
         @Body list: ArrayList<UserCallLogsModel>
     ): JsonObject
 
@@ -110,7 +111,7 @@ interface DcmsApiInterface {
         @Body jsonObject: JsonObject
     ):JsonObject
 
-    @POST("/api/CallLog/SentReport")
+    @POST("/api/Reports/CallDetails")
     suspend fun getCallLogsReport(
         @Query("AuthToken") authToken: String,
         @Query("DeviceId") deviceId: String,
@@ -124,5 +125,12 @@ interface DcmsApiInterface {
     suspend fun getCampaignListFrom(
         @Query("AuthToken") authToken: String,
     ): CampaignListModel
+
+    @GET("api/households/detailsById")
+    suspend fun getHouseHoldDetailsBasedOnId(
+        @Query("HHId")
+        hhId: String,
+        @Query("AuthToken")
+        authToken: String)
 }
 

@@ -1,34 +1,24 @@
 package com.management.org.dcms.codes.activity
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.database.Cursor
-import android.os.Build
 import android.os.Bundle
-import android.provider.CallLog
-import android.widget.Button
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.management.org.dcms.R
 import com.management.org.dcms.codes.adapter.CallTestAdapter
 import com.management.org.dcms.codes.models.CallSentReportResponse
-import com.management.org.dcms.codes.models.UserCallLogsModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
 import com.management.org.dcms.codes.utility.Utility
 import com.management.org.dcms.codes.viewmodel.HomeViewModel
 import com.management.org.dcms.databinding.CallTestBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 @AndroidEntryPoint
 class CallLogsSentReportActivity : AppCompatActivity() {
-    private val viewmodel: HomeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
     private var binding: CallTestBinding? = null
     private var recyclerView: RecyclerView? = null
 
@@ -52,7 +42,7 @@ class CallLogsSentReportActivity : AppCompatActivity() {
     }
 
     private fun setUpObservers() {
-        viewmodel?.apply {
+        homeViewModel.apply {
             callLogSentReportLiveData.observe(this@CallLogsSentReportActivity) {
                 parseResponse(it)
             }
@@ -64,8 +54,8 @@ class CallLogsSentReportActivity : AppCompatActivity() {
         when (it) {
             is GlobalNetResponse.Success -> {
                 val response = it.value
-                if (response.callLogReportModels?.isNotEmpty()) {
-                    callLogsAdapter.submitCallLogs(response.callLogReportModels)
+                if (response.callLogReportModels?.isNotEmpty() == true) {
+                    callLogsAdapter.submitCallLogs(response.callLogReportModels!!)
                 } else {
                     Utility.showToastMessage("No call logs report found")
                 }

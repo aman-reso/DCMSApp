@@ -45,10 +45,10 @@
             android:exported="false" />
 
         <activity
-            android:name=".codes.activity.PopScreen"
+            android:name=".codes.activity.ModifyHouseHoldActivity"
             android:exported="false" />
         <activity
-            android:name=".codes.activity.ViewEntries"
+            android:name=".codes.activity.ViewEntriesActivity"
             android:exported="false" />
         <activity
             android:name=".codes.activity.ForgotPasswordActivity"

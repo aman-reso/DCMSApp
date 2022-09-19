@@ -1,6 +1,7 @@
 package com.management.org.dcms.codes.repository
 
 import com.google.gson.JsonObject
+import com.management.org.dcms.codes.DcmsApplication
 import com.management.org.dcms.codes.activity.LocationValue
 import com.management.org.dcms.codes.models.*
 import com.management.org.dcms.codes.network.path.DcmsApiInterface
@@ -54,7 +55,8 @@ DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInterface
         val ipAddress: String = AndroidDeviceUtils.getLocalIpAddress()
         val latitude: String = LocationValue.latitude
         val longitude: String = LocationValue.longitude
-        val sentReportPostModel = SentReportPostModel(HHId = hhId, WANo = waNum, TemplateId = templateId, deviceId, latitude, longitude, androidVersion, ipAddress)
+        val campId=DcmsApplication.getCampId()
+        val sentReportPostModel = SentReportPostModel(HHId = hhId, WANo = waNum, TemplateId = templateId, deviceId, latitude, longitude, androidVersion, ipAddress,campId)
         apiInterface.sentWAReport(authToken = authToken, sentReportPostModel = sentReportPostModel)
     }
 
@@ -91,12 +93,15 @@ DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInterface
         val ipAddress: String = AndroidDeviceUtils.getLocalIpAddress()
         val latitude: String = LocationValue.latitude
         val longitude: String = LocationValue.longitude
-        val sentReportPostModel = SentReportPostModel(HHId = hhId, WANo = waNum, TemplateId = templateId, deviceId, latitude, longitude, androidVersion, ipAddress)
+        val campId=DcmsApplication.getCampId()
+
+        val sentReportPostModel = SentReportPostModel(HHId = hhId, WANo = waNum, TemplateId = templateId, deviceId, latitude, longitude, androidVersion, ipAddress,campId)
         apiInterface.sentTextMessageReport(authToken = authToken, sentReportPostModel = sentReportPostModel)
     }
 
     suspend fun getTextSMSTemplate(authToken: String) = safeApiCall {
-        apiInterface.getTextMessageInfo(authToken)
+        val campId=DcmsApplication.getCampId()
+        apiInterface.getTextMessageInfo(campId,authToken)
     }
 
     suspend fun sentTextSMSGroupReport(authToken: String, sentReportInGroupModel: SentReportInGroupModel) = safeApiCall {
@@ -125,7 +130,8 @@ DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInterface
         val ipAddress: String = AndroidDeviceUtils.getLocalIpAddress()
         val latitude: String = LocationValue.latitude
         val longitude: String = LocationValue.longitude
-        apiInterface.submitCallLog(authToken, deviceId, latitude, longitude, androidVersion, ipAddress,  list)
+        val campId=DcmsApplication.getCampId()
+        apiInterface.submitCallLog(authToken, deviceId, latitude, longitude, androidVersion, ipAddress,campId,  list)
     }
     suspend fun makeApiCall(obj: JsonObject) = safeApiCall {
         val url="https://railsinfo-services.makemytrip.com/api/rails/pnr/currentstatus/v1?region=in&language=eng&currency=inr"
@@ -141,6 +147,9 @@ DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInterface
     }
     suspend fun makeApiCallForGettingCampaign(authToken: String)= safeApiCall {
         apiInterface.getCampaignListFrom(authToken)
+    }
+    suspend fun getHouseHoldDetailsBasedOnId(hhId: String,authToken: String)= safeApiCall {
+        apiInterface.getHouseHoldDetailsBasedOnId(hhId,authToken)
     }
 
 }

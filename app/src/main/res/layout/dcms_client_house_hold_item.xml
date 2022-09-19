@@ -111,7 +111,6 @@
             android:gravity="center"
             android:paddingHorizontal="8dp"
             android:text="Modify"
-            android:onClick="onButtonShowPopupWindowClick"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

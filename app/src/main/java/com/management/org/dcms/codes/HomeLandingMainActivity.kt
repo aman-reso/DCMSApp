@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -16,6 +15,8 @@ import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.dcmsclient.additem.AddItemActivity
 import com.management.org.dcms.codes.dcmsclient.viewitem.ViewItemActivity
 import com.management.org.dcms.codes.extensions.showHideView
+import com.management.org.dcms.codes.models.CampaignListModel
+import com.management.org.dcms.codes.models.CampaignModel
 import com.management.org.dcms.codes.models.TaskDetailsModel
 import com.management.org.dcms.codes.network_res.GlobalNetResponse
 import com.management.org.dcms.codes.utility.LanguageManager.getStringInfo
@@ -24,12 +25,11 @@ import com.management.org.dcms.codes.viewmodel.HomeViewModel
 import com.management.org.dcms.databinding.ActivityMainBinding
 import com.management.org.dcms.databinding.LayputHomeDashboardBinding
 import com.management.org.dcms.databinding.ProfileSectionBinding
+import com.skydoves.powerspinner.OnSpinnerItemSelectedListener
 import com.skydoves.powerspinner.PowerSpinnerView
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -54,11 +54,13 @@ class HomeLandingMainActivity : BaseActivity() {
     private var seeAddedHouseHoldTv: TextView? = null
     private var textMessageActionBtn: View? = null
     private var callActionBtn: View? = null
+
     //added skyDovesPowerSpinner
-    private val campaignSpinner:PowerSpinnerView? by lazy { mainActivityBinding?.campaignPowerSpinner }
+    private val campaignSpinner: PowerSpinnerView? by lazy { mainActivityBinding?.campaignPowerSpinner }
 
     private var registrationImageURL: String = "http://dcms.dmi.ac.in/content/dist/img/Registration.png"
     private var surveyImageURL: String = "http://dcms.dmi.ac.in/content/dist/img/questionairs.png"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +109,8 @@ class HomeLandingMainActivity : BaseActivity() {
             true
         }
         if (dashboardBinding?.imageViewForRegistration != null) {
-            Picasso.get().load(registrationImageURL).into(dashboardBinding?.imageViewForRegistration)
+            Picasso.get().load(registrationImageURL)
+                .into(dashboardBinding?.imageViewForRegistration)
         }
         if (dashboardBinding?.imageViewForStartSurvey != null) {
             Picasso.get().load(surveyImageURL).into(dashboardBinding?.imageViewForStartSurvey)
@@ -116,12 +119,34 @@ class HomeLandingMainActivity : BaseActivity() {
 
 
     private fun setUpObserver() {
+        homeViewModel?.getCampaignList()
         homeViewModel?.getTaskDetails()
         progressBar?.showHideView(true)
         homeViewModel?.apply {
             taskDetailLiveData.observe(this@HomeLandingMainActivity) {
                 progressBar?.showHideView(false)
                 parseNetworkResponse(it)
+            }
+            campaignListLiveData.observe(this@HomeLandingMainActivity) {
+                progressBar?.showHideView(false)
+                parseNetworkResponseForCampaignList(it)
+            }
+        }
+
+    }
+
+    private fun parseNetworkResponseForCampaignList(response: GlobalNetResponse<CampaignListModel>?) {
+        when (response) {
+            is GlobalNetResponse.NetworkFailure -> {
+
+            }
+            is GlobalNetResponse.Success -> {
+                val successResponse = response.value
+                if (successResponse.campItemList == null) {
+                    Utility.showToastMessage("Something went wrong")
+                    return
+                }
+                bindDataWithSpinner(successResponse.campItemList!!)
             }
         }
 
@@ -146,9 +171,13 @@ class HomeLandingMainActivity : BaseActivity() {
 
 
     private fun setUpClickListener() {
-        //reprort
+        //report
         questionActionView?.setOnClickListener {
-            handleQuestionaireIntent()
+            if (validateCampId()) {
+                handleQuestionaireIntent()
+            } else {
+                Utility.showToastMessage("Please Select Campaign")
+            }
         }
         //waMessage
         wAMessageActionView?.setOnClickListener {
@@ -162,15 +191,32 @@ class HomeLandingMainActivity : BaseActivity() {
             handleDataCollectionIntent()
         }
         textMessageActionBtn?.setOnClickListener {
-            handleTextMessageIntent()
+            if (validateCampId()) {
+                handleTextMessageIntent()
+            } else {
+                Utility.showToastMessage("Please Select Campaign")
+            }
         }
         //call
         callActionBtn?.setOnClickListener {
-            handleCallIntent()
+            if (validateCampId()) {
+                handleCallIntent()
+            } else {
+                Utility.showToastMessage("Please Select Campaign")
+            }
         }
+
         seeAddedHouseHoldTv?.setOnClickListener {
             startSeeAddedHouseHoldIntent()
         }
+        campaignSpinner?.setOnSpinnerItemSelectedListener(OnSpinnerItemSelectedListener<String> { oldIndex, oldItem, newIndex, newItem ->
+            if (newIndex != -1) {
+                val id = homeViewModel?.campList?.get(newIndex)?.campId
+                if (id != null) {
+                    DcmsApplication.setCampId(id)
+                }
+            }
+        })
 
     }
 
@@ -220,7 +266,7 @@ class HomeLandingMainActivity : BaseActivity() {
 
     private fun handleCallIntent() {
         if (taskDetailsModel != null) {
-            val isMessageEnabled = taskDetailsModel?.Task?.Questionaires
+            val isMessageEnabled = taskDetailsModel?.Task?.CallDetail
             if (isMessageEnabled == true) {
                 startCallActivity()
             } else {
@@ -302,11 +348,27 @@ class HomeLandingMainActivity : BaseActivity() {
     }
 
     private fun viewEntriesClass() {
-        val intent = Intent(this, ViewEntries::class.java)
+        val intent = Intent(this, ViewEntriesActivity::class.java)
         startActivity(intent)
     }
-    private fun bindDataWithSpinner(){
 
+    private fun bindDataWithSpinner(campItemList: ArrayList<CampaignModel>) {
+        homeViewModel?.campList?.clear()
+        homeViewModel?.campList?.addAll(campItemList)
+        campaignSpinner?.setItems(campItemList.map { it.campName })
+        if (campItemList.size == 1) {
+            DcmsApplication.setCampId(campItemList[0].campId!!)
+            campaignSpinner?.selectItemByIndex(0)
+        }
+
+    }
+
+    private fun validateCampId(): Boolean {
+        val campId = DcmsApplication.getCampId()
+        if (campId == "-1") {
+            return false
+        }
+        return true
     }
 
 }

@@ -5,21 +5,32 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import com.management.org.dcms.R
 import com.management.org.dcms.codes.dcmsclient.viewitem.ViewItemActivity
+import com.management.org.dcms.codes.extensions.showHideView
+import com.management.org.dcms.codes.utility.LanguageManager
+import com.management.org.dcms.databinding.ViewEntriesBinding
 
-class ViewEntries : BaseActivity() {
-
+class ViewEntriesActivity : BaseActivity() {
+    var binding:ViewEntriesBinding?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.view_entries)
+        binding=DataBindingUtil.setContentView(this,R.layout.view_entries)
 
         val textView = findViewById<View>(R.id.viewEntries) as TextView
         textView.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-
+        setUpHeaders()
         onClickListeners()
     }
 
+    private fun setUpHeaders() {
+        binding?.containerAppBar?.icNavBackIcon?.showHideView(true)
+        binding?.containerAppBar?.icNavBackIcon?.setOnClickListener {
+            onBackPressed()
+        }
+        binding?.containerAppBar?.appBarTitleTV?.text = LanguageManager.getStringInfo(R.string.view_entries)
+    }
 
 
     private fun onClickListeners()

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.management.org.dcms.codes.dcmsclient.data.models.HouseHold
 import com.management.org.dcms.databinding.DcmsClientHouseHoldItemBinding
 
-class ViewItemAdapter:ListAdapter<HouseHold, ViewItemAdapter.vh>(diffUtil) {
+class ViewItemAdapter(var callback:(HouseHold?)->Unit):ListAdapter<HouseHold, ViewItemAdapter.vh>(diffUtil) {
 
     class vh(val item: DcmsClientHouseHoldItemBinding):RecyclerView.ViewHolder(item.root){
         fun bind(data: HouseHold){
@@ -39,7 +39,11 @@ class ViewItemAdapter:ListAdapter<HouseHold, ViewItemAdapter.vh>(diffUtil) {
     }
 
     override fun onBindViewHolder(holder: vh, position: Int) {
-        holder.bind(getItem(position))
+        val item=getItem(position)
+        holder.bind(item)
+        holder.item.modify.setOnClickListener {
+            callback.invoke(item)
+        }
     }
 
 }

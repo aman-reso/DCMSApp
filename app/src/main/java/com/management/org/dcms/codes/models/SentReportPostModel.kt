@@ -8,7 +8,8 @@ data class SentReportPostModel(
     var Lattitude: String,
     var Longitude: String,
     var Andversion: String,
-    var IPAddress: String
+    var IPAddress: String,
+    var CampaignId:String
 )
 
 data class SentReportInGroupModel(
@@ -17,5 +18,6 @@ data class SentReportInGroupModel(
     var Lattitude: String,
     var Longitude: String,
     var Andversion: String,
-    var IPAddress: String
+    var IPAddress: String,
+    var CampaignId:String
 )
