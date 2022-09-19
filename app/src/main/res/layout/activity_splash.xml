@@ -7,6 +7,18 @@
     tools:context=".codes.activity.SplashActivity">
 
     <ImageView
+        android:id="@+id/unicefLogo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="fitXY"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/unicef_logo"
+        app:layout_constraintBottom_toTopOf="@+id/appLogoOnSplashImg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ImageView
         android:id="@+id/appLogoOnSplashImg"
         android:layout_width="150dp"
         android:layout_height="150dp"
