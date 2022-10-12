@@ -85,7 +85,8 @@ class AddItemActivity : AppCompatActivity() {
             finish()
         }
         binding.imageSelector.setOnClickListener {
-            ImagePicker.with(this).compress(1024)         //Final image size will be less than 1 MB(Optional)
+            ImagePicker.with(this)
+                .compress(1024)         //Final image size will be less than 1 MB(Optional)
                 .maxResultSize(1080, 1080).cameraOnly().crop().createIntent {
                     startForProfileImageResult.launch(it)
                 }
@@ -101,20 +102,36 @@ class AddItemActivity : AppCompatActivity() {
                             villageList.add(it.villageName)
                         }
                         Timber.e("$villageList")
-                        val stateAdapter = ArrayAdapter(this@AddItemActivity, R.layout.dcms_client_simple_spinner_item, villageList)
+                        val stateAdapter = ArrayAdapter(
+                            this@AddItemActivity,
+                            R.layout.dcms_client_simple_spinner_item,
+                            villageList
+                        )
                         (binding.villageSpinner as? AutoCompleteTextView)?.setAdapter(
                             stateAdapter
                         )
                         binding.villageSpinner.addTextChangedListener(object : TextWatcher {
                             override fun afterTextChanged(s: Editable?) {}
 
-                            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                            override fun beforeTextChanged(
+                                s: CharSequence?,
+                                start: Int,
+                                count: Int,
+                                after: Int
+                            ) {
+                            }
 
-                            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                            override fun onTextChanged(
+                                s: CharSequence?,
+                                start: Int,
+                                before: Int,
+                                count: Int
+                            ) {
                                 try {
                                     Timber.i("SELECTED = ${it.data.villages[villageList.indexOf(s.toString())]}")
                                     villageName = s.toString()
-                                    villageId = it.data.villages[villageList.indexOf(s.toString())].id
+                                    villageId =
+                                        it.data.villages[villageList.indexOf(s.toString())].id
                                 } catch (e: Exception) {
                                 }
                             }
@@ -161,7 +178,11 @@ class AddItemActivity : AppCompatActivity() {
         })
 
 
-        val documentAdapter = ArrayAdapter(this@AddItemActivity, R.layout.dcms_client_simple_spinner_item, documentTypeList)
+        val documentAdapter = ArrayAdapter(
+            this@AddItemActivity,
+            R.layout.dcms_client_simple_spinner_item,
+            documentTypeList
+        )
         (binding.documentType as? AutoCompleteTextView)?.setAdapter(documentAdapter)
         binding.documentType.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
@@ -183,7 +204,8 @@ class AddItemActivity : AppCompatActivity() {
                     is UiState.Success<*> -> {
                         stopLoad()
                         Utility.showToastMessage("Household Created SuccessFully")
-                        Snackbar.make(binding.root, "Household Created", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "Household Created", Snackbar.LENGTH_SHORT)
+                            .show()
                         finish()
                     }
                     is UiState.Failed -> {
@@ -211,7 +233,7 @@ class AddItemActivity : AppCompatActivity() {
                         if (!binding.whatsapp.text.isNullOrEmpty()) {
                             if (binding.whatsapp.text?.length == 10) {
                                 whatsAppNum = binding.whatsapp.text.toString()
-                            }else{
+                            } else {
                                 Utility.showToastMessage("Enter correct whatsApp number")
                             }
                         }
@@ -219,28 +241,47 @@ class AddItemActivity : AppCompatActivity() {
                         val latitude: String = LocationValue.latitude
                         val longitude: String = LocationValue.longitude
                         val a = CancellationTokenSource().token
-                        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, a).addOnSuccessListener {
+                        fusedLocationClient.getCurrentLocation(
+                            LocationRequest.PRIORITY_HIGH_ACCURACY,
+                            a
+                        ).addOnSuccessListener {
                             val file = File("${fileUri?.path}")
-                            val encodedImage: String = Base64.encodeToString(method(file), Base64.DEFAULT)
+                            val encodedImage: String =
+                                Base64.encodeToString(method(file), Base64.DEFAULT)
                             AuthConfigManager.getAuthToken().let { authToken ->
                                 try {
                                     viewModel.registerHousehold(
-                                        villageId, villageName, binding.name.text.toString(),
-                                        binding.mobile.text.toString(), whatsAppNum, emailId, binding.address.text.toString(),
-                                        binding.father.text.toString(), binding.mother.text.toString(), binding.ward.text.toString(),
-                                        binding.landmark.text.toString(), authToken, latitude, longitude, encodedImage, ".jpg",
-                                        mobileType, documentType, binding.documentNumber.text.toString()
+                                        villageId,
+                                        villageName,
+                                        binding.name.text.toString(),
+                                        binding.mobile.text.toString(),
+                                        whatsAppNum,
+                                        emailId,
+                                        binding.address.text.toString(),
+                                        binding.father.text.toString(),
+                                        binding.mother.text.toString(),
+                                        binding.ward.text.toString(),
+                                        binding.landmark.text.toString(),
+                                        authToken,
+                                        latitude,
+                                        longitude,
+                                        encodedImage,
+                                        ".jpg",
+                                        mobileType,
+                                        documentType,
+                                        binding.documentNumber.text.toString()
                                     )
-                                } catch (e:Exception) {
+                                } catch (e: Exception) {
 
                                 }
 
                             }
 
                         }.addOnFailureListener {
-                            Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_SHORT).show()
+                            Snackbar.make(binding.root, "${it.message}", Snackbar.LENGTH_SHORT)
+                                .show()
                         }
-                    }else{
+                    } else {
                         Utility.showToastMessage("Please select Image")
                     }
                 }
@@ -283,15 +324,7 @@ class AddItemActivity : AppCompatActivity() {
                         if (validateMobileTypeNum()) {
                             if (validateAddress()) {
                                 if (validateLandmark()) {
-                                    if (validateDocType()) {
-                                        if (validateDocNum()) {
-                                            if (validateFatherName()) {
-                                                if (validateMotherName()) {
-                                                    return true
-                                                }
-                                            }
-                                        }
-                                    }
+                                    return true
                                 }
                             }
                         }
@@ -305,7 +338,7 @@ class AddItemActivity : AppCompatActivity() {
     //                && mobileType != "" && documentType != ""
     private fun validateFatherName(): Boolean {
         val fatherName: String? = binding.father.text?.toString()
-        if (fatherName != null && fatherName!="") {
+        if (fatherName != null && fatherName != "") {
             return true
         }
         Utility.showToastMessage("Please enter father's name")
@@ -322,7 +355,7 @@ class AddItemActivity : AppCompatActivity() {
 
     private fun validateLandmark(): Boolean {
         val landMark: String? = binding.landmark.text?.toString()
-        if (landMark != null && landMark!="") {
+        if (landMark != null && landMark != "") {
             return true
         }
         Utility.showToastMessage("Please enter Landmark")
@@ -331,7 +364,7 @@ class AddItemActivity : AppCompatActivity() {
 
     private fun validateMotherName(): Boolean {
         val motherName: String? = binding.mother.text?.toString()
-        if (motherName != null && motherName!="") {
+        if (motherName != null && motherName != "") {
             return true
         }
         Utility.showToastMessage("Please enter mother's name")
@@ -340,7 +373,7 @@ class AddItemActivity : AppCompatActivity() {
 
     private fun validateDocNum(): Boolean {
         val docNum: String? = binding.documentNumber.text?.toString()
-        if (docNum != null && docNum!="") {
+        if (docNum != null && docNum != "") {
             return true
         }
         Utility.showToastMessage("Please enter correct Document number")
@@ -358,7 +391,7 @@ class AddItemActivity : AppCompatActivity() {
 
     private fun validateAddress(): Boolean {
         val address: String? = binding.address.text?.toString()
-        if (address != null && address!="") {
+        if (address != null && address != "") {
             return true
         }
         Utility.showToastMessage("Please enter correct Address")

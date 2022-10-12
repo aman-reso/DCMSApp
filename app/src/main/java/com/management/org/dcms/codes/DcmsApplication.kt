@@ -4,8 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.os.Build
 import com.management.org.dcms.codes.utility.LanguageManager
-import com.management.org.dcms.codes.utility.LanguageSettingImpl
-import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
 import java.util.*
 
@@ -44,6 +42,15 @@ class DcmsApplication : Application() {
         @Synchronized
         fun getCampId():String{
            return localSessionManager.getSelectedCampaignId()
+        }
+
+        @Synchronized
+        fun setThemeId(id: String){
+            localSessionManager.setSelectedTheme(id)
+        }
+        @Synchronized
+        fun getThemeId():String{
+            return localSessionManager.getSelectedThemeId()
         }
 
     }

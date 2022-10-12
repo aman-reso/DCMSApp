@@ -2,10 +2,13 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:layout_margin="8dp"
+    android:elevation="4dp"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="wrap_content">
 
 
@@ -14,6 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:fontFamily="@font/nuntio_bold"
             android:text="Campaign Name -"
             android:padding="5dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +28,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:hint="CampaignName"
+            android:hint=""
+            android:fontFamily="@font/nuntio_regular"
             android:padding="5dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/campaignNameTV"/>
@@ -36,6 +41,7 @@
             android:layout_margin="5dp"
             android:text="Theme Name -"
             android:padding="5dp"
+            android:fontFamily="@font/nuntio_bold"
             app:layout_constraintTop_toBottomOf="@+id/campaignNameTV"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -44,8 +50,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:hint="ThemeName"
+            android:hint=""
             android:padding="5dp"
+            android:fontFamily="@font/nuntio_regular"
             app:layout_constraintStart_toEndOf="@+id/themeNameTv"
             app:layout_constraintTop_toBottomOf="@+id/campaignName"/>
 
@@ -56,6 +63,7 @@
             android:layout_margin="5dp"
             android:text="Mobile No -"
             android:padding="5dp"
+            android:fontFamily="@font/nuntio_bold"
             app:layout_constraintTop_toBottomOf="@+id/themeNameTv"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -64,7 +72,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:hint="MobileNo"
+            android:hint=""
+            android:fontFamily="@font/nuntio_regular"
             android:padding="5dp"
             app:layout_constraintStart_toEndOf="@+id/mobileNoCRTv"
             app:layout_constraintTop_toBottomOf="@+id/themeName"/>
@@ -76,6 +85,7 @@
             android:layout_margin="5dp"
             android:text="Call Time -"
             android:padding="5dp"
+            android:fontFamily="@font/nuntio_bold"
             app:layout_constraintTop_toBottomOf="@+id/mobileNoCRTv"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -84,7 +94,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:hint="CallTime"
+            android:hint=""
+            android:fontFamily="@font/nuntio_regular"
             android:padding="5dp"
             app:layout_constraintStart_toEndOf="@+id/callTimeTv"
             app:layout_constraintTop_toBottomOf="@+id/mobileNoCR"/>

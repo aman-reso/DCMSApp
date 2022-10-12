@@ -50,7 +50,7 @@ class MessageTemplateViewModel @Inject constructor(var dcmsNetworkCallRepository
         if (themeId != null && campaignId != null) {
             viewModelScope.launch(Dispatchers.IO) {
                 val authToken = AuthConfigManager.getAuthToken()
-                val response = dcmsNetworkCallRepository.getContactsList(authToken, themeId, campaignId)
+                val response = dcmsNetworkCallRepository.getContactsList(authToken, themeId)
                 contactsListLiveData.postValue(response)
             }
         }
@@ -122,7 +122,7 @@ class MessageTemplateViewModel @Inject constructor(var dcmsNetworkCallRepository
     internal fun getContactsListForQuestion() {
         viewModelScope.launch(Dispatchers.IO) {
             val authToken = AuthConfigManager.getAuthToken()
-            val serverResponse = dcmsNetworkCallRepository.getContactsListForQuestion(authToken = authToken, themeId = 1, campaignId = 1)
+            val serverResponse = dcmsNetworkCallRepository.getContactsListForQuestion(authToken = authToken, themeId = 12)
             qContactListLiveData.postValue(serverResponse)
         }
     }
@@ -130,7 +130,7 @@ class MessageTemplateViewModel @Inject constructor(var dcmsNetworkCallRepository
    fun getContactListForCall(){
        viewModelScope.launch(Dispatchers.IO) {
            val authToken = AuthConfigManager.getAuthToken()
-           val serverResponse = dcmsNetworkCallRepository.getContactListForCall(authToken = authToken, themeId = 1, campaignId = 1)
+           val serverResponse = dcmsNetworkCallRepository.getContactListForCall(authToken = authToken, themeId = 12)
            qContactListLiveData.postValue(serverResponse)
        }
    }

@@ -38,11 +38,14 @@ DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInterface
     }
 
     suspend fun getWAMessageTemplate(authToken: String) = safeApiCall {
-        apiInterface.getWaMessage(authToken)
+        val campId=DcmsApplication.getCampId()
+        apiInterface.getWaMessage(authToken,campId)
     }
 
-    suspend fun getContactsList(authToken: String, themeId: Int, campaignId: Int) = safeApiCall {
-        apiInterface.getContactsList(authToken, themeId, campaignId)
+    suspend fun getContactsList(authToken: String, themeId: Int) = safeApiCall {
+        val campaignId=DcmsApplication.getCampId()
+        val theme=DcmsApplication.getThemeId()
+        apiInterface.getContactsList(authToken, campaignId,theme)
     }
 
     suspend fun logoutUserFromServer(authToken: String) = safeApiCall {
@@ -60,11 +63,15 @@ DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInterface
         apiInterface.sentWAReport(authToken = authToken, sentReportPostModel = sentReportPostModel)
     }
 
-    suspend fun getContactsListForQuestion(authToken: String, campaignId: Int, themeId: Int) = safeApiCall {
-        apiInterface.getQuestionContactsList(authToken, campaignId, themeId)
+    suspend fun getContactsListForQuestion(authToken: String, themeId: Int) = safeApiCall {
+        val campaignId=DcmsApplication.getCampId()
+        val theme= DcmsApplication.getThemeId()
+        apiInterface.getQuestionContactsList(authToken, campaignId, theme)
     }
-    suspend fun getContactListForCall(authToken: String, campaignId: Int, themeId: Int) = safeApiCall {
-        apiInterface.getContactListForCall(authToken, campaignId, themeId)
+    suspend fun getContactListForCall(authToken: String, themeId: Int) = safeApiCall {
+        val campaignId=DcmsApplication.getCampId()
+        val theme= DcmsApplication.getThemeId()
+        apiInterface.getContactListForCall(authToken, campaignId, theme)
     }
 
     suspend fun getProfileDetails(authToken: String) = safeApiCall {
@@ -133,17 +140,8 @@ DcmsNetworkCallRepository @Inject constructor(var apiInterface: DcmsApiInterface
         val campId=DcmsApplication.getCampId()
         apiInterface.submitCallLog(authToken, deviceId, latitude, longitude, androidVersion, ipAddress,campId,  list)
     }
-    suspend fun makeApiCall(obj: JsonObject) = safeApiCall {
-        val url="https://railsinfo-services.makemytrip.com/api/rails/pnr/currentstatus/v1?region=in&language=eng&currency=inr"
-        apiInterface.makeApiCall(url,obj)
-    }
-    suspend fun getCallLogsReport(authToken: String)= safeApiCall{
-        val deviceId: String = AndroidDeviceUtils.getDeviceId()
-        val androidVersion: String = AndroidDeviceUtils.getAndroidVersion()
-        val ipAddress: String = AndroidDeviceUtils.getLocalIpAddress()
-        val latitude: String = LocationValue.latitude
-        val longitude: String = LocationValue.longitude
-        apiInterface.getCallLogsReport(authToken, deviceId, latitude, longitude, androidVersion, ipAddress)
+    suspend fun getCallLogsReport(authToken: String,fromDate: String,toDate: String)= safeApiCall{
+        apiInterface.getCallLogsReport(authToken, fromDate,toDate)
     }
     suspend fun makeApiCallForGettingCampaign(authToken: String)= safeApiCall {
         apiInterface.getCampaignListFrom(authToken)

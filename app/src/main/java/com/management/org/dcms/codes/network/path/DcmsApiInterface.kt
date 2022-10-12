@@ -22,25 +22,24 @@ interface DcmsApiInterface {
 
 
     @GET("/api/SGAccount/Contacts")
-    suspend fun getContactsList(@Query("AuthToken") authToken: String, @Query("CampaignId") CampaignId: Int, @Query("ThemeId") ThemeId: Int): ContactsMainModel
+    suspend fun getContactsList(@Query("AuthToken") authToken: String, @Query("CampaignId") CampaignId: String, @Query("ThemeId") ThemeId: String): ContactsMainModel
 
 
     @GET("/api/SGAccount/QContacts")
     suspend fun getQuestionContactsList(
-        @Query("AuthToken") authToken: String, @Query("CampaignId") CampaignId: Int, @Query("ThemeId") ThemeId: Int
+        @Query("AuthToken") authToken: String, @Query("CampaignId") CampaignId: String, @Query("ThemeId") ThemeId: String
     ): QContactsMainModel
 
 
     @GET("/api/SGAccount/CallContacts")
-    suspend fun getContactListForCall( @Query("AuthToken") authToken: String, @Query("CampaignId") CampaignId: Int, @Query("ThemeId") ThemeId: Int):QContactsMainModel
+    suspend fun getContactListForCall( @Query("AuthToken") authToken: String, @Query("CampaignId") CampaignId: String, @Query("ThemeId") ThemeId: String):QContactsMainModel
 
     @GET("/api/WA/Message")
-    suspend fun getWaMessage(@Query("AuthToken") token: String): WAMessageTemplateModel
+    suspend fun getWaMessage(@Query("AuthToken") token: String, @Query("CampaignId") CampaignId: String): WAMessageTemplateModel
 
     @POST("/api/WA/SentReport")
     suspend fun sentWAReport(@Body sentReportPostModel: SentReportPostModel, @Query("AuthToken") authToken: String): JsonObject
 
-    // http://dcmshost.dmi.ac.in/api/SGAccount/QContacts?AuthToken=wUESwWxNd20%3D&CampaignId=1&ThemeId=1
     @POST("/Api/Account/Profile")
     suspend fun getProfileDetails(@Query("AuthToken") authToken: String): JsonObject
 
@@ -111,14 +110,11 @@ interface DcmsApiInterface {
         @Body jsonObject: JsonObject
     ):JsonObject
 
-    @POST("/api/Reports/CallDetails")
+    @GET("/api/Reports/CallDetails")
     suspend fun getCallLogsReport(
         @Query("AuthToken") authToken: String,
-        @Query("DeviceId") deviceId: String,
-        @Query("Lattitude") lattitude: String,
-        @Query("Longitude") longitude: String,
-        @Query("AndVersion") androidVersion: String,
-        @Query("IpAddress") ipAddress: String,
+        @Query("fromdate") fromDate: String,
+        @Query("todate") toDate: String,
     ):CallSentReportResponse
 
     @GET("/api/sg/Campaigns")

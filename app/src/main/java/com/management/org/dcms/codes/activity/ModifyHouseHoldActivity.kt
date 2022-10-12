@@ -25,6 +25,7 @@ class ModifyHouseHoldActivity : BaseActivity() {
             hhId = intent.getIntExtra("hhId", -1)?.toString()
         }
         setUpObservers()
+
     }
 
     private fun setClickListeners() {

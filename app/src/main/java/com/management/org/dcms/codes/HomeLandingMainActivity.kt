@@ -162,6 +162,9 @@ class HomeLandingMainActivity : BaseActivity() {
                 val successResponse: TaskDetailsModel = response.value
                 this.taskDetailsModel = successResponse
                 instructionDetailTextView?.text = taskDetailsModel?.Task?.Instructions
+                if (successResponse.Task!=null && successResponse.Task?.ThemeId!=null) {
+                    DcmsApplication.setThemeId(successResponse.Task?.ThemeId?.toString()!!)
+                }
             }
             else -> {
 

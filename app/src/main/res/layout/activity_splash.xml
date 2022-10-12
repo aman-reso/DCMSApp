@@ -8,21 +8,23 @@
 
     <ImageView
         android:id="@+id/unicefLogo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:scaleType="fitXY"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/unicef_logo"
+        android:scaleType="fitCenter"
+        android:src="@drawable/dmilogo_1"
         app:layout_constraintBottom_toTopOf="@+id/appLogoOnSplashImg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
         android:id="@+id/appLogoOnSplashImg"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/dmilogo_1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/unicef_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

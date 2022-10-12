@@ -3,7 +3,6 @@ package com.management.org.dcms.codes.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.JsonObject
 import com.management.org.dcms.codes.authConfig.AuthConfigManager
 import com.management.org.dcms.codes.models.CallSentReportResponse
 import com.management.org.dcms.codes.models.CampaignListModel
@@ -78,16 +77,19 @@ class HomeViewModel @Inject constructor(var dcmsNetworkCallRepository: DcmsNetwo
         }
     }
 
-    internal fun getCallLogsReport() = viewModelScope.launch(Dispatchers.IO) {
+    internal fun getCallLogsReport(fromDateString: String, toDateString: String) {
         if (Utility.isUserLoggedIn()) {
             viewModelScope.launch(Dispatchers.IO) {
                 val authToken: String? = AuthConfigManager.getAuthToken()
                 if (authToken != null) {
-                    val response =
-                        dcmsNetworkCallRepository.getCallLogsReport(authToken = authToken)
+                    val response = dcmsNetworkCallRepository.getCallLogsReport(authToken = authToken,fromDateString,toDateString)
                     callLogSentReportLiveData.postValue(response)
+                }else{
+                    callLogSentReportLiveData.postValue(null)
                 }
             }
+        }else{
+            callLogSentReportLiveData.postValue(null)
         }
     }
 

@@ -7,6 +7,7 @@ import javax.inject.Singleton
 @Singleton
 open class LocalSessionManager @Inject constructor() {
     var selectedCampId:String?="-1"
+    var themeId:String?="-1"
     internal fun setSelectedCamp(id: String){
         this.selectedCampId=id
     }
@@ -15,6 +16,17 @@ open class LocalSessionManager @Inject constructor() {
             "1"
         } else{
             selectedCampId!!;
+        }
+    }
+
+    internal fun setSelectedTheme(id: String){
+        this.themeId=id
+    }
+    open fun getSelectedThemeId():String{
+        return if (this.themeId.equals("-1")){
+            "13"
+        } else{
+            themeId!!;
         }
     }
 }
